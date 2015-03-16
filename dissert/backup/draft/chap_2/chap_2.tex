@@ -1,0 +1,87 @@
+\chapter{Extremal problems and conjectures}
+
+The extremal problem of connected matchings turns out to have implications for one of the most important unsolved problems in graph theory; Hadwiger's conjectured upper bound on chromatic number given in terms of graph minors.  
+
+\section{Hadwiger's conjecture}
+
+A proper vertex coloring of a graph is an assignment of colors to the vertices so that no two adjacent vertices have the same color.  The {\it chromatic number} of a graph $G$ (denoted $\chi(G)$) is the fewest colors with which one can properly color the vertices of $G$. It is clear that the size of a largest clique in a graph is a lower bound on the chromatic number of the graph.  If a graph contains a clique on $n$ vertices, no two vertices of that clique may be assigned the same color.  It is equally apparent by considering as small an example as a cycle on five vertices that the chromatic number of a graph may exceed the clique number.    
+
+But if the clique number of a graph is not an upper bound on the chromatic number, what is?  One possibility to look at some type of ``topological generalization'' of a clique whose size would bound the chromatics number from above.  SEE TOFT.  
+
+When we {\it contract} an edge $uv$ of a graph $G$, we identify the vertices $u$ and $v$ as a new vertex adjacent to all vertices in the union of the neighborhoods of $u$ and $v$ We say that $H$ is a {\it minor} of a graph $G$, or that $G$ has $H$ as a minor (denoted $H \leq G$) is there is some sequence of vertex deletions of edge contractions that transform $G$ into $H$.  
+\begin{figure}
+	\begin{center}
+	\input{minor1}\hspace{0.5cm}
+	\input{minor2}\hspace{0.2cm}
+	\input{minor3}
+	\end{center}
+	\caption{A sequence of edge contractions that show $K_3 \leq C_5$.}
+	\label{minorex}
+\end{figure}
+The famous conjecture of Hadwiger suggests that the generalization of cliques needed to give an upper bound on the chromatic number is that of a clique minor.
+\bconj{[Hadwiger, 1947] The number of colors needed to properly color the vertices of a graph $G$ is no more than $n$ where $K_n$ is the largest clique contained in $G$ as a minor.  In other words, for all graphs $G$, 
+\[\eta(G) \geq \chi(G) \]
+}
+  HERE PUT IN PARTIAL RESULTS.
+
+Another restriction of Hadwiger's  conjecture arises from the upper bound on the chromatic number coming from the independence number of the graph.  A proper coloring can be thought of as a partitioning of the vertex set into independent sets, so the following bound is quite clear.
+\bprop{For all graphs $G$, \[\chi(G) \geq \frac{n}{\alpha(G)}\]}
+This leads to the following weakening of Hadwiger's conjecture
+\bconj{[Weaker version of Hadwiger's conjecture] For all graphs $G$, 
+\[\eta(G) \geq \frac{n}{\alpha(G)}.\]}
+At the present time, this conjecture remains open for any particular independence number.  The first examination of this problem by Duchet and Meyniel yielded the following bound.
+\begin{theorem}[\cite{DandM}]
+	For any graph $G$, 
+\[\eta(G) \geq \frac{n}{2\alpha(G) -1}\]
+\end{theorem}
+This is turn was improved by Kawarabayashi et. al for almost all values of $\alpha$
+\begin{theorem}[\cite{Kawara}]
+	For any graph $G$ on $n$ vertices with $\alpha(G) \geq 3$
+\[\eta(G) \geq \frac{n(4\alpha(G)-2)}{(4\alpha(G)-3)(2\alpha(G)-1)}\]
+\end{theorem}
+The first improvement by an absolute constant factor comes from Fox (\cite{fox}) who shows that 
+\begin{theorem}
+	Let $c = \frac{29-\sqrt{813}}{28}$.  Then for any graph $G$,
+\[\eta(G) \geq \frac{n}{(2-c)\alpha}\]
+\end{theorem}
+
+The specific case of $\alpha(G) = 2$ has attracted much attention.  Plummer, Stiebitz and Totf gave this case a thorough treatment in \cite{PST}.  In addition to their work on Hadwiger's conjecture, it is in \cite{PST} that the idea of a connected matching is introduced.  Their work led to the following extended conjecture.
+
+\begin{conj}[PST extention of Hadwiger's conjecture] Every graph $G$ with $\alpha(G) = 2$ and $n$ vertices has a connected matching $M$ such that the contractions of the edges in $M$ to $|M|$ single vertices results in a graph containing $K_{\lceil n/c \rceil} $ 
+\end{conj}
+
+This was also conjectured by Seymour CITE and is sometimes referred to as {\it Seymour's strengthening of Hadwiger's conjecture.}  Plummer, Stiebitz and Toft prove this conjecture for all inflations of graphs with independence number 2 and fewer than 12 vertices, as well as inflations of an infinite family of $\alpha = 2$ graphs.
+
+\section{Connected matchings in graphs with independence number 2}
+
+The strengthened version of Hadwiger's conjecture for graphs with independence number 2 placed connected matchings front and center.  Seymour is credited with presenting the problem of improving the bound of Duchet and Meyniel in the case of independence number 2.
+\bconj{There exists $\epsilon > 0$ so that every graph $G$ with $n$ vertices and $\alpha(G) = 2$ contains $K_{\lceil(\frac{1}{3}+\epsilon)n}$ as a minor.}
+One of the results of Kawarabayashi et. al in \cite{Kawara} effectively reduces this problem to an extremal problems on connected matchings.
+\begin{theorem}[\cite{Kawara}] If $G$ is a graph on $n$ vertices with $\alpha(G) \leq 2$ containing a connected matching of size greater than or equal to $kn>0$, then $G$ has $K_{\lceil (n/3)(1+k/3)\rceil}$ as a minor.
+
+Conversely, if $G$ is a graph on $n$ vertices with $\alpha(G) \leq 2$ having $K_{\lceil cn\rceil}$ as a minor for $c> \frac{1}{3}$, then $G$ contains a connected matching of size at least $(3c-1)n/4 -\frac{1}{2}$.\label{ramsey_flavor}
+\end{theorem}
+
+Gy\'arf\'as, F\:uredi, and Simonyi present the extremal conjecture in \cite{GFS}
+\bconj{[\cite{GFS}]There exists some constant $c$ such that every graph $G$ with $n$ vertices and $\alpha(G) = 2$ has a connected matching of size $cn$.\label{GFSconj}}
+Furthermore, they conjecture on the value of the constant $c$
+\bconj{\cite{GFS}Every graph $G$ with $4t-1$ vertices and $\alpha(G) = 2$ has a connected matching of size $t$.\label{GFSconj2}}
+They are able to prove this for values of $t$ up to 17, and show that it is sharp by exhibiting the example of $G$ consisting of two disjoint and disconnected cliques.
+
+Another result found in \cite{PST} is that if $H$ is a 4-vertex graph with $\alpha(H) \leq 2$, and $G$ is an $n$ vertex graph with $\alpha(G) =2$ and no copy of $H$ as an induced subgraph, then $G$ has $K_{\lceil n/2 \rceil}$ as a minor.  Kriesell has recently improved this result by adding the 5 vertex graphs to this list.
+\begin{figure}
+	\begin{center}
+	\input{B}\hspace{1.5cm}
+	\input{Bminus}
+	\end{center}
+	\caption{The graphs $B$ and $B^-$ referred to in Theorem \ref{Kriesell2}.}
+	\label{B_B}
+\begin{theorem}[Kriesell, \cite{Kries}]
+	Let $H$ be any $\kfree$-free graph on at most 5 vertices.  Then every $\{\kfree, H\}$-free graph on $n$ vertices has a collection of $\lceil n/2 \rceil$ pairwise adjacent edges and vertices.
+	\end{theorem}
+From this and the second part of theorem  \ref{ramsey_flavor} we can conclude that every $\{\kfree, H\}$-free graph on $n$ vertices has a connected matching of size $\lfloor \frac{n}{8} \rfloor$. However when $H = \overline{K_{2,3}}$, Kriesell has found that we can say even more.
+\begin{theorem}[Kriesell, \cite{Kries2}]
+	Every connected, $\{\kfree, \overline{K_{2,3}}\}$-free graph on $n$ vertices nonisomorphic to $B$ or $B^-$ in figure \ref{B_B} has a connected dominating matching of size $\lfloor \frac{n}{2} \rfloor$.
+\end{theorem}
+OTHER KRIESELL THEOREMS???
+\end{figure}

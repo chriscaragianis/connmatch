@@ -1,0 +1,32 @@
+
+The stepping-off point of this research is a conjecture offered by F\"{u}redi, Gy{\'a}rf{\'a}s, and Simonyi in \cite{FGS}. Their conjecture concerns the number of vertices needed to ensure that a graph with independence number two has a sufficiently large connected matching.  That such a number is well defined is a consequence of \textit{Ramsey's theorem}, a central result of graph theory.
+\begin{theorem}[Ramsey's theorem (1930) ]
+	Given positive integers $r$ and $t$, there exists a number $R(r,t)$ such that when $n \geq R(r,t)$, every coloring of the edges of $K_n$ with red and blue yields either an $r$-clique in all red edges or a $t$-clique in all blue edges.    
+\end{theorem}
+F\"{u}redi et al. were motivated to study connected matchings by a special case of \textit{Hadwiger's conjecture}.  Hadwiger's conjecture concerns a relationship between the structure of a graph and it's chromatic number.  To discuss it, we need the concept of a graph \textit{minor}.  Define the \textit{contraction} of an edge $uv \in E(G)$ to be the graph $G'$ obtained by replacing the vertices $u$ and $v$ with a single vertex $w$ adjacent to any vertex adjacent to $u$ or $v$ in $G$.  Now we can say that $G$ contains $H$ as a minor, denoted $H \preceq G$, if and only if $H$ can be obtained as a subgraph from $G$ by some series of edge contractions.  Let $\eta(G)$ denote the \textit{Hadwiger number} of a graph $G$, that is, the largest $n$ for which $K_n \preceq G$.
+\begin{conj}[Hadwiger (1947)]
+	For any graph $G$, \[\chi(G) \leq \eta(G)\]\label{HC}
+\end{conj}  
+\noindent Hadwiger's conjecture is known to be true in the cases of $\chi(G) \leq 6$, but unsolved in general.
+Since $\chi(G)\cdot\alpha(G) \geq |V(G)|$, Hadwiger's conjecture implies the following
+\begin{conj}
+ For all graphs $G$ with $n$ vertices, \[\eta(G) \geq \frac{n}{\alpha(G)}\]
+\label{weakHC} 
+\end{conj}In studying this weaker conjecture, Duchet and Meyniel \cite{DandM} were able to show that $G$ has $K_{n/(2\alpha(G)-1)}$ as a minor.  For $\alpha(G) \geq 3$, Kawarabayahsi, Plummer, and Toft \cite{DandMimprove} managed to improve the constant $1/(2\alpha(G)-1)$, but their method fails to extend to the $\alpha(G) = 2$ case.  
+
+Plummer, Stiebitz, and Toft \cite{Spec_case} give special attention to the case of $\overline{K_3}$-free graphs (that is, $G$ with $\alpha(G) = 2$) and, among many important results, show that in this case conjectures \ref{HC} and \ref{weakHC} are equivalent.  They also show that a minimal counterexample to conjecture \ref{weakHC} does not contain a connected dominating matching.
+
+Paul Seymour has offered the following conjecture implied by conjecture \ref{weakHC}.
+\begin{conj}
+	There exists $\epsilon \geq 0$ such that every graph $K_3$-free graph $G$ with $n$ vertices contains $K_{(\frac{1}{3} + \epsilon)n}$ as a minor.
+\label{PS_conj}
+\end{conj}
+\noindent It is an \textit{equivalent} conjecture of F\"{u}redi, Gy{\'a}rf{\'a}s, and Simonyi in \cite{FGS} that begins the present investigation.
+\begin{conj}	
+	There exists some constant $c$ such that every graph $G$ with $ct$ vertices and with $\alpha(G) = 2$ contains a connected matching of size $t$.
+\label{c_conj}
+\end{conj}  
+In fact, they further conjecture that this holds with $ct$ replaced by $4t-1$, and prove the stronger version for $t \leq 17$. A proof of the equivalence of conjectures \ref{c_conj} and \ref{PS_conj} can be found in \cite{DandMimprove}.
+
+In the following, we study connected matchings in graphs.  We introduce the study of connected matchings in optmization problems, and further investigate the complexity of the maximum connected matching problem studied in \cite{Spec_case} and \cite{K_Cam}.  We introduce the method of \textit{proximity colorings} to simplify many results conerning connected matchings, and study such colorings in their own right.  Finally, we present some modest and partial progress in support of conjecture \ref{c_conj}.  
+

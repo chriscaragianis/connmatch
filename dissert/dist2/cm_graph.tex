@@ -1,0 +1,19 @@
+\section{The connected matching graph}
+
+We define the connected matching graph $CM(H)$ of a simple graph $H$ to be the distance-2 graph of the line graph of $H$.  $CM(H)$ then has the property that cliques correspond to connected matchings in $H$.  In what follows, if $S$ is an edge set, we will denote by $[S]$ the vertex set induced by $S$.  If $\mathcal{S}$ is a collection of edge sets, we will denote by $[\mathcal{S}]$ the collection of vertex sets induced by the members of $\mathcal{S}$.
+
+\subsection{Characterizing connected matching graphs}
+
+To characterize connected matching graphs, we will make use of Krausz's characterization of line graphs in terms of an edge partition.  
+
+\bthm{[Krausz, 1943 CITE] \label{krausz} A simple graph $G$ is the line graph of a simple graph $H$ if and only if there is a partition $\mathcal{P} = \{P_1, P_2, \ldots, P_k\}$ of the edges of $G$ with the property that each $P_i \in \mathcal{P}$ is a clique and each vertex of $G$ is used by at most two elements of $\mathcal{P}$. }
+\begin{proof}
+	Let $H$ be a simple graph and take $L(H)$ in the following manner.  For each vertex $v\in V(H)$, let $P(v)$ be the set of edges incident to $v$.  Then $P(v)$ is a set of vertices inducing a clique in $L(H)$.  Every edge of $L(H)$ indicates two edges of $H$ sharing some endpoint, so the collection $\mathcal(P) = \bigcup_{v\in V(H)} \{L(H)[(P(v)]\}$ is a collection of cliques covering the edges of $L(H)$.  If there were adjacent vertices $x,y \in P(u)\cap P(v)$, then there would be two edges incident to $u$ and $v$ in $H$.  Since $H$ is simple, this cannot be the case.  Finally suppose there were a vertex used by three elements of $\mathcal{P}$.  This would correspond to an edge in $H$ incident to three vertices.  Hence, $\mathcal{P}$ has the desired properties. 
+	Now suppose that $G$ has a suitable edge partition $\mathcal{P}$.  We will construct a simple graph $H$ with the property that $G = L(H)$.  For each ....FINISH
+\end{proof}
+Note that the partition $\mathcal{P}$ has the additional property that any two elements of $[\mathcal{P}]$ intersect in at most one vertex.  If this were not the case, two elements of $\mathcal{P}$ would cover the same edge.  
+
+Our characterization of connected matching graphs relies on Krausz's characterization of line graphs, and similarly uses an edge covering by structurally similar subgraphs with restricted intersections.  We will use the term \textit{augmented biclique} to refer to the union of a complete bipartite graph and an isolated vertex.  Suppose that two vertex sets $S_1$ and $S_2$ each induce augmented bicliques.  Denote the partite sets of $S_i$ by $S_i^1$ and $S_i^2$.  Denote the isolated vertex of $S_i$ by $s_i$.  We say that $S_1$ and $S_2$ \textit{cross} if $S_1^a \cup \{s_1\}= S_2^b\cup \{s_2\}$ and $S_1\cap S_2 = S_1^a \cup S_2^b \cup \{s_1,s_2\}$ for some $a,b \in \{1,2\}$.  We say that a clique $K$ is \textit{small} if $K =K_1$ or $K_2$.
+
+
+\input{char_thm}

@@ -1,0 +1,31 @@
+\begin{tikzpicture}[thick,scale=0.5]
+
+	\coordinate (a) at (90:2.5);
+	\coordinate (b) at (25:2.5); 
+	\coordinate (c) at (0:0);
+	\coordinate (d) at (155:2.5);
+	\coordinate (e) at (-55:3);
+	\coordinate (f) at (-125:3);
+
+	\draw (a)--(b);
+	%\draw (b)--(c);
+	\draw (d)--(a);
+	\draw (a)--(c);
+	%\draw (c)--(d);
+	\draw (b)--(e);
+	\draw (e)--(c);
+	\draw (d)--(f);
+	\draw (f)--(c);
+	\draw (d)--(b);
+	\draw (e)--(f);
+	%\draw (f) arc {-125:-33:3};
+	
+	\draw (a) node {};
+	\draw (b) node {};
+	\draw (c) node {};
+	\draw (d) node {};
+	\draw (e) node {};
+	\draw (f) node {};
+	\draw (-90:4) node[words] {$\omega(G) = 3$, $\alpha(G) = 2$};
+	\draw (180:4) node[words] {G:};
+\end{tikzpicture}

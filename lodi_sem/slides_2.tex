@@ -1,0 +1,58 @@
+
+\documentclass{beamer}
+
+\newtheorem{conjecture}{Conjecture}
+ \newcommand{\bconj}[1]{\begin{conj}#1\end{conj}}
+\newtheorem{mconj}{Metaconjecture}
+
+\newtheorem{prop}{Proposition}
+ \newcommand{\bprop}[1]{\begin{prop}#1\end{prop}}
+\newtheorem{lem}{Lemma}
+ \newcommand{\blem}[1]{\begin{lem}#1\end{lem}}
+
+
+\newtheorem{guess}{Guess}
+ \newcommand{\bguess}[1]{\begin{guess}#1\end{guess}}
+
+
+
+\usepackage{tikz,framed, amsrefs}
+\tikzstyle{every node}=[circle, draw, fill=black!50,
+                        inner sep=0pt, minimum width=4pt]
+\tikzstyle{lblvertex}=[fill=white, inner sep = 1pt, font=\small]
+\tikzstyle{words} =[rectangle, draw=none, fill=none, black]
+\newcommand{\bframe}[2]{\begin{frame}{#1}#2\end{frame}}
+\newcommand{\bfig}[2]{\begin{figure}#1\caption{#2}\end{figure}}
+
+
+\usetheme{CambridgeUS}
+%\setbeamertemplate{navigation symbols}{}
+\usecolortheme[RGB={216,30,5}]{structure}
+\AtBeginSection[] % "Beamer, do the following at the start of every section"
+{
+\begin{frame}<beamer>
+\frametitle{Outline} % make a frame titled "Outline"
+\tableofcontents[currentsection] % show TOC and highlight current section
+\end{frame}
+}
+
+\title{Covert social networks}
+\author{Chris Caragianis}
+\institute[U of L]{ Department of Mathematics\ University of Louisville\ Louisville, KY 40292\\[1ex]
+
+
+   \texttt{cjcara01@louisville.edu} }
+\begin{document}
+
+%\bframe{}{\titlepage}
+
+%\bframe{}{\tableofcontents}
+
+
+\bframe{Graphs, vertex coloring}{
+	\begin{overprint} 
+		\onslide<1>A (simple, undirected) graph is comprised of a collection of \textit{vertices}, some pairs of which are \textit{adjacent}.  A pair of adjacent vertices is called an \textit{edge}. \\
+		\onslide<2-3>A (simple, undirected) graph is comprised of a collection of \textit{vertices}, some pairs of which are \textit{adjacent}.  A pair of adjacent vertices is called an \textit{edge}. \vskip BIPARTITE\\
+}
+
+\end{document}

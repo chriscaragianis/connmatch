@@ -1,0 +1,230 @@
+\chapter{THE EXTREMAL CONJECTURE}
+
+Now we focus directly on the extremal conjecture of Gy\'arf\'as, F\"uredi and Simonyi (Conjecture \ref{GFSconj}).  We show that among certain families of graphs with independence number 2, the size of a maximum connected matching is {\it linear} in the number of vertices.  We ``piggyback'' in some cases on results related to Seymour's strengthening of Hadwiger's conjecture, optimizing them for connected matchings.  Furthermore, we prove  the conjecture for a class of graphs that appear with probability one in a natural random process generating graphs with independence number 2. 
+
+The progress on Conjecture \ref{GFSconj} presented in this chapter splits into {\it large clique cases} and {\it small clique cases}.  For graphs with $\alpha = 2$ that have large cliques (i.e., cliques whose size is linear in the number of vertices in the graph) it is relatively simple to construct the largest possible connected matching arising from a large clique as we show in Section 3.1.  The structure of graphs with independence number 2 allows us to draw conclusions on the possible minimum degree and connectivity properties of a counterexample to Conjecture \ref{GFSconj}.
+  
+
+\section{Large clique cases}
+
+As noted earlier, Gy\'{a}rf\'{a}s, F\"{u}redi and Simonyi prove that for $t \leq 16$, any graph $G$ with $\alpha(G) = 2$ has a connected matching of size $t$.  In so doing, they implicitly introduce an important lemma concerning the relationship between cliques and connected matchings.  
+
+\blem{[GFS] Let $0<c<1/4$.  If $G$ is a graph with $\alpha(G) \leq 2$ with $\omega(G) \geq cn$, then $G$ has a $\lfloor cn\rfloor$-connected matching.
+\label{spider}}
+
+\begin{proof}
+	Let $S$ be a set of $cn$ vertices inducing a clique.  For any subset of $S'\subseteq S$, the intersection $\displaystyle I = \bigcap_{s\in S'} \{v \in V(G): sv \notin E(G)\}$ induces a clique.  If for any $S'\subseteq S$, $|I| > n/2$, then there is a $n/4$-connected matching in the clique induced by $I$.  Otherwise, 
+\begin{align*}
+|N(S')| &= n- |S'| - |I|\\
+	&\geq n - |S'| - \frac{n}{2}\\
+	&\geq \frac{n}{4} \\
+	&> |S'| 
+\end{align*} for all $S'\subseteq S$.  Hence, by Hall's condition (see {\it e.g.}, \cite{dwest}),  a matching from the vertices of $S$ to the vertices of $V(G)-S$ exists.  This matching must be connected, since $S$ induces a clique.
+\end{proof}
+
+We might suggestively call this the ``spider lemma'' as it exhibits a connected matching with a ``head'' (the clique) and many ``legs'' (the matching with one side inducing the clique).  Using the spider lemma, we deduce some structural qualities that a counterexample to Conjecture \ref{GFSconj} must possess.  Chief among these is high connectivity, because, in graphs with independence number at most two, disjoint sets of vertices with no edges between them must induce cliques.  First, we make explicit the relationship between Conjecture \ref{GFSconj} and Seymour's strengthening of Hadwiger's conjecture (As described in Chapter 2.  Hereafter, SSH.).  The following proposition shows that SSH implies the GFS conjecture.  
+
+\bprop{If SSH holds for a graph $G$ on $n$ vertices with independence number 2, then $\nu_c(G) \geq n/4$.}
+
+\begin{proof}
+Let $\mathcal{M}$ be the collection of branch sets of a $K_{n/2}$ minor of $G$ that satisfies the hypothesis of SSH (all branch sets of size 2 or 1). Let $M_1$ be the collection of elements of $\mathcal{M}$ consisting of single vertices and $M_2$ the collection of elements of $\mathcal{M}$ consisting of edges.  Obviously, $M_2$  is a connected matching.  Furthermore, any matching of the clique induced by $M_1$ forms a connected matching that extends the connected matching formed by $M_2$, because 
+\[\nu_c(G) \geq \lfloor\frac{|M1|}{2}\rfloor + |M2| \geq \lfloor\frac{|M1 | + |M2 |}{2}\rfloor = \lfloor n/4\rfloor\]
+\end{proof}
+
+In Lemma 2.1 of Blasiak's paper \cite{Blas}, the author shows that any $\alpha = 2$ graph with connectivity less
+than $n/2$ satisfies SSH. We show the following for higher connectivity.  
+
+\blem{ If $G$ is a graph on $n$ vertices with $\alpha(G) \leq 2$, then  $\nu_c(G) \geq \frac{n-\kappa(G)}{4}$. If $\kappa(G) \geq n/2$, then $\nu_c(G) \geq
+n -\kappa(G)$. }% Furthermore, if $n/4 < \kappa(G) < n/2$, then $\nu_c(G) \geq \kappa(G)$ and if $\kappa(G) < n/4$ then $\nu_c(G) \geq n/2 - \kappa(G)$}
+
+\begin{proof} Let $G$ be a graph on $n$ vertices with $\alpha(G) \leq 2$.  Because cuts in $\alpha = 2$ graphs separate components that must be cliques, at least one component has at least $\frac{n-\kappa(G)}{2}$ vertices.  Any matching in this clique component is connected, so $G$ has a connected matching of size $\frac{n-\kappa(G)}{4}$. 
+
+The proof of the second claim follows the strategy of Lemma 2.1 of \cite{Blas}. 
+%
+Assume that $\kappa(G) \geq n/2$.
+%
+Let $S$ be a minimum cut set of $G$. 
+%
+Let $L$, $R$ be a partition of $V(G)-S$ so that there are no edges joining vertices from $L$ to vertices from $R$. 
+%
+Since $\alpha(G) = 2$, $L$ and $R$ are cliques.  Every vertex of $S$ is adjacent to every vertex of $L$ or adjacent to every vertex of $R$.
+%
+We say that a vertex is {\it complete to} a set of vertices if it is adjancet to every vertex in the set.
+%
+Let $S_L$ be the set of vertices complete to $L$ and $S_R$ be the set of vertices complete to $R$. 
+%
+We claim that between any $A \subseteq S_L$ with $|A| \leq |R|$ and $R$ ($S_R$ and $L$ resp.) there is a matching that saturates $A$. 
+%
+Suppose there is no matching from $R$ that saturates $A$. 
+%
+Hall’s condition then implies that there is a subset $T$ of $A$ such that $|N(T) \cap R| < |T |$. 
+%
+But then $(S -T) \cup (N(T)\cap R)$ is a cut set separating $L \cup T$ and $R - N (T)$. 
+%
+This set is smaller than $S$, yielding a contradiction.
+
+Let $M$ be the largest possible matching obtained with edges between $S_L$ and $R$ (temporarily named {\it type 1 edges}) and edges between $S_R$ and $L$ ({\it type 2 edges}). 
+%
+This matching is connected.
+%
+To see this, note that the collections of edges of each type form ``spiders'' because $R$ and $L$ are cliques.
+%
+Furthermore, without loss of generality, the $S_L$ ends of the type 1 edges are complete to $L$, and hence adjacent to an endpoint of every type 2 edge.
+%
+
+If both $|R| \leq |S_L|$ and $|L| \leq |S_R|$ (and $\kappa(G) \geq n/2$) , then we can find $T_L \subseteq S_L$ and $T_R \subseteq S_R$ so that $T_L$ and $T_R$ are disjoint, $|T_R| = |L|$, and $|T_L| = |R|$. 
+%
+Thus, using the above claim, we construct a connected matching saturating $V(G)-S$.  
+%
+
+Without loss of generality, $|R| > S_L$.
+%
+This means that $|L| \leq S_R$, as $S \geq n/2$ and $S \subseteq S_L \cup S_R$.
+%
+Let $R^u$ denote the set of vertices of $R$ unmatched by $M$.
+%
+Since $|S| \geq n/2$, we assume that we have matched all the vertices of $S_L$ to vertices in $R$.  
+%
+Consequently, there are at least $|R^u|$ unmatched vertices of $S_R$ (denoted $S_R^u$ ).
+%
+ Augment $M$ with any matching from the biclique between $R^u$ and $S_R^u$ saturating $R^u$ to yield $M'$ . 
+%
+These new edges are mutually connected, and connected to any type 1 or type 2 edges via edges of $R$ in the case of type 1, or edges from $S_R$ to $R$ in the case of type 2. 
+%
+Now $M'$ is a connected matching saturating $R \cup L$, and $|R \cup L| = n- \kappa(G)$.
+\end{proof}
+
+This lemma, together with the spider lemma, allows us to collect the properties of a ``large-clique'' counterexample to Conjecture \ref{GFSconj}.  Say that an edge $e$ {\it dominates} a vertex $v \notin e$ if $v$ is adjacent to an endpoint of $e$.  The following proposition collects these properties.
+  
+\bprop{
+	If $G_c$ is a vertex-minimal counterexample to Conjecture \ref{GFSconj} with $n$ vertices, then the following conditions must be satisfied
+	\begin{enumerate}
+		\item $\omega(G_c) < cn$.
+		\item $\delta(G_c) \geq (1 - c )n$.
+		\item $G_c$ has diameter 2.
+		\item  $G_c$ is $(1 - c)n$-connected.
+		\item $G_c$ has no edge dominating $c(n-1)$ vertices.
+	\end{enumerate}
+}
+\begin{proof}
+Items 1 and 4 follow directly from the two lemmas.  The collection of non-neighbors of a vertex in an $\alpha = 2$ graph form a clique, which leads to item 2.  Applying the pigeonhole principle together with the assumption in  item 2, every pair of vertices share a neighbor, so $G_c$ has diameter 2. 
+
+Consider a vertex-minimal counterexample $G_c$.  Following from the work of Gy\'arf\'as et al., we know that small graphs (fewer than $67$ vertices) satisfy Conjecture \ref{GFSconj} for any $c \leq 4$.  Assume that the conjecture holds up to $n-1$ vertices.  Any edge dominating a connected matching clearly extends that connected matching.  Thus our minimal counterexample must not dominate $c(n-1)$ vertices, lest it dominate a connected matching of size $n-1$ by the induction hypothesis.
+\end{proof}   
+
+Taken altogether, the results of this section show that a counterexample to Conjecture \ref{GFSconj} must be highly connected, yet avoid large cliques.  As Blasiak remarks in \cite{Blas}, this means that the most ``mysterious'' cases arise when minimum degree and connectivity are close to the number of vertices in the graph.  These are what we call the small clique cases.  We show next that one important class of these graphs, the {\it Ramsey graphs} with independence number 2, satisfy Conjecture \ref{GFSconj}.  
+
+\section{The small clique cases}
+
+To work on graphs with independence number 2 and only the smallest possible cliques, we employ results from an area known as {\it Ramsey theory}.  Ramsey theory is concerned with the study of highly organized, unavoidable substructures in large structures.  This unavoidability is sometimes summarized by the statement ``Complete disorder is impossible''.
+
+\subsection{Ramsey's theorem}
+
+Ramsey theory tells us that a large enough graph must either have a clique or independent set of a certain size.  This makes intuitive sense, if there are few enough edges in a graph to avoid a large clique, then there ought to be a large independent set.  Ramsey formalized and proved this intuition in the following theorem \cite{ramsey}.
+\bthm{For any pair of positive integers $(r,s)$, there exists a least positive integer $R(r,s)$ such that for any graph on $R(r,s)$ vertices,  there exists either a complete subgraph on $r$ vertices in $G$ or an independent set of $s$ vertices in $G$.}
+This number $R(r,s)$ is known as a {\it Ramsey number}.  
+
+We study graphs that are, in a sense, extremal with respect to Ramsey numbers.  In particular, we study $\alpha = 2$ graphs.  This means we are most interested in the {\it triangle} Ramsey numbers $R(3,k)$.  In \cite{Kim}, Kim famously proved that the magnitude of $R(3,k)$ is on the order of $k^2/\log k$.  For any positive constant $B$, we call the class of $\alpha = 2$ graphs with $n$ vertices and no clique of size $B\sqrt{n\log n}$ the {\it triangle Ramsey graphs}.
+%
+These graphs are very highly connected, so the results of the previous section are of little help.
+%
+In this section, we show the Conjecture \ref{GFSconj} holds for sufficiently large Ramsey graphs, with a value of $c$ arbitrarily close to $1/4$.
+%
+We also discuss a natural random $\alpha = 2$ graph model which almost certainly satisfies Conjecture \ref{GFSconj}. 
+
+\begin{theorem}
+Let $c < 1/4$ be a constant.  For any constant $b$ and sufficently large $n$, every $\alpha = 2$ graph $G$ on $n$ vertices with $\omega(G) < b\sqrt{n\log n}$ has a $cn$-connected matching.
+\label{sm_cli}
+\end{theorem}
+
+First, we prove a lemma that will place a bound on the number of pairs of separable edges in an $\alpha = 2$ graph with a given clique number.  In order to simplify the notation in the proof, we work on the complementary notion of  cycles of four vertices in triangle-free graphs with a given independence number.  
+
+\begin{lem}
+For every pair of positive constants $\epsilon, d$ there is $n_{\epsilon, d}$ such that every triangle-free graph $G$ with $n > n_{\epsilon, d}$ vertices and $\alpha(G) < d\sqrt{n\log n}$ has fewer than $\epsilon n^3$ copies of $C_4$.
+\end{lem}
+\begin{proof}
+Fix $\epsilon, d> 0$ and let $G$ be a triangle free graph on $n$ vertices with $\alpha(G) < d\sqrt{n\log n}$.  
+%
+Let $X_{C_4}$ be the number of copies of $C_4$ in $G$.  
+%
+Then
+%
+\begin{equation}
+X_{C_4} = \frac{1}{2}\sum_{\{u,v\}\notin E(G)} {|N(u) \cap N(v)| \choose 2} 
+\label{c4counteq}
+\end{equation}
+%
+\begin{figure}
+	\begin{center}
+		\input{c4count4}	
+	\end{center}
+	\label{c4count}
+	\caption{Illustration of the count from Eq. \ref{c4counteq}}
+\end{figure}
+%
+For each nonadjacent vertex pair $\{u,v\}$, we count the number of distinct pairs of vertices in the intersection of the neighborhoods of $u$ and $v$.  This counts each $C_4$ twice, so we divide by two. 
+%
+Fix $\epsilon_1 < \sqrt{8\epsilon}$.
+
+\noindent\textit{Claim. For sufficiently large $n$, fewer than $n^2(\log n)^{-2}$ pairs of vertices $u,v$ have neighborhood intersection larger than $\epsilon_1\sqrt{n}$.}
+
+Suppose the contrary is true, and there are more than $n^2(\log n)^{-2}$ pairs $u,v$ so that $|N(u)\cap N(v)| \geq \epsilon_1\sqrt{n}$.
+%
+We count the total number of vertices in these intersections. The count is at least $\epsilon_1n^{5/2}(\log n)^{-2}$, meaning some vertex is counted at least $\epsilon_1n^{3/2}(\log n)^{-2}$ times.  However, $\Delta(G) \leq \alpha(G) < d\sqrt{n\log n}$, so each vertex is in at most \[{d\sqrt{n\log n}\choose 2 } < \frac{d^2}{2}n\log n\] neighborhood intersections.  Thus, for sufficiently large $n$,  the claim holds.
+
+Now we bound $X_{C_4}$.  We overestimate by supposing that there are precisely $n^2(\log n)^{-2}$ pairs of vertices with the largest possible vertex intersection, and the remainder have neighborhood intersection of size $\epsilon_1\sqrt{n}$.
+\begin{equation}X_{C_4} < \frac{1}{2}\left[\frac{n^2}{(\log n)^2}{d\sqrt{n\log n}\choose 2}+ \left(|E(\overline{G})|- \frac{n^2}{(\log n)^2}\right){\epsilon_1\sqrt{n}\choose 2}\right]
+\end{equation}
+The right hand side asymptotically equals	
+\begin{equation}
+\sim \frac{\epsilon_1^2-2\epsilon_1}{8}n^3 
+\end{equation}
+This is strictly greater than $\epsilon n^3$, so for sufficiently large $n$, the desired bound on $X_{C_4}$ holds.
+\end{proof}
+ 
+Now we prove Theorem \ref{sm_cli}.  We use the language of RGB proximity colorings introduced in Chapter 1. 
+
+\begin{proof}[Proof (of Theorem \ref{sm_cli})]
+Fix constants $d$ and $c < 1/4$, and let $G$ be a $\alpha = 2$ graph with $n$ vertices, $m$ edges, and $\omega(G) < b\sqrt{n\log n}$.  
+%
+Consider the $RGB$ graph $\mathcal{G}$ induced by $L(G)$ (recalling that green $k$-cliques correspond to $k$-connected matchings in $G$ and red edges correspond to induced $\overline{C_4}$s in $G$).
+%
+If $R, G,$ and $B$ denote the number of red, green and blue edges respectively, we would like to show that 
+\begin{equation}
+G = {m\choose 2} - R - B \geq {m\choose 2} - cn{m/cn\choose 2}
+\end{equation} equivalently
+\begin{equation}
+	R + B \leq cn{m/cn\choose 2}\label{goal}
+\end{equation}
+guaranteeing by T\'{u}ran's theorem (see, \textit{e.g.}, \cite{dwest}) a green clique on $cn$ vertices in $\mathcal{G}$, and a $cn$-connected matching in $G$.
+
+We obtain a crude upper bound on $B$ by taking the number of edges in the line graph of $K_n$,
+\begin{equation}
+	B < \frac{n^3}{2} - \frac{3n^2}{2} + n.
+\end{equation}
+We bound $R$ using Lemma 1.  For any $\epsilon > 0$ and sufficiently large $n$, 
+\begin{equation}
+R < \epsilon n^3.
+\end{equation}
+Thus for sufficiently large $n$,
+\begin{equation}
+	B+R < \frac{n^3}{2} + \epsilon n^3.
+\end{equation}
+We compare this with the right hand side of (\ref{goal})
+\begin{eqnarray}
+	cn{m/cn\choose 2} =&\displaystyle \frac{cn}{2}\left(\frac{m^2}{c^2n^2} - \frac{m}{cn}\right)\\
+	=& \displaystyle \frac{1}{2c}m^2n^{-1} - \frac{m}{2}\\
+	\sim&   \displaystyle \frac{n^3}{8c}.
+\end{eqnarray}
+Since $c < 1/4$, and we can take $\epsilon < \frac{1-4c}{8c}$, for sufficiently large $n$, the inequality (\ref{goal}) holds and $G$ has a $cn$-connected matching.
+\end{proof}
+
+\subsection{The triangle-free process}
+The \textit{triangle-free process}\index{Triangle-free process} is a method of stochastically constructing maximal triangle-free graphs.  Let $G_0$ be the empty graph on $n$ vertices and let $O_i$ be the set of edges of $K_n- G_i$ that will not create a triangle when added to $G_i$.  Then for each $G_i$, construct $G_{i+1}$ by adding an edge chosen uniformly at random from $O_i$ until some step $k$ at which $O_k$ is empty.  The complementary version of this process is a natural source of $\alpha = 2$ graphs.  
+
+Bohman has shown in \cite{bohman} that the triangle free process asymptotically almost surely produces graphs which satisfy the hypotheses of Theorem \ref{sm_cli}.  This unfortunately falls short of a proof that Conjecture \ref{GFSconj} holds for almost all $\alpha = 2$ graphs because the triangle-free process does not produce a uniform distribution.  Nonetheless, the triangle-free process indicates that the $\alpha = 2$ Ramsey graphs are in a sense ``typical'' among $\alpha = 2$ graphs and well worth studying.  
+
+In conclusion, we see that in $\alpha = 2$ graphs that are highly ``spread-out'' (Theorem \ref{sm_cli}) and in ones that are ``bunched-up'' (spider lemma) Conjecture \ref{GFSconj} succeeds.   It remains to be seen if further work in tuning and sharpening these techniques can close the gap, if new approaches are needed, or if indeed there lurks a counterexample somewhere in the middle ground.
+
+
+

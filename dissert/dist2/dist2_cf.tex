@@ -1,0 +1,26 @@
+ \input{/home/cjcara01/connmatch/dissert/preamble}
+
+\begin{document}
+\bthm{A graph $G$ with $n$ vertices $(v_1, v_2, \ldots, v_n)$ is the distance 2 graph of some claw free graph $H$ if and only if some set of $n$ triangle free induced subgraphs of $G$ whose union is $G$ can be labeled $S_1, S_2, \ldots, S_n$ so that
+\begin{enumerate}
+	\item $v_i \in V(C_i)$ 
+	\item If $v_i \in V(C_j)$, then  $v_j \in V(C_i)$
+	\item For every pair of vertices $v_i, v_j \in V(C_k)$, exactly one of the following holds:
+	\begin{enumerate}
+		\item $v_iv_j \in E(C_k)$
+		\item $v_i \in V(C_j)$ and $v_j \in V(C_i)$
+	\end{enumerate}
+\end{enumerate}}
+\begin{proof}
+Let $H$ be a claw free graph with vertices $v_1, v_2, \ldots, v_n$.  Let $V(C_i) = N(v_i) \cup \{v_i\}$ and let $E(C_i)$ be the edges induced by $D_2(H)$ for $i = 1,2,\ldots, n$.  We claim that $C_1, C_2, \ldots, C_n$ is now a collection of induced subgraphs of $D_2(H)$ that satisfy the above hypotheses.  These graphs are triangle free, as three vertices at distance 2 from one another found within the neighborhood of a vertex would correspond to a claw in $H$.  Any pair of vertices at distance two from one another lie in the neighborhood of some third vertex, so it is clear that the union of these subgraphs is equal to $D_2(H)$.  Condition 1 is satisfied by definition.  Condition 2 follows from the symmetry of the adjacency relation.  If 3(a) fails for some $v_i, v_j \in V(C_k)$, then $d(v_i, v_j) \neq 2$ and either $k \in \{i,j\}$ or $v_i, v_j$ are both adjacent to $v_k$.  In either case, $v_iv_j \in E(H)$ and 3(b) holds.  If 3(a) holds for the same, then $d(v_i, v_j) = 2 \implies v_iv_j \notin E(H) \implies$ 3(b) fails.
+
+For the proof of sufficiency, suppose we have a graph $G$ on $n$ vertices $(v_1, v_2, \ldots, v_n)$ wtih a collection of $n$ induced subgraphs $S_1, S_2, \ldots, S_n$ that satisfies the above hypotheses.  We construct a graph $H$ on the same vertex set by successively adding the edges of the complement of each $S_i$.  We now claim that $G = D_2(H)$.  Suppose that $d_H(v_i, v_j) = 2$.  We would like to show that $v_iv_j\in E(G)$.  In $H$, $v_i$ and $v_j$ must not be adjacent, and so if $v_i, v_j \in V(S_k)$ for some $k$, $v_iv_j \in E(G)$.  There must be some common $H$-neighbor $v_k$ of $v_i$ and $v_j$, so according to the construction we must have
+\[\exists\: C_{l_1} \makebox{ such that } v_i, v_k \in V(C_{l_1}) \makebox{ and } v_iv_k\notin E(C_{l_1})\] and
+\[\exists\: C_{l_2} \makebox{ such that } v_j, v_k \in V(C_{l_2}) \makebox{ and } v_jv_k\notin E(C_{l_2}).\]  By condition 2(b), $v_i, v_j \in V(S_k)$ and $v_iv_j \in E(G)$.
+
+Now suppose that $v_iv_j \in E(G)$.  We will show that $d_H(v_i, v_j) = 2$.  First, $d(v_i,v_j) \geq 2$, as $H$ is constructed by complementation.  Since the union of $S_i$'s cover the edges of $G$, there is $k$ so that $v_i, v_j \in V(S_k)$.  Note that since condition 2(b) holds with respect to either $v_i$ or $v_j$, $v_k$, and $V(S_k)$, neither $v_iv_k$ nor $v_jv_k$ is an edge in $V(S_k)$ and both are edges in $H$.  Thus $d(v_i, v_j) = 2$.
+
+Finally, we must show that the constructed graph $H$ is claw free.  Suppose a claw on vertices $u, v_1, v_2, v_3$  with center $u$ appears in $H$.  Then it must be the case that $v_1, v_2, v_3 \in S_u$.  As $v_1v_2, v_2v_3,$ and $v_1v_3$ are not edges of $H$, they must be edges of $S_u$, contradicting the assumption that $S_u$ is triangle free. T he proof of sufficiency is complete.
+\end{proof}
+
+\end{document}	

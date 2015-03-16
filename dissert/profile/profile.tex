@@ -1,0 +1,42 @@
+\documentclass[12 pt]{article}
+
+\usepackage{tikz, amsmath, amsfonts, amsthm,xspace,cancel,ulem}
+\newtheorem{theorem}{Theorem}
+\tikzstyle{every node}=[circle, draw, fill=black,
+                        inner sep=0pt, minimum width=4pt]
+\tikzstyle{plain}=[fill = none, draw = white]
+\newcommand{\kfree}{$\overline{K_3}$-free\xspace}
+\begin{document}
+
+
+\input{5H_0}
+
+In each of the above drawings, we name the set of black vertices $\mathcal{O}_0$, the blue vertices  $\mathcal{O}_1$, the green vertices $\mathcal{O}_2$, and the red vertices $\mathcal{O}_3$.
+
+Suppose that $G_c$ is graph on $n$ vertices with $\nu_c(G_c) \leq n/c$.  Define a function $\# : [13] \cup {0} \times [3] \rightarrow \mathbb{N}$ so that $\#(i,j)$ is  the minimum number of distinct copies of $H_i$ in which a vertex $v \in V(G)$ appears as a member of orbit $\mathcal{O}_j$ (when defined, otherwise 0). 
+
+\begin{theorem}
+	For any $0 \leq i \leq 13$, if $G$ is a  \kfree graph on $n$ vertices with some vertex not in an induced subgraph isomorphic to $H_i$, then $G$ has a connected matching of size at least $\lfloor n/c \rfloor$ ($c$ to be determined later, for sure $c\leq 16$).
+\end{theorem}
+
+\begin{proof}
+	\begin{description}
+		\item
+		\item[$H_0$:] The neighborhood of any vertex must induce some non edge (otw large clique).  Let $v_1$ and $v_2$ be non adjacent nieghbors of some vertex $v$.  Let $S = N(v_1) \cap \overline{N(v)}$ and $T = N(v_2) \cap \overline{N(v)}$.  If there is no induced $C_5$ including $v$ in $G$, then one of $S \Delta T \cap S$ or  $S \Delta T \cap T$ is empty.  Hence, either $S\subset T$ or $T\subset S$.  Since $G$ is \kfree, $S \cup T  = \overline{N(v)}$.  Hence one of $vv_1$ or $vv_2$ is a dominating edge, and we can carry out an induction step (HC2-strong).  
+		\item[$H_1$:] If any vertex has degree greater than $n-c-1$ we can carry out an inductive step.
+		\item[$H_2$] Work on green vertex.  If neighborhood complement has max degree 2, then the neighborhood has a large clique.
+		\item[$H_3$] \sout{Must exist an edge disconnected from a vertex.  If no edge from said vertex into intersection of endpoint nbds, then this is a large clique}???
+		\item[$H_4$] Oops, thats the same as $H_3$.
+		\item[$H_5$] If two non-adjacent vertices have nbds with small intersection, then there is a large clique
+		\item[$H_6$] Kriesell showed HC2-strong.  Simpler proof for this weaker result- if  $v\notin H_6$, $v$ is in a dominating edge.
+		\item[$H_7$] Must be non-edges in nbd, if max deg from nbd to non nbd is 2, max non-deg is 4.
+		\item[$H_8$] Nbd induces no $2K_2$ $\implies$ near perfect conn match (in nbd)
+		\item[$H_9$] edges from endpoints of a non-edge in the nbd to the non-nbd either totally coincide and dominate ($\implies$ dominating edge) or are distinct and cover it. ...implies perfection of nbd, but is tricky
+		\item[$H_{10}$] If nbd is $P_4$-free it is perfect.
+		\item[$H_{11}$] Again with the tricky implication of perfection of nbd
+		\item[$H_{12}$] max degree issue
+		\item[$H_{13}$] $\{\overline{K_3}, P_4\}$-free graph decomposes into three cliques.  $P_4$-free nbd has a large clique 
+	\end{description}
+\end{proof}
+
+\end{document}

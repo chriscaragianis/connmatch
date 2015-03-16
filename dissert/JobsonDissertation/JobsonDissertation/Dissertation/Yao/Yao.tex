@@ -1,0 +1,535 @@
+%!TEX root=../Dissertation.tex
+\newcommand*{\key}[2]{\ensuremath{K_{#1}^{#2}}}%
+\tikzstyle{cvertex}=[draw,circle,fill=white,text=black,inner sep=1pt]%
+\tikzstyle{oriented}=[line width=1pt]%
+\chapter{QUERYING: YAO'S PROBLEM}
+
+Many fundamental problems in computer science involve storage and retrieval of information. Given tables of data,  for instance the names of all the employees of a business, a storage scheme is devised to record the data in some manner. The retrieval aspect may be concerned with whether a certain entry is present in the table; call this question the \index{membership question}\defn{membership question}. Some algorithm is invoked to inspect the data and return a yes or no answer to the membership question.
+
+The na\"{i}ve approach to answering the membership question is to inspect, or \index{query}\defn{query}, every cell of the table to see if it contains the data in question. If the table has $n$ cells and we ask the membership question for an element that is not in the table, then this algorithm will require $n$ queries to decide the membership question. But remember, we also have control over how data is stored. Suppose the table is sorted upon storage. Now a binary search can answer the membership question in at most $\left\lceil\lg\left(n+1\right)\right\rceil$ queries. The extra time required to sort the table will be easily eclipsed by the time saved over multiple searches.
+
+\section{Introduction}
+
+In 1981, Andrew Yao asked, `Should tables be sorted?' \cite{Yao}. In particular, he wondered if some restriction on the data could allow us to answer the membership question in fewer queries than the traditional sort/search described above.\footnote{Binary search on a sorted table is not uniquely the fastest approach. There are other approaches, notably \emph{hashing} or \emph{interpolation search} that will perform better for certain applications but the worst-case scenarios still require a number of queries that is at least logarithmic in $n$.} He supposed that the table contained $n$ elements chosen from a set of $m$ elements (called the key space and denoted $M$), rather than from a potentially infinite set. Let \index{f(n,m)@$f(n,m)$}$f\left(n,m\right)$ be the number of queries needed in the worst case to answer this membership question. He showed that if the key space is significantly larger than the table then the traditional approach is optimal. That is, \[ m \gg n\ \implies\ f\left(n,m\right) = \left\lceil\lg\left(n+1\right)\right\rceil \] But when $m$ and $n$ are relatively close in size another store/query strategy can yield improved performance.
+
+He then looked at the question from a different angle: for a fixed $k$ and fixed $n$, what is the largest $m$ such that we can answer the membership question using at most $k$ queries? Let \index{g(n,k)@$g(n,k)$}$g\left(n,k\right)$ be the largest $m$ such that $f\left(n,m\right) = k$.
+
+To obtain a simple lower bound, consider the case when $m = n+1$; i.e., the table contains all but one element of the key space. Picture the key space as a sorted list wrapping around at the ends. Choose the element that is the successor to the missing element and place it in the first cell in the table. Now we can answer the membership question in one query by querying the first cell in the table. That will tell us which element is missing and by extension, which elements are present. Thus $g\left(n,1\right) \geq n+1$.
+
+However this simple approach does not fully take advantage of the tools at our disposal; we just blindly query the first entry of the table. More sophisticated techniques will yield improvements. Yao answered this question for $k=1$ and so determined $g\left(n,1\right)$.
+
+\begin{theorem}[Yao, \cite{Yao}]\label{thm:Yao one query}~\phantom{hi.} \[ g\left(n,1\right) = \begin{cases}3&\text{if}\ n=2\\ 2n-2&\text{if}\ n>2\end{cases}\]
+\end{theorem}
+\begin{proof}We will establish that for $n>2$, $g\left(n,1\right) \geq 2n-2$ by providing a store/query strategy. Proving that $2n-2$ is best possible takes up several pages in \cite{Yao} so the argument is omitted, but \autoref{thm:Yao minus 1} will establish that $2n$ is impossible.
+
+Let $m = 2n-2$. To establish a labeling scheme, suppose that we could force more than two keys to fit into a cell of the table. We could then fit the entire key space into the table by placing two keys in each of the first $n-2$ cells, and one key in cells $n-1$ and $n$. Label the keys in cell $i$ by choosing one to be $\key{i}{L}$ (the `lower key') and the other to be $\key{i}{U}$ (the `upper key'). Treat the lone keys in cells $n-1$ and $n$ as lower keys; these cells have no upper key. This gives our labeling for the key space: $M = \left\{\key{1}{L}, \dotsc, \key{n}{L}, \key{1}{U}, \dotsc, \key{n-2}{U}\right\}$.
+
+\begin{ctikzpicture}[scale=1.2]
+	\draw (0,0) grid (2,2);
+	\foreach \v in {1,2}{
+		\node[vlab] at (\v-0.5,-0.3){\small$\v$};
+		\node[vlab] at (\v-0.5,0.5){$\key{\v}{L}$};
+		\node[vlab] at (\v-0.5,1.5){$\key{\v}{U}$};
+	};
+	\pgfmathsetmacro{\xs}{3.5}
+	\draw (\xs,0) -- +(3,0);
+	\draw (\xs,1) -- +(3,0);
+	\draw (\xs,2) -- +(1,0);
+	\draw (\xs,0) -- +(0,2);
+	\draw (\xs+1,0) -- +(0,2);
+	\draw (\xs+2,0) -- +(0,1);
+	\draw (\xs+3,0) -- +(0,1);
+
+	%\node[vlab] at (1+0.5*\xs,1){\makebox[0pt]{\huge$\dotsb$}};
+	\foreach \d in {0,-0.3,0.3}\fill (1+0.5*\xs+\d,0.5) circle (0.05);
+	\node[vlab] at (\xs+0.5,-0.3){$n-2$};
+	\node[vlab] at (\xs+0.5,0.5){$\key{n-2}{L}$};
+	\node[vlab] at (\xs+0.5,1.5){$\key{n-2}{U}$};
+
+	\node[vlab] at (\xs+1.5,-0.3){$n-1$};
+	\node[vlab] at (\xs+1.5,0.5){$\key{n-1}{L}$};
+
+	\node[vlab] at (\xs+2.5,-0.3){$n$};
+	\node[vlab] at (\xs+2.5,0.5){$\key{n}{L}$};
+	\extendtopbound
+\end{ctikzpicture}
+
+Given a set $N$ of $n$ keys with which to fill the table, the storage scheme proceeds as follows:
+	\begin{enumerate}
+		\item\label{en:2n-2 empty cell} For any cell $i$ such that no key with cell label $i$ is present in $N$, mark the cell as available for other use.
+		\item\label{en:2n-2 end cell} If the keys with cell label $n-1$ or $n$ are present in $N$ they are added to a list called the shuffle list and the cell is marked as a shuffle cell.
+		\item For the first $n-2$ cells:
+			\begin{enumerate}
+				\item\label{en:2n-2 one cell} If only one of the two keys with that cell label is present in $N$ then that key is stored in the cell.
+				\item\label{en:2n-2 two cell} If both keys with that cell label are present in $N$ then by the pigeonhole principle another cell must be marked as available via \ref{en:2n-2 empty cell}. The upper key for the current cell is stored in the available cell. The lower key for the current cell is added to the shuffle list. The current cell is marked as a shuffle cell.
+			\end{enumerate}
+		\item At this stage, every cell marked as available in \ref{en:2n-2 empty cell} is filled with an upper key with a different cell label. The other cells are either filled with a key with the corresponding cell label or are marked as a shuffle cell.
+		\item\label{en:2n-2 shuffle} The shuffle list must have at least two keys, since by the pigeonhole principle for each of $\key{n-1}{L}$ and $\key{n}{L}$ that are not in $N$ there must have been a cell for which both keys with that cell label are present in $N$. Note that every key on the shuffle list is a lower key and that there are the same number of shuffle cells as keys on the shuffle list. Complete the table by assigning the keys from the shuffle list to shuffle cells in such a way that no shuffle cell is assigned a key with that cell label (a cyclic shift will suffice).
+	\end{enumerate}
+To answer the membership question for a key with cell label $i$, we query cell $i$.
+	\begin{itemize}
+		\item If cell $i$ holds $\key{i}{L}$ or $\key{i}{U}$ then the key was assigned by \ref{en:2n-2 one cell} and so the other key with that cell label is not in the table.
+		\item If cell $i$ holds $\key{j}{U}$, $j \neq i$ then the key was assigned by \ref{en:2n-2 two cell}. Therefore cell $i$ was marked as available by \ref{en:2n-2 empty cell} and so neither $\key{i}{L}$ nor $\key{i}{U}$ is in the table.
+		\item If cell $i$ holds $\key{j}{L}$, $j \neq i$ then the key was assigned by \ref{en:2n-2 shuffle}. Therefore cell $i$ was marked as a shuffle cell by \ref{en:2n-2 end cell} or by \ref{en:2n-2 two cell} and so both $\key{i}{L}$ and $\key{i}{U}$ (if $i < n-1$) are present in the table.
+	\end{itemize}
+Thus $f\left(n,2n-2\right) = 1$ and so $g\left(n,1\right) \geq 2n-2$.
+\end{proof}
+
+Although Yao takes several pages to prove the upper bound half of \autoref{thm:Yao one query}, the start of his argument can be adapted into a quick proof leaving a gap of $1$.
+
+\begin{theorem}\label{thm:Yao minus 1}$g\left(n,1\right) \leq 2n-1$
+\end{theorem}
+\begin{proof}Suppose we have a store/search strategy for a key space containing at least $2n$ keys. By the pigeonhole principle, the search strategies for at least two keys will query the same cell. Without loss of generality, the search for keys $1$ and $2$ both query cell $1$.
+
+Let $Y_1$ (the \defn{`yes set'} for key $1$) be the set of keys whose appearance in cell $1$ resolve the membership question for key $1$ in the affirmative. All keys not in $Y_1$ are in $N_1$, the \defn{`no set'} for key $1$. Define $Y_2$ and $N_2$ similarly.
+
+\begin{claim}$\left|Y_1\right| \leq n$.
+
+If $\left|Y_1\right| > n$, then there is a subset $S$ of $Y_1$ of cardinality $n$ that does not contain key $1$. But if the table is populated with the keys from $S$, then the first cell will contain a key that will falsely imply that key $1$ is in the table, contradicting that this store/search strategy is valid.
+\end{claim}
+
+Therefore $\left|N_1\right| \geq n$. Since key $1$ is clearly in $Y_1$, we can populate the table with key $1$ and  $n-1$ keys chosen from $N_1$ without choosing key $2$. The storage scheme must place key $1$ in cell $1$, and so key $1$ must belong to $N_2$. Similarly, key $2$ must belong to $N_1$.
+
+Now populate the table using key $1$, key $2$, and $n-2$ keys chosen from $N_1$. The storage scheme must place key $1$ in cell $1$ since all other keys belong to $N_1$. But since key $1$ is in $N_2$, when we attempt to answer the membership question for key $2$ we will see key $1$ in cell $1$ and falsely imply that key $2$ is not in the table. Thus, this search/store strategy cannot be valid.
+\end{proof}
+
+\section{Two queries\label{sec:Yao two queries}}
+
+At his 2010 REGS, Doug West proposed \cite{WestYao} that we try to determine the maximum size of the key space when we are permitted two queries.
+
+If the table has only three cells then we can accommodate a key space of any size by storing the keys in the table in sorted order. With the first query we query the middle cell. If that is the key we are looking for then great, we are done. If that key is larger than the key we are looking for then we query the first cell. Otherwise we query the last cell. Therefore $g\left(3,2\right) = \infty$ and more generally, using a similar sort/search strategy, $g\left(2^k-1,k\right) = \infty$. Thus we only need to consider tables with at least four cells.
+
+\begin{proposition}\label{prop:two queries 3n-4}For $n \geq 4$, $g\left(n,2\right) \geq 3n-4$.
+\end{proposition}
+\begin{proof}Start by labeling all the keys in $M$ using a technique similar to Yao's from \autoref{thm:Yao one query}. For $i \in \left[n-2\right]$, three keys will have cell label $i$: a `lower key' $\key{i}{L}$, a `middle key' $\key{i}{M}$, and an `upper key' $\key{i}{U}$. For $i\in \left\{n-1,n\right\}$ only one key will have cell label $i$: $\key{n-1}{U}$ and $\key{n}{M}$.
+\begin{ctikzpicture}[scale=1.2]
+	\draw (0,0) grid (2,3);
+	\foreach \v in {1,2}{
+		\node[vlab] at (\v-0.5,-0.3){\small$\v$};
+		\node[vlab] at (\v-0.5,0.5){$\key{\v}{L}$};
+		\node[vlab] at (\v-0.5,1.5){$\key{\v}{M}$};
+		\node[vlab] at (\v-0.5,2.5){$\key{\v}{U}$};
+	};
+	\pgfmathsetmacro{\xs}{3.5}
+	\foreach \y in {0,1,2,3}\draw (\xs,\y) -- +(1,0);
+	\draw (\xs+2,1) -- +(1,0);
+	\draw (\xs+1,2) -- +(2,0);
+	\draw (\xs+1,3) -- +(1,0);
+	\draw (\xs,0) -- +(0,3);
+	\draw (\xs+1,0) -- +(0,3);
+	\draw (\xs+2,1) -- +(0,2);
+	\draw (\xs+3,1) -- +(0,1);
+
+	\foreach \d in {0,-0.3,0.3}\fill (1+0.5*\xs+\d,0.5) circle (0.05);
+	\node[vlab] at (\xs+0.5,-0.3){$n-2$};
+	\node[vlab] at (\xs+0.5,0.5){$\key{n-2}{L}$};
+	\node[vlab] at (\xs+0.5,1.5){$\key{n-2}{M}$};
+	\node[vlab] at (\xs+0.5,2.5){$\key{n-2}{U}$};
+
+	\node[vlab] at (\xs+1.5,-0.3){$n-1$};
+	\node[vlab] at (\xs+1.5,2.5){$\key{n-1}{U}$};
+
+	\node[vlab] at (\xs+2.5,-0.3){$n$};
+	\node[vlab] at (\xs+2.5,1.5){$\key{n}{M}$};
+	\extendtopbound
+\end{ctikzpicture}
+
+Given a set $N$ of $n$ keys from the key space, the storage scheme works as follows:
+\begin{enumerate}
+	\item Examine the first $n-2$ cells.
+	\begin{enumerate}
+		\item If no keys in $N$ have this cell label, then the cell is flagged as available.
+		\item\label{en:3n-4 only key} If only one key in $N$ has this cell label then that key is assigned to the cell.
+		\item If two of more keys in $N$ have this cell label then we classify the cell by type:
+		\begin{ctikzpicture}%[scale=1.2]
+			\foreach \x in {0,2,4,6}\draw (\x,0) grid +(1,3);
+			\foreach \x/\y/\lab in {0/0/L,0/1/M,0/2/U,2/0/L,2/2/U,4/0/L,4/1/M,6/1/M,6/2/U}\node[vlab] at (\x+0.5,\y+0.5){$\key{i}{\lab}$};
+			\foreach \x/\ty in {0/A,2/B,4/C,6/D}\node[vlab] at (\x+0.5,3.3){Type $\ty$};
+			%\extendtopbound
+		\end{ctikzpicture}
+	\end{enumerate}
+	\item Pair up cells of type $A$ and $B$ with other cells of type $A$ and $B$.
+		\begin{ctikzpicture}%[scale=1.2]
+			\foreach \x in {0,2,5,7,10,12}{
+				\draw (\x,0) grid +(1,3);
+				\draw (\x,-2) rectangle +(1,1);
+			};
+			\foreach \x/\y/\lab in {0/0/L,0/1/M,0/2/U	,2/-2/L,%
+				5/0/L,5/2/U,7/-2/U,%
+				10/0/L,10/1/M,10/2/U,12/-2/L%
+			}\node[vlab] at (\x+0.5,\y+0.5){$\key{i}{\lab}$};
+			\foreach \x/\y/\lab in {2/0/L,2/1/M,2/2/U,0/-2/L,%
+				7/0/L,7/2/U,5/-2/U,%
+				12/0/L,12/2/U,10/-2/U%
+			}\node[vlab] at (\x+0.5,\y+0.5){$\key{j}{\lab}$};
+			\foreach \x/\ty in {0/A,2/A,5/B,7/B,10/A,12/B}\node[vlab] at (\x+0.5,3.3){Type $\ty$};
+			\foreach \xl/\yl/\xr/\yr in {0/0/2/0,5/2/7/2,10/0/12/2}{
+				\draw[very thick,->] (\xl+0.75,\yl+0.25) -- (\xr+0.25,-1.25);
+				\draw[very thick,->] (\xr+0.25,\yr+0.25) -- (\xl+0.75,-1.25);
+			};
+			%\extendtopbound
+		\end{ctikzpicture}
+	\item We may have one extra cell of type either $A$ or $B$. Now consider that extra cell $i$ (if it exists) and cell $n-1$.
+		\begin{ctikzpicture}%[scale=1.2]
+			\foreach \x in {0,6}{
+				\draw (\x,0) grid +(1,3);
+				\draw (\x+2,2) rectangle +(1,1);
+				\draw (\x,-2) rectangle +(1,1);
+				\draw (\x+2,-2) rectangle +(1,1);
+			};
+			\foreach \x/\y/\lab in {0/0/L,0/1/M,0/2/U	,2/-2/M,0/-2/U,%
+				6/0/L,6/1/M,6/2/U,8/-2/M%
+			}\node[vlab] at (\x+0.5,\y+0.5){$\key{i}{\lab}$};
+			\node[vlab] at (6.5,-1.5){$\key{n-1}{U}$};
+			\node[vlab] at (8.5,2.5){$\key{n-1}{U}$};
+		
+			\foreach \x/\ty in {0/A,6/A}\node[vlab] at (\x+0.5,3.3){Type $\ty$};
+			\foreach \x in {2,8}\node[vlab] at (\x+0.5,3.3){$n-1$};
+			\foreach \xl/\yl/\xr/\yr in {6/1/8/2}{
+				\draw[very thick,->] (\xl+0.75,\yl+0.25) -- (\xr+0.25,-1.25);
+				\draw[very thick,->] (\xr+0.25,\yr+0.25) -- (\xl+0.75,-1.25);
+			};
+			\draw[very thick,->] (0.75,1.25) -- (2.25,-1.25);
+			\draw[very thick,->] (0.125,2.25) -- (0.125,-1.25);
+			%\extendtopbound
+		\end{ctikzpicture}
+		\begin{ctikzpicture}%[scale=1.2]
+			\foreach \x in {0,6}{
+				\draw (\x,0) grid +(1,3);
+				\draw (\x+2,2) rectangle +(1,1);
+				\draw (\x,-2) rectangle +(1,1);
+				\draw (\x+2,-2) rectangle +(1,1);
+			};
+			\foreach \x/\y/\lab in {0/0/L,0/2/U,2/-2/L,0/-2/U,%
+				6/0/L,6/2/U,8/-2/L%
+			}\node[vlab] at (\x+0.5,\y+0.5){$\key{i}{\lab}$};
+			\node[vlab] at (6.5,-1.5){$\key{n-1}{U}$};
+			\node[vlab] at (8.5,2.5){$\key{n-1}{U}$};
+		
+			\foreach \x/\ty in {0/B,6/B}\node[vlab] at (\x+0.5,3.3){Type $\ty$};
+			\foreach \x in {2,8}\node[vlab] at (\x+0.5,3.3){$n-1$};
+			\foreach \xl/\yl/\xr/\yr in {6/0/8/2}{
+				\draw[very thick,->] (\xl+0.75,\yl+0.25) -- (\xr+0.25,-1.25);
+				\draw[very thick,->] (\xr+0.25,\yr+0.25) -- (\xl+0.75,-1.25);
+			};
+			\draw[very thick,->] (0.75,0.25) -- (2.25,-1.25);
+			\draw[very thick,->] (0.125,2.25) -- (0.125,-1.25);
+			%\extendtopbound
+		\end{ctikzpicture}
+	\item Pair up cells of type $C$ and $D$ with other cells of type $C$ and $D$.
+		\begin{ctikzpicture}%[scale=1.2]
+			\foreach \x in {0,2,5,7,10,12}{
+				\draw (\x,0) grid +(1,3);
+				\draw (\x,-2) rectangle +(1,1);
+			};
+			\foreach \x/\y/\lab in {0/0/L,0/1/M,2/-2/M,%
+				5/1/M,5/2/U,7/-2/U,%
+				10/0/L,10/1/M,12/-2/L%
+			}\node[vlab] at (\x+0.5,\y+0.5){$\key{i}{\lab}$};
+			\foreach \x/\y/\lab in {2/0/L,2/1/M,0/-2/M,%
+				7/1/M,7/2/U,5/-2/M,%
+				12/1/M,12/2/U,10/-2/M%
+			}\node[vlab] at (\x+0.5,\y+0.5){$\key{j}{\lab}$};
+			\foreach \x/\ty in {0/C,2/C,5/D,7/D,10/C,12/D}\node[vlab] at (\x+0.5,3.3){Type $\ty$};
+			\foreach \xl/\yl/\xr/\yr in {0/1/2/1,5/2/7/1,10/0/12/1}{
+				\draw[very thick,->] (\xl+0.75,\yl+0.25) -- (\xr+0.25,-1.25);
+				\draw[very thick,->] (\xr+0.25,\yr+0.25) -- (\xl+0.75,-1.25);
+			};
+			%\extendtopbound
+		\end{ctikzpicture}
+	\item We may have one extra cell of type either $C$ or $D$. Now consider that extra cell $i$ (if it exists) and cell $n$.
+		\begin{ctikzpicture}%[scale=1.2]
+			\foreach \x in {0,6}{
+				\draw (\x,0) grid +(1,3);
+				\draw (\x+2,1) rectangle +(1,1);
+				\draw (\x,-2) rectangle +(1,1);
+				\draw (\x+2,-2) rectangle +(1,1);
+			};
+			\foreach \x/\y/\lab in {0/0/L,0/1/M,2/-2/L,0/-2/M,%
+				6/0/L,6/1/M,8/-2/L%
+			}\node[vlab] at (\x+0.5,\y+0.5){$\key{i}{\lab}$};
+			\node[vlab] at (6.5,-1.5){$\key{n}{M}$};
+			\node[vlab] at (8.5,1.5){$\key{n}{M}$};
+		
+			\foreach \x/\ty in {0/C,6/C}\node[vlab] at (\x+0.5,3.3){Type $\ty$};
+			\foreach \x in {2,8}\node[vlab] at (\x+0.5,3.3){$n$};
+			\foreach \xl/\yl/\xr/\yr in {6/0/8/1}{
+				\draw[very thick,->] (\xl+0.75,\yl+0.25) -- (\xr+0.25,-1.25);
+				\draw[very thick,->] (\xr+0.25,\yr+0.25) -- (\xl+0.75,-1.25);
+			};
+			\draw[very thick,->] (0.75,0.25) -- (2.25,-1.25);
+			\draw[very thick,->] (0.125,1.25) -- (0.125,-1.25);
+			%\extendtopbound
+		\end{ctikzpicture}
+		\begin{ctikzpicture}%[scale=1.2]
+			\foreach \x in {0,6}{
+				\draw (\x,0) grid +(1,3);
+				\draw (\x+2,1) rectangle +(1,1);
+				\draw (\x,-2) rectangle +(1,1);
+				\draw (\x+2,-2) rectangle +(1,1);
+			};
+			\foreach \x/\y/\lab in {0/1/M,0/2/U,2/-2/U,0/-2/M,%
+				6/1/M,6/2/U,8/-2/U%
+			}\node[vlab] at (\x+0.5,\y+0.5){$\key{i}{\lab}$};
+			\node[vlab] at (6.5,-1.5){$\key{n}{M}$};
+			\node[vlab] at (8.5,1.5){$\key{n}{M}$};
+		
+			\foreach \x/\ty in {0/D,6/D}\node[vlab] at (\x+0.5,3.3){Type $\ty$};
+			\foreach \x in {2,8}\node[vlab] at (\x+0.5,3.3){$n$};
+			\foreach \xl/\yl/\xr/\yr in {6/2/8/1}{
+				\draw[very thick,->] (\xl+0.75,\yl+0.25) -- (\xr+0.25,-1.25);
+				\draw[very thick,->] (\xr+0.25,\yr+0.25) -- (\xl+0.75,-1.25);
+			};
+			\draw[very thick,->] (0.75,2.25) -- (2.25,-1.25);
+			\draw[very thick,->] (0.125,1.25) -- (0.125,-1.25);
+			%\extendtopbound
+		\end{ctikzpicture}
+	\item\label{en:3n-4 fill available} Fill any cells flagged as available with any remaining keys.
+\end{enumerate}
+	Thus we are able to answer the membership question in at most two queries for a table of $n$ keys chosen from a key space of size $3n-4$ and so $g\left(n,2\right) \geq 3n-4$.
+\end{proof}
+
+When we were permitted only a single query, we had to know in advance which cell we would choose to query when presented with the membership question for a specific key. With two queries this is no longer necessarily the case. While we still need to know the first cell to query, the strategy given in \autoref{prop:two queries 3n-4} is \defn{adaptive}: it uses information gained from the first query to decide which other cell to query. We could mandate that the strategy be \defn{non-adaptive}, meaning that when we are presented with the membership question for a specific key the algorithm decides which cells to query before making any queries to the table. The best-known upper bound for the two query problem was established by David Howard but is an upper bound only for the non-adaptive case.
+
+\begin{proposition}[Howard, \cite{Howard}] If restricted to non-adaptive strategies,\[ g\left(n,2\right) \leq \bigO\left(n^2 \log n\right) \]
+\end{proposition}
+
+Yao's original question was motivated by situations in which the key space was restricted. One approach to the two query problem is to impose further restrictions on the key space. If we can solve that problem, we may be able to solve the original problem by tiling the original key space with copies of the restricted space.
+
+\section{Graph Queryability\label{sec:Yao graph queryability}}
+
+Yao restricted the key space by supposing that it contained only $m$ keys. However, any subset of size $n$ is permitted. Suppose we further mandate that only certain subsets of the key space are permitted. If we consider subsets of size $2$ we can represent the restrictions as a graph with the key space as vertices and with edges between pairs of keys that are permitted to appear together.
+
+\begin{example}Let $\left\{a,b,c,d\right\}$ be the key space and suppose that we permit all pairs except $\left\{b,d\right\}$. This can be represented as the diamond graph\index{diamond graph@diamond graph ($K_4-e$)} $K_4-e$, where $bd$ is the deleted edge.
+	\begin{ctikzpicture}
+		\foreach \u in {0,1}\node[vertex] (u\u) at (2*\u,0.5){};
+		\foreach \v in {0,1}\node[vertex] (v\v) at (1,\v){};
+		\foreach \u in {0,1}\foreach \v in {0,1} \draw (u\u) -- (v\v);
+		\draw (v0) -- (v1);
+		\node[vlab] at ($(v1)+(90:0.3)$){$a$};
+		\node[vlab] at ($(v0)+(270:0.3)$){$c$};
+		\node[vlab] at ($(u0)+(180:0.3)$){$b$};
+		\node[vlab] at ($(u1)+(0:0.3)$){$d$};
+		
+		\node[vlab] at (1,-0.75){Diamond $\smash{K_4-e}$};
+		\extendtopbound
+	\end{ctikzpicture}
+\end{example}
+
+\begin{definition}A graph $G$ is \defn{$1$-queryable}\index{graph!1-queryable@$1$-queryable} means there exists a one-query sort/search strategy that will answer the membership question for any element of $V\left(G\right)$ on any table formed from an edge of $G$.
+\end{definition}
+
+\begin{example}The complete graph on three vertices, $K_3$, is $1$-queryable.
+\end{example}
+\begin{proof}We will use this example to demonstrate how the sort/search strategy can be \defn{encoded} into the graph. The table contains two cells. Every permissible subset of size $2$ is an edge of the graph. To indicate how a given pair of keys will be stored in the table, we orient the corresponding edge such that the orientation $u\rightarrow v$ indicates that $u$ will be stored in the first cell of the table and $v$ will be stored in the second cell. So if we have the orientation
+	\begin{ctikzpicture}
+		\foreach \v in {0,1,2}\node[vertex] (v\v) at (90+120*\v:1){};
+		\foreach \u/\v in {0/1,1/2,2/0}\draw[-latex,oriented] (v\u) -- (v\v);
+		\node[vlab] at ($(v0)+(180:0.3)$){$c$};
+		\node[vlab] at ($(v1)+(180:0.3)$){$a$};
+		\node[vlab] at ($(v2)+(0:0.3)$){$b$};
+		\extendtopbound
+	\end{ctikzpicture}
+and we are presented with $\left\{a,c\right\}$ to store in the table, we will store $c$ in the first cell and $a$ in the second cell.
+
+When we are asked to answer the membership question for a key $v$, we must decide which cell of the table to query. Suppose we decide to query the first cell. We can indicate this decision in the graph by coloring vertex $v$ color $0$. So if we have the coloring
+	\begin{ctikzpicture}
+		\foreach \v/\c in {0/0,1/0,2/1}\node[cvertex] (v\v) at (90+120*\v:1){$\c$};
+		\foreach \u/\v in {0/1,1/2,2/0}\draw[-latex,oriented] (v\u) -- (v\v);
+		\node[vlab] at ($(v0)+(180:0.4)$){$c$};
+		\node[vlab] at ($(v1)+(180:0.4)$){$a$};
+		\node[vlab] at ($(v2)+(0:0.4)$){$b$};
+		\extendtopbound
+	\end{ctikzpicture}
+then we will query the first cell when asked the membership question for $a$ or $c$ and we will query the second cell when asked the membership question for $b$.
+
+Under the encoding given, opening either door will determine exactly which edge is stored in the table. Thus $K_3$ is $1$-queryable and the given encoding is \defn{valid}\index{graph!1-queryable@$1$-queryable!valid encoding}\index{valid encoding}.
+\end{proof}
+
+It is refreshingly easy to characterize valid encodings. Notice that given a valid encoding, if we reverse the orientation of every edge and the color of every vertex then we have another valid encoding. We will use this fact on multiple occasions to fix the color of a vertex without any loss of generality.
+
+\begin{lemma}\label{lem:reminder}An encoding of $G$ is valid if and only if for every edge $u\rightarrow v$:
+	\begin{enumerate}
+		\item\label{en:reminder 0} if $v$ has color $0$ then $\outdegree{u} = 1$
+		\item\label{en:reminder 1} if $u$ has color $1$ then $\indegree{v} = 1$
+	\end{enumerate}
+	\begin{ctikzpicture}
+		\node[vertex] (u) at (0,0){};
+		\node[cvertex] (v) at (1.5,0){$0$};
+		\node[vlab] at ($(u)+(180:0.3)$){$u$};
+		\node[vlab] at ($(v)+(0:0.5)$){$v$};
+		\draw[-latex,oriented] (u) -- (v);
+		\draw[-latex,oriented] (u) -- (1.5,-0.8);
+		\path (u) -- (1.5,-0.8) node[cross out,sloped,draw,pos=0.5]{};
+
+		\pgfmathsetmacro{\xs}{4}
+		\node[cvertex] (u) at (\xs,-0.8){$1$};
+		\node[vertex] (v) at (\xs+1.5,-0.8){};
+		\node[vlab] at ($(u)+(180:0.5)$){$u$};
+		\node[vlab] at ($(v)+(0:0.3)$){$v$};
+		\draw[-latex,oriented] (u) -- (v);
+		\draw[-latex,oriented] (\xs,0) -- (v);
+		\path (\xs,0) -- (v) node[cross out,sloped,draw,pos=0.5]{};
+		\extendtopbound
+	\end{ctikzpicture}
+\end{lemma}
+\begin{proof}
+	Suppose every edge satisfies \ref{en:reminder 0} and \ref{en:reminder 1} and that we are asked to answer the membership question for vertex $a$. Without loss of generality, assume $a$ has color $0$. If we query the first cell and find $a$ then we are done; if not, let $b$ be the vertex found in the first cell. If $ab$ is not an edge of $G$ or if the edge is encoded as $a \rightarrow b$ then we conclude that $a$ is not in the table. Otherwise the edge $ab$ is encoded as $b \rightarrow a$. Since $a$ has color $0$, we know that $\outdegree{b} = 1$ by \ref{en:reminder 0}. Therefore $a$ must be in the second cell of the table. Thus we can decide the membership question in one query with this strategy and so the encoding is valid.
+
+	Now suppose that some oriented edge $c\rightarrow d$ does not satisfy both \ref{en:reminder 0} and \ref{en:reminder 1}. If it does not satisfy \ref{en:reminder 0} then $d$ has color $0$ and $\outdegree{c} > 1$. When the table contains the edge $cd$ and we are asked to solve the membership question for $d$, we will query the first cell and find $c$. But since $\outdegree{c} > 1$, there is another vertex $x$ that is oriented $c\rightarrow x$. Thus we are unable to decide the membership question for $d$ in one query using this encoding, and so the encoding is not valid. The argument is similar in the case that \ref{en:reminder 1} is not satisfied.
+\end{proof}
+
+If $G$ is a bipartite graph with partite sets $X$ and $Y$, consder the encoding given by coloring all vertices in $X$ color $0$, all vertices in $Y$ color $1$, and orienting all edges to point from $X$ to $Y$. This encoding will vacuously satisfy the requirements of \autoref{lem:reminder}.
+
+\begin{corollary}Every bipartite graph is $1$-queryable.
+\end{corollary}
+
+\begin{lemma}\label{lem:triangle directed}In a valid encoding of a $1$-queryable graph, every triangle must be oriented as a directed cycle.
+\end{lemma}
+\begin{proof}
+	Let $a$, $b$, and $c$ be the vertices of the triangle. Without loss of generality $c$ is colored $0$ and the edge $ab$ is oriented $a \rightarrow b$. It follows by \autoref{lem:reminder} that $ac$ must be oriented $c\rightarrow a$. To obtain a contradiction, assume $bc$ is oriented $c\rightarrow b$. Both $a$ and $b$ must be colored $1$ by \autoref{lem:reminder}. This is a contradiction, since $\outdegree{b} \geq 2$.
+	\begin{ctikzpicture}
+		\node[vertex] (a) at (0,0){};				\node[vlab] at ($(a)+(180:0.3)$){$a$};
+		\node[vertex] (b) at (2,0){};				\node[vlab] at ($(b)+(0:0.3)$){$b$};
+		\node[cvertex] (c) at ($(a)!1!60:(b)$){$0$};		\node[vlab] at ($(c)+(180:0.5)$){$c$};
+		\draw[oriented,-latex] (a) -- (b);
+		\draw[oriented] (a) -- (c);
+		\draw[oriented] (b) -- (c);
+	\end{tikzpicture}\hspace{1cm}\begin{tikzpicture}
+		\node[vertex] (a) at (0,0){};				\node[vlab] at ($(a)+(180:0.3)$){$a$};
+		\node[vertex] (b) at (2,0){};				\node[vlab] at ($(b)+(0:0.3)$){$b$};
+		\node[cvertex] (c) at ($(a)!1!60:(b)$){$0$};		\node[vlab] at ($(c)+(180:0.5)$){$c$};
+		\draw[oriented,-latex] (a) -- (b);
+		\draw[oriented,latex-] (a) -- (c);
+		\draw[oriented,latex-] (b) -- (c);
+	\end{tikzpicture}\hspace{1cm}\begin{tikzpicture}
+		\node[cvertex] (a) at (0,0){$1$};				\node[vlab] at ($(a)+(180:0.5)$){$a$};
+		\node[cvertex] (b) at (2,0){$1$};				\node[vlab] at ($(b)+(0:0.5)$){$b$};
+		\node[cvertex] (c) at ($(a)!1!60:(b)$){$0$};		\node[vlab] at ($(c)+(180:0.5)$){$c$};
+		\draw[oriented,-latex] (a) -- (b);
+		\draw[oriented,latex-] (a) -- (c);
+		\draw[oriented,latex-] (b) -- (c);
+		\extendtopbound
+	\end{ctikzpicture}
+\end{proof}
+
+\begin{lemma}[3-chaining]\label{lem:3-chaining}Let $v_0, v_1, \dotsc, v_n$ be a path in a graph $G$ with $d(v_i) \geq 3$ for $i=1,\dotsc n$. If $v_0$ and $v_1$ have color $0$ and the edge $v_{0} v_{1}$ is oriented $v_{1} \rightarrow v_{0}$ then:
+	\begin{enumerate}
+		\item $v_1$, $\dotsc$, $v_n$ all have color $0$.
+		\item The edges $v_{i-1} v_{i}$ are oriented $v_{i} \rightarrow v_{i-1}$ for $i = 1,\dotsc, n$.
+		\item Every neighbor $u$ of $v_i$ has color $0$ and $uv_{i}$ is oriented $u \rightarrow v_{i}$ (except when $u = v_{i-1}$) for $i = 1, \dotsc, n$.
+		\item For any $1 \leq i < j \leq n$, if $j \neq i+1$ then $v_i$ is not adjacent to $v_j$.
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	The hypotheses, together with \autoref{lem:reminder} imply that $\outdegree{v_1} = 1$, and so all edges incident to $v_1$, aside from $v_{0} v_{1}$, must flow into $v_{1}$. Thus $\indegree{v_1} \geq 2$, so all vertices adjacent to $v_1$ must have color $0$. This provides the base case for the claim, and the rest follows by induction on $n$.
+	\begin{ctikzpicture}
+		\pgfmathsetmacro{\gap}{1.5}
+		\node[cvertex] (v0) at (0,0){$0$};				\node[vlab] at ($(v0)+(270:0.5)$){$v_0$};
+		\node[cvertex] (v1) at (\gap,0){$0$};			\node[vlab] at ($(v1)+(270:0.5)$){$v_1$};
+		\node[vertex] (v2) at ($(v1)+(\gap,0)$){};		\node[vlab] at ($(v2)+(270:0.5)$){$v_2$};
+		\node[vertex] (vn) at ($(v2)+(1.5*\gap,0)$){};	\node[vlab] at ($(vn)+(270:0.5)$){$v_n$};
+
+		\node[vertex] (u1) at ($(v1)+(0,\gap)$){};	%\node[vlab] at ($(v1)+(270:0.5)$){$v_1$};
+		\node[vertex] (u2) at ($(v2)+(0,\gap)$){};		%\node[vlab] at ($(v2)+(270:0.5)$){$v_2$};
+		\node[vertex] (un) at ($(vn)+(0,\gap)$){};		%\node[vlab] at ($(v2)+(270:0.5)$){$v_2$};
+
+		\draw[oriented,latex-] (v0) -- (v1);
+		\draw[oriented] (v1) -- (v2);
+		\draw[oriented] (v2) -- +(0.25*\gap,0);
+		\draw[oriented, dashed] (v2)++(0.25*\gap,0) -- (vn)++(-0.25*\gap,0);
+		\draw[oriented] (vn)++(-0.25*\gap,0) -- (vn);
+		\draw[oriented] (vn) -- +(0.25*\gap,0);
+		\draw[oriented, dashed] (vn)++(0.25*\gap,0) -- +(0.5*\gap,0);
+
+		\draw[oriented] (u1) -- (v1);
+		\draw[oriented] (u2) -- (v2);
+		\draw[oriented] (un) -- (vn);
+	\end{tikzpicture}\hspace{1cm}\begin{tikzpicture}
+		\pgfmathsetmacro{\gap}{1.5}
+		\node[cvertex] (v0) at (0,0){$0$};				\node[vlab] at ($(v0)+(270:0.5)$){$v_0$};
+		\node[cvertex] (v1) at (\gap,0){$0$};			\node[vlab] at ($(v1)+(270:0.5)$){$v_1$};
+		\node[cvertex] (v2) at ($(v1)+(\gap,0)$){$0$};		\node[vlab] at ($(v2)+(270:0.5)$){$v_2$};
+		\node[vertex] (vn) at ($(v2)+(1.5*\gap,0)$){};	\node[vlab] at ($(vn)+(270:0.5)$){$v_n$};
+
+		\node[cvertex] (u1) at ($(v1)+(0,\gap)$){$0$};	%\node[vlab] at ($(v1)+(270:0.5)$){$v_1$};
+		\node[vertex] (u2) at ($(v2)+(0,\gap)$){};		%\node[vlab] at ($(v2)+(270:0.5)$){$v_2$};
+		\node[vertex] (un) at ($(vn)+(0,\gap)$){};		%\node[vlab] at ($(v2)+(270:0.5)$){$v_2$};
+
+		\draw[oriented,latex-] (v0) -- (v1);
+		\draw[oriented,latex-] (v1) -- (v2);
+		\draw[oriented] (v2) -- +(0.25*\gap,0);
+		\draw[oriented, dashed] (v2)++(0.25*\gap,0) -- (vn)++(-0.25*\gap,0);
+		\draw[oriented] (vn)++(-0.25*\gap,0) -- (vn);
+		\draw[oriented] (vn) -- +(0.25*\gap,0);
+		\draw[oriented, dashed] (vn)++(0.25*\gap,0) -- +(0.5*\gap,0);
+
+		\draw[oriented,-latex] (u1) -- (v1);
+		\draw[oriented] (u2) -- (v2);
+		\draw[oriented] (un) -- (vn);
+		\extendtopbound
+	\end{ctikzpicture}
+\end{proof}
+
+\begin{corollary}\label{cor:odd cycles}Let $C$ be an odd cycle in a graph $G$ such that every vertex of $C$ has degree at least $3$.
+	\begin{itemize}
+		\item $C$ must be oriented as a directed cycle and must be monochromatic.
+		\item Any vertex in $G-C$ that is adjacent to a vertex in $C$ must also have that same color.
+		\item $C$ acts as either a source or a sink for the vertices of $G-C$ that are adjacent to a vertex of $C$, according to whether the color is a $0$ or a $1$, respectively.
+	\end{itemize}
+\end{corollary}
+
+\begin{lemma}\label{lem:unicyclic}Let $G$ be a $1$-queryable graph with no vertices of degree two. Either $G$ is bipartite, or $G$ is unicyclic.
+\end{lemma}
+\begin{proof}Suppose $G$ is neither bipartite nor unicyclic. $G$ has an odd cycle $C$ with minimum degree three, so by \autoref{cor:odd cycles}, $C$ is monochromatic. Without loss of generality, $C$ has color $0$ and is a sink. $C$ cannot have a chord, as a chord would not be orientable.
+
+If another cycle shares two vertices with $C$ then there is a path between two vertices $u$ and $v$ of $C$. Call the interior vertices of the path $p_1, p_2, \dotsc, p_k$. Starting at $v$ and applying \autoref{lem:3-chaining}, every $p_i$ must be colored $0$, and all edges must be oriented $p_i \rightarrow p_{i+1}$. But now $\outdegree{p_1} = 2$, contradicting \autoref{lem:reminder}.
+	\begin{ctikzpicture}
+		\pgfmathsetmacro{\rad}{3}
+		\pgfmathsetmacro{\fa}{1}
+		\pgfmathsetmacro{\sa}{15}
+		\pgfmathsetmacro{\ea}{30}
+		\draw (\rad,0) arc (0:\sa:\rad);
+		\draw (\rad,0) arc (0:-\sa:\rad);
+		\draw (-\rad,0) arc (180:180-\sa:\rad);
+		\draw (-\rad,0) arc (180:180+\sa:\rad);
+		\draw[dashed] (\sa:\rad) arc (\sa:\ea:\rad);
+		\draw[dashed] (-\sa:\rad) arc (-\sa:-\ea:\rad);
+		\draw[dashed] (180-\sa:\rad) arc (180-\sa:180-\ea:\rad);
+		\draw[dashed] (180+\sa:\rad) arc (180+\sa:180+\ea:\rad);
+		%\draw (0,0) circle (\rad);
+		\node[cvertex] (c1) at (-\rad,0){$0$};			\node[vlab] at ($(c1)+(180:0.5)$){$u$};
+		\node[cvertex] (c2) at (\rad,0){$0$};			\node[vlab] at ($(c2)+(0:0.5)$){$v$};
+		\node[cvertex] (p1) at ($(c1)+(\fa,0)$){$0$};		\node[vlab] at ($(p1)+(270:0.5)$){$p_1$};
+		\node[cvertex] (p1n) at ($(p1)+(0,\fa)$){$0$};
+		\node[cvertex] (p2) at ($(p1)+(\fa,0)$){$0$};		\node[vlab] at ($(p2)+(270:0.5)$){$p_2$};
+		\node[cvertex] (p2n) at ($(p2)+(0,\fa)$){$0$};
+		\coordinate (p3) at ($(p2)+(\fa,0)$){};
+		\node[cvertex] (pk) at ($(c2)+(-\fa,0)$){$0$};	\node[vlab] at ($(pk)+(270:0.5)$){$p_k$};
+		\node[cvertex] (pkn) at ($(pk)+(0,\fa)$){$0$};
+		\coordinate (pj) at ($(pk)+(-\fa,0)$){};
+
+		\foreach \u/\v in {p1/p2, p2/p3, pj/pk}\draw[oriented,-latex] (\u) -- (\v);
+		\foreach \u/\v in {c1/p1, p1/p1n, p2/p2n, c2/pk, pkn/pk}\draw[oriented,latex-] (\u) -- (\v);
+		\draw[dashed] (p3)++(0.125*\fa,0) -- ($(pj)+(-0.125*\fa,0)$);
+		\extendtopbound
+	\end{ctikzpicture}
+
+Thus any other cycle of $G$ must be connected to $C$ by a path. This is a contradiction to \autoref{lem:3-chaining}, completing the proof.
+\end{proof}
+
+\begin{lemma}\label{lem:components}Let $G$ be a $1$-queryable graph and let $S$ be the set of all vertices of $G$ of degree two. Every component of $G-S$ is either bipartite or unicyclic.
+\end{lemma}
+\begin{proof}Suppose $G-S$ has a component that is neither bipartite nor unicyclic. This component has at least one odd cycle, and since we removed all vertices of $G$ of degree two, every vertex of this odd cycle has minimum degree at least three. Thus, by \autoref{cor:odd cycles} it is monochromatic. The component also contains another cycle, which either shares vertices with the odd cycle or is connected to the cycle by a path. Either way, in $G$ all the relevant vertices have minimum degree three, and so by \autoref{lem:unicyclic}, $G$ has a subgraph that is not $1$-queryable, contradicting that $G$ is $1$-queryable.
+\end{proof}
+
+\begin{theorem}Every $1$-queryable graph has chromatic number at most three.
+\end{theorem}
+\begin{proof}Let $G$ be a $1$-queryable graph and let $S$ be the set of all vertices of $G$ of degree two. By \autoref{lem:components}, every component of $G-S$ is either bipartite or unicyclic and so can be colored with at most three colors. Hence $G-S$ has a valid coloring using colors chosen from the set $\left\{a,b,c\right\}$. This coloring can be extended to a valid coloring of $G$ by coloring each vertex $v$ of $S$ in turn. Since every vertex in $S$ has degree two, at least one of the colors from $\left\{a,b,c\right\}$ is unused by the neighbors of $v$. Thus the coloring can be extended to $v$ and hence to all of $G$.
+\end{proof}
+
+\section{Conclusion}
+
+This chapter studied a storage problem introduced by Yao and resurrected by Doug West in his 2010 REGS \cite{WestYao}. \Autoref{sec:Yao two queries} gives a lower bound for the $2$-query, adaptive version of this problem. No known upper bound even comes close to matching this lower bound, so \autoref{sec:Yao graph queryability} revisits the structure of extremal $1$-queryable graphs in the hopes that this will provide a tiling argument leading to a better upper bound for the $2$-query case. While this section does give a near-complete characterization of $1$-queryable graphs, a generalization to $1$-queryable $k$-uniform hypergraphs\nocite{Berge} is required to power this tiling which reduces the $2$-queryable problem to a $1$-queryable problem with an open cell. An `open cell' whose contents are always known. With one query and one open cell it is possible to accommodate a key space of $2n-1$ keys, one more than Yao's bound for the basic $1$-query case; we conjecture that this is the best possible. Another variant is to allow for `closed' cells: ones that cannot be queried. The bounds for this problem are very close to the bounds for the original problem.
+
+There has been some progress on characterizing $1$-queryable $3$-uniform hypergraphs. If for every pair of vertices the co-degree $0$ or at least $7$ then the hypergraph must be tripartite. This is the $3$-uniform analogue to the fact that if a $1$-queryable graph has minimum degree at least $3$ then the graph must be bipartite. A complete characterization of $1$-queryable graphs is not yet known, nor is a generalization to graphs of higher uniformity. The co-degree restriction imposes a sort of edge-density requirement on the hypergraph. It remains an open problem to determine the maximum number of edges that can be contained in a $k$-uniform $1$-queryable hypergraph, but it is known that the extremal hypergraphs will not be $k$-partite.

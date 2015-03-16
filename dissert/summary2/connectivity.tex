@@ -1,0 +1,65 @@
+
+\documentclass[12pt]{article}
+
+
+
+
+\usepackage{amsrefs,array,amsthm,amsmath,setspace,tikz, xspace}
+\usepackage[top=1.25 in, bottom=1.25in, left=1.25 in, right=1.25in]{geometry}
+
+
+
+\renewcommand{\arraystretch}{1.8}
+\doublespacing
+\linespread{2}
+
+\newtheorem{conj}{Conjecture}
+	\newcommand{\bconj}[1]{\begin{conj}#1\end{conj}}
+\newtheorem{mconj}{Metaconjecture}
+
+\newtheorem{prop}{Proposition}
+	\newcommand{\bprop}[1]{\begin{prop}#1\end{prop}}
+\newtheorem{lem}{Lemma}
+	\newcommand{\blem}[1]{\begin{lem}#1\end{lem}}
+\newtheorem{theorem}{Theorem}
+	\newcommand{\bthm}[1]{\begin{theorem}#1\end{theorem}}
+
+
+\newtheorem{guess}{Guess}
+	\newcommand{\bguess}[1]{\begin{guess}#1\end{guess}}
+
+\theoremstyle{definition}
+\newtheorem{mydef}{Definition}
+
+
+\newcommand{\kfree}{$\overline{K_3}$-free\xspace}
+
+
+\usepackage{color}
+\usepackage{tikz,framed, amsrefs, amsthm}
+\tikzstyle{every node}=[circle, draw, fill=black!50,
+                        inner sep=0pt, minimum width=4pt]
+\tikzstyle{lblvertex}=[fill=white, inner sep = 1pt, font=\small]
+\tikzstyle{lblvertex2}=[fill=white, inner sep = 1pt, font=\tiny,circle, draw]
+\tikzstyle{lblvertex3}=[fill=white, inner sep = 1pt, font=\tiny,circle, draw = black!25]
+\tikzstyle{words} =[rectangle, draw=none, fill=none, black]
+
+\begin{document}
+
+\begin{prop}
+	If SSH holds for a \kfree graph $G$ with $n$ vertices, then $\nu_c(G) \geq \frac{1}{4}n$. 
+\end{prop}
+\begin{proof}
+	Let $\mathcal{M}$ be the collection of branch sets of a $n/2$ SSH-minor of $G$.  Let $\mathcal{M}_1 = \{M\in \mathcal{M}: |M| = 1\}$ and $\mathcal{M}_2 = \{M\in \mathcal{M}: |M| = 2\}$. Then 
+\[\nu_c(G) \geq \frac{1}{2}|\mathcal{M}_1| + |\mathcal{M}_2| \geq \frac{1}{2}(|\mathcal{M}_1| + |\mathcal{M}_2|) = \frac{1}{4}n\]
+\end{proof}
+In Lemma 2.1 of \cite{blas}, Blasiak shows that \kfree graph with connectivity less than $n/2$ satisfies SSH.  We can show the following for higher connectivity.
+\begin{lem}
+	If $G$ is a \kfree graph on $n$ vertices with $\kappa(G) \geq n/2$, then $\nu_c(G) \geq n-\kappa(G)$.  (Further, if $n/4 < \kappa(G) < n/2$, then $\nu_c(G) \geq \kappa(G)$ and if $\kappa(G) < n/4$ then $\nu_c(G) \geq \frac{1}{4}(n-\kappa(G)$ maybe more) 
+\end{lem}
+\begin{proof}
+	The proof begins similarly to \cite{blas}. Let $S$ be a minimum cut set of $G$.  Then let $L$, $R$ be a partition of $V(G) - S$ so that $L$ and $R$ do not touch.  Since $G$ is \kfree, $L$ and $R$ are cliques, and every vertex of $S$ is complete to $L$ or complete to $R$.  Let $S_L$ be the set of vertices complete to $L$ and $S_R$ the set of vertices complete to $R$.    We claim that between any $A \subseteq S_L$ with $|A| \leq |R|$ and $R$ ($S_R$ and $L$ resp.) there is a matching that saturates $A$.  Suppose there is no $(A, R)$ matching saturating $A$.  Hall's condition then implies that there is $T\subseteq A$ such that $|N(T)\cap R| < |T|$. But then $(S-T)\cup (N(T)\cap R)$ is a cut set separating $L\cup T$ and $R-N(T)$. This set is smaller than $S$, yielding a contradiction.   
+
+Let $M$ be the largest possible matching obtained with $(S_L,R)$ edges and $(S_R,L)$ edges.  This matching is connected, and $|M| = \min\{|S_L|, |R|\} + \min\{|S_R|, |L|\}$.  If both $|R| \leq S_L$ and $|L| \leq S_R$, then we are done.  If, WLOG,  $|R| > S_L$, then let $U_R$ denote the set of vertices of $R$ unmatched by $M$.  Since $|S|\geq n/2$, there are at least $|U_R|$ unmatched vertices of $S_R$ (denoted $U_{S_R}$).  Augment $M$ with any $(U_R , U_{S_R})$ matching saturating $U_R$ to yield $M'$.  These new edges are mutually connected, and connected to any $(S_R,L)$ or $(S_L, R)$ edges via $R$.  Hence, $M'$ is a $(S,S^c)$ connected matching saturating $S^c = R\cup L$, and $|R\cup L| = n-\kappa(G)$. 
+\end{proof}
+\end{document}

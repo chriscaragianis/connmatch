@@ -1,0 +1,50 @@
+For any graph $G$ on $n$ vertices, there is a natural partition of the edges of a complete graph on $n$ vertices constructed by collecting each edge $uv$ into a distinct class $P_i = \{uv : d_G(u,v) = i\}$ .  We call this the \textit{proximity partition} $\mathcal{P}_G$ induced by $G$.  For an integer $k$, we can also consider the \textit{proximity $k$-partition} $\mathcal{P}^k_G$ induced by $G$, where for $1 < i < k$, $P_i = \{uv : d_G(u,v) = i\}$ and $P_k = \{uv : d_G(u,v) \geq k\}$. Occasionally, for small values of $k$, we may think of this partiton as an edge coloring of $K_n$ and refer to the \textit{proximity $k$-coloring} of $K_n$.  
+\bprop{For any fixed $k$, determining whether a given partition of the edges $K_n$ is a proximity $k$-partition can be done in time polynomial in $n$.}
+
+\begin{proof}
+Suppose we have a partition $\mathcal{P}$ of the edges of $K_n$. If the $\mathcal{P}$ has more than $k$ classes, it clearly cannot be a proximity $k$-partition. Therefore there are at most $k!$ possible indexings of $\mathcal{P}$.  Checking whether a given indexing gives rise to a proximity $k$-partition can be accomplished in no more than $k$ matrix multiplications and comparisons.  
+\end{proof}
+In the case of a proximity $3$-coloring, we introduce a further shothand.  The RGB graph induced by a graph $G$ is the proximity $3$-coloring induced by $G$ with $P_1$ colored blue, $P_2$ colored green, and $P_3$ colored red.
+\begin{prop}
+Connected matchings in a graph $G$ correspond to green cliques in the RGB graph induced by $G$.  Copies of $2K_2$ correspond to red edges in the RGB graph induced by $G$.
+\end{prop} 
+
+The proximity partition induced by a graph $G$ can be thought of as the collection of \textit{distance-$k$ graphs} of $G$.  We may ask if there is a characterization of $\mathcal{H}_k$ where
+\[\mathcal{H}_k = \{H :\: H \makebox{ is the distance-$k$ graph of some graph } G\}\]
+In the case of $\mathcal{H}_2$, we can do so.  Let $A(G)$ denote the adjacency matrix of a graph $G$.  In \cite{sqrtofgraph} Mukhopdhyay characterizes graphs that have a \textit{square root}, which is to say graphs $H$ such that for some $G$, $A(H) = A(G)^2$.  This is equivalent to $H$ possesing an edge between any pair of vertices $u,v$ that satisfy $d_G(u,v) \leq 2$.  
+\bthm{[Mudkhopdhyay] A connected graph $G$ with $n$ vertices $v_1, v_2, \ldots, v_n$ has a square root if and only if some set of $n$ complete subgraphs of $G$ whose union is $G$ can be labeled $C_1, C_2, \ldots, C_n$ so that, for all $i,j = 1, 2, \ldots, n$ the following conditions hold:
+\begin{enumerate}
+	\item $C_i$ contains $v_i$,
+	\item $C_i$ contains $v_j$ if and only if $C_i$ contains $v_i$.
+\end{enumerate}}
+\noindent An alternate definition of $\mathcal{H}_2$ is 
+\[\mathcal{H}_2 = \{H : \: A(H) = A(G)^2-A(G)\}\] and we have the following characterization in the spirit of Mukhopdhyay's theorem.  
+\bthm{A graph $G$ with $n$ vertices $v_1, v_2, \ldots , v_n$ is the distance 2 graph of some graph $H$ if and only if some set of $n$ subgraphs of $G$ whose union is $G$ can be labeled $C_1, C_2, \ldots, C_n$ so that 
+\begin{enumerate}
+	\item $v_a \notin C_a$ 
+	\item For every pair of vertices $v_i, v_j \in C_k$, exactly one of the following holds:
+	\begin{enumerate}
+		\item $v_iv_j \in E(C_k)$ 
+		\item If $v_i \in V(C_j)$, then $v_j \in V(C_i)$
+		\item $v_i \in C_j$ and $v_j \in C_i$
+	\end{enumerate}
+	\item If $C_i \cap C_j \neq \emptyset$, then $v_i, v_j \in V(C_k)$ for some $k$.
+\end{enumerate}}
+\begin{proof}
+Suppose we have a graph $G$ on vertices $v_1, v_2, \ldots, v_n$ and subgraphs $C_1, C_2, \ldots, C_n$ that satisfy the above hypotheses.  We construct a graph $H$ on the same vertex set by adding edges in two steps for each $C_i$.
+\begin{description}
+	\item[Step 1.] Add the complement of $C_i$.
+	\item[Step 2.] Add all edges from $v_i$ to $C_i$.
+\end{description}
+	We claim that $G$ is now the distance 2 graph of $H$.  Suppose that $d_H(v_i, v_j) = 2$.  We want to show that $v_iv_j \in E(G)$.  Since $d_H(v_i,v_j) \leq 2$, there is some vertex $v_k$ so that $v_iv_k, v_jv_k \in E(H)$.  If both edges were added in step 2, then one of the following occurs
+\begin{description}
+	\item[Case 1.] $v_i, v_j \in C_k$
+	\item[Case 2.] $v_k \in C_i$, $v_k \in C_j$
+	\item[Case 3.] $v_k \in C_i, C_j$
+\end{description}    
+In case 1, distance 2 implies $v_iv_j \notin E(H)$. In particular, this edge was not added in step 2, so $v_i \notin C_j$ and $v_j \notin C_i$.  Condition 2 then implies that if $v_i, v_j \in C_k$ for some $C_k$, then $v_iv_j \in E(G)$.  In case 2, $V(C_i)$ and $V(C_j)$ intersect, implying (by condition 3) again that there is a $V(C_l)$ containing both $v_i$ and $v_j$.  In case 3, condition 4 requires that $v_i, v_j \in C_k$.  In any event, $v_iv_j \in E(G)$.
+
+Now we may assume WLOG that $v_iv_k$ was added to $H$ in step 1.  Suppose $v_jv_k$ was added in step 2. Then either $v_k \in C_j$, implying $C_i \cap C_j \neq \emptyset$, or $v_j \in C_k$ implying $v_i, v_j \in C_k$.  The only remaining possibility is that both $v_iv_k$ and $v_jv_k$ were added in step 1.  Following from two applications of condition 2(b), both $v_i$ and $v_j$ are then in $V(C_k)$.  Sufficiency complete.
+
+For the proof of necessity, we take a graph $H$ and show that its distance two graph $D_2(H)$ has a collection of subgraphs with the necessary properties.  For each vertex $v_i$, let $V(C_i) = N(v_i)$.  That condition 1 holds is immediate.  The vertices of any given $C_i$ are at most distance two apart.  Whenever there is a nonedge in a particular $C_i$ and 2(a) fails, the vertices must be adjacent in $H$, and condition 2(b) holds.  The symmetric property of the neighbor relation shows that conditions 3 and 4 hold as well.  Finally, all distance 2 edges occur between vertices with a common neighbor, so $\bigcup C_i = G$. 
+\end{proof}

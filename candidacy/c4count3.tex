@@ -1,0 +1,17 @@
+\begin{tikzpicture}[thick,scale=0.4]
+
+\draw (-4,4) node[lblvertex]{x}
+	edge[dashed] (4,4);
+\draw(4,4) node[lblvertex]{y}; 
+	
+\draw[fill = red, opacity = 0.25](-2,-2) ellipse (4 cm  and 2.5 cm);
+\draw[fill = blue, opacity = 0.25](2,-2) ellipse (4 cm and 2.5 cm);
+
+\draw (-3.8,-2) node[words]{$N(x)$};
+\draw (3.8,-2) node[words]{$N(y)$};
+
+\draw (-.8,-1.2) node[]{}
+	edge[dashed] (.8,-2.3);
+\draw (.8,-2.3) node[]{};
+
+\end{tikzpicture}

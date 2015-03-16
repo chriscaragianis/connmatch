@@ -1,0 +1,22 @@
+\begin{tikzpicture}[thick,scale=0.5]
+
+	\coordinate (a0) at (0:0);
+	\coordinate (a1) at (180:1);
+	\coordinate (a3) at (-109:3);
+	\coordinate (a2) at (0:1);
+	\coordinate (a4) at (-71:3);
+	\coordinate (b1) at (150:3);
+	\coordinate (b2) at (30:3);
+
+	\draw (a1)-- node[lblvertex] {a}(a3);
+	\draw (a2)-- node[lblvertex] {b}(a4);
+	%\draw (a1)--(a4);
+	\draw (b1)[red]--(b2);
+	%\draw (a0) node {};	
+	\draw (a1) node {};
+	\draw (a2) node {};
+	\draw (a3) node {};
+	\draw (a4) node {};
+	\draw (b1) node[lblvertex, draw = red] {a};
+	\draw (b2) node[lblvertex, draw = red] {b};
+\end{tikzpicture}

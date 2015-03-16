@@ -1,0 +1,16 @@
+Let $k$ be $\min \{|L|, \makebox{``guys to the right of $C$''}\}$.  We say that $L$ is {\it supported} if $k$ elements of $\displaystyle\bigcup_{l\in L}l - C$ are in $\displaystyle\bigcap_{i\in E(H) - (L\cup R)}i$.  
+
+Our algorithm consists of matching an element of $C$ to an interval in the following order of preference.
+
+Choose $C$ first.
+
+If $L$ is supported and $R$ safe, choose least of $R$ (vice versa).
+
+If none chosen yet, fail.
+
+(neccessity is pretty straightforward)
+
+The problem remains to show that if the least of $L$ is chosen, then we won't ``miss'' a perfect dominated chain.  Suppose we were supposed to choose $R$.  Then $R$ is chosen too late.  However, $R$ is supported, so there are candidates to take up the vertices dominated by the elements of $R$.  $etc_R$ is chosen too late perhaps, but we have a home for that too.  
+
+OK.  Choose the smaller of $R$ and $L$.  match the smallest of that with the ``nearest'' vertex IF the other side has ``safe landing''.  otherwise try the otherside.  if no safe landings, you are done.
+

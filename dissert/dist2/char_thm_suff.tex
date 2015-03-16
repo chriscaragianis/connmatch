@@ -1,0 +1,29 @@
+\input{preamble}
+
+\begin{document}
+THE LIST OF PROPERTIES:
+
+\begin{enumerate}
+	\item $G$ has an edge covering $\mathcal{Q} = \{Q_1, Q_2, \ldots, Q_k\}$ of augmented bicliques. (Prop. 1)
+	\item If a vertex $v$ is in three elements of $[\mathcal{Q}]$, then two of them cross in parts containing $v$. (Prop. 3)
+	\item If two parts intersect in more than one vertex, then the containing $\mathcal{Q}$ elements cross in these parts. (Prop. 4)
+	\item If $q_i \in [Q^b_j]$, then $Q_i$ and $Q_j$ cross in part $b$ of $Q_j$. (Prop. 5)
+	\item Take three parts $a$, $b$, and $c$ each from a different element of $\mathcal{Q}$.  If $a$ crosses $b$, and $b$ crosses $c$, then $a$ crosses $c$. (Prop. 6)
+	\item If $u,v \in [Q_i^a] \triangle [Q_j^b]$ and $Q_i^a$ and $Q_j^b$ cross, then $uv \notin E(Q')$.
+\end{enumerate}
+
+Take a graph $G$ and an edge covering $\mathcal{Q}$ as in 1-6.  Construct the graph $F$.
+\begin{enumerate}
+	\item $V(F) = V(G)$.
+	\item $\forall_{Q_i \in \mathcal{Q}}$ add $uv$ whenever $u,v \in [Q_i]$ and $uv \notin E(Q_i)$.
+	\item If $Q_i^a$ and $Q_j^b$ cross, add all edges between $[Q_i^a]$ and $[Q_j^b]$.
+\end{enumerate}
+
+\bprop{$F$ is a line graph.}
+\begin{proof}
+	The parts of $[\mathcal{Q}]$ form a Krausz partition of $F$, when crossing-maximalized.  
+\end{proof}
+
+\bprop{$G$ is the distance-2 graph of $F$}
+$uv \in E(G) \doublerightarrow uv$ is not added in step 2.   
+\end{document}

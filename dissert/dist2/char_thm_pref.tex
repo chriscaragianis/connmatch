@@ -1,0 +1,34 @@
+\input{preamble}
+
+\begin{document}
+
+\begin{mydef}
+	The \textit{connected matching graph} $CM(G)$ of a graph $G$ is the distance-2 graph of $L(G)$.
+\end{mydef}
+
+\begin{mydef}
+	An \textit{augmented biclique} $S$ is the union of a biclique and an isolated vertex (denoted $s$).
+\end{mydef}
+
+\begin{mydef}
+	An augmented biclique $S$ has two \textit{parts} $S^1$ and $S^2$ consisting of each partite set together with $s$, respectively. 
+\end{mydef}
+
+\begin{mydef}
+	Two augmented bicliques $S_1$ and $S_2$ \textit{cross} if $[S_1] \cap [S_2]$ is contained in the union of one part of $S_1$ and one part of $S_2$.
+\end{mydef}
+
+\begin{mydef}
+	The $Q$-transform $Q(L(H))$ of a line graph $L(H)$ is constructed as follows:
+	\begin{enumerate}
+		\item Let $\mathcal{P} = \{P_1, P_2, \ldots, P_l\}$ be a Krausz partition of the edges of $L(H)$.
+		\item Define an index set $\mathcal{I} \subset [l] \times [l]$ where $(x,y) \in 
+\mathcal{I}$ if and only if $x < y$ and $[P_x] \cap [P_y] \neq \emptyset$.
+		\item For each $(a_1, a_2) \in \mathcal{I}$, define $S_a = [P_{a_1}] \cup [P_{a_2}]$, and let $\mathcal{S} = \{S_a: a \in \mathcal{I}\}$.
+		\item For each $S_a \in \mathcal{S}$, if there are $u \in [P_{a_1}]$ and $v \in [P_{a_2}]$ so that $u,v \notin [P_{a_1}] \cap [P_{a_2}]$ and $u,v \in [P_k]$ for some $k$, then remove $u$ and $v$ from $S_a$.
+		\item Let $V(Q') = V(L(H))$, and let $uv \in E(Q')$ whenever $uv$ is in the complement of a graph induced by some $S_a \in \mathcal{S}$ in the graph $L(H)$.  Then $Q' = Q(L(H))$.
+	\end{enumerate}
+\end{mydef}
+
+\bprop{$Q(L(H)) = CM(H)$}
+\end{document}

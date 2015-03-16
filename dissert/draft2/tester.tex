@@ -1,0 +1,55 @@
+\documentclass{beamer}
+
+\newtheorem{conjecture}{Conjecture}
+ \newcommand{\bconj}[1]{\begin{conj}#1\end{conj}}
+\newtheorem{mconj}{Metaconjecture}
+
+\newtheorem{prop}{Proposition}
+ \newcommand{\bprop}[1]{\begin{prop}#1\end{prop}}
+\newtheorem{lem}{Lemma}
+ \newcommand{\blem}[1]{\begin{lem}#1\end{lem}}
+
+
+\newtheorem{guess}{Guess}
+ \newcommand{\bguess}[1]{\begin{guess}#1\end{guess}}
+%\newtheorem{corollary}{Corollary}
+
+
+
+\usepackage{tikz,framed, amsrefs, amsthm, color,wrapfig}
+\tikzstyle{every node}=[circle, draw, fill=black!50,
+                        inner sep=0pt, minimum width=4pt]
+\tikzstyle{dot}=[circle, draw, fill=black,
+                        inner sep=0pt, minimum width=2pt]
+
+\tikzstyle{lblvertex}=[fill=white, inner sep = 1pt, font=\small]
+\tikzstyle{lblvertex2}=[fill=white, inner sep = 1pt, font=\tiny,circle, draw]
+\tikzstyle{lblvertex3}=[fill=white, inner sep = 1pt, font=\tiny,circle, draw = black!25]
+\tikzstyle{words} =[rectangle, draw=none, fill=none, black]
+\newcommand{\bframe}[2]{\begin{frame}{#1}#2\end{frame}}
+\newcommand{\bfig}[2]{\begin{figure}#1\caption{#2}\end{figure}}
+
+
+\usetheme{CambridgeUS}
+\setbeamertemplate{navigation symbols}{}
+\usecolortheme[RGB={216,30,5}]{structure}
+\AtBeginSection[] % "Beamer, do the following at the start of every section"
+{
+\begin{frame}<beamer>
+\frametitle{Outline} % make a frame titled "Outline"
+\tableofcontents[currentsection] % show TOC and highlight current section
+\end{frame}
+}
+
+\title{Connected matchings in special families of graphs}
+\author{Chris Caragianis}
+\institute[U of L]{ Department of Mathematics\\ University of Louisville\\ Louisville, KY 40292\\[1ex]
+   \texttt{cjcara01@louisville.edu} }
+\begin{document}
+\bframe{Ordered connected matchings}{
+
+\begin{center}\input{CMex_2_edut}\input{rgb}\end{center}\pause\vskip 0.5 cm
+
+}
+
+\end{document}

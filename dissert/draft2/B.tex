@@ -1,0 +1,25 @@
+\begin{tikzpicture}[thick,scale=0.5]
+
+	\coordinate (a) at (30:2.5);
+	\coordinate (b) at (-30:2.5); 
+	\coordinate (c) at (0:0);
+	\coordinate (d) at (150:2.5);
+	\coordinate (e) at (-150:2.5);
+	%\coordinate (f) at (-125:3);
+
+	\draw (c)--(b);
+	\draw (c)--(a);
+	\draw (c)--(d);
+	\draw (c)--(e);
+	\draw (b)--(a);
+	\draw (d)--(e);
+	
+	\draw (a) node {};
+	\draw (b) node {};
+	\draw (c) node {};
+	\draw (d) node {};
+	\draw (e) node {};
+	%\draw (f) node {};
+	\draw (-90:4) node[words] {$B$};
+	%\draw (-90:5) node[words] {but not a connected matching};
+\end{tikzpicture}

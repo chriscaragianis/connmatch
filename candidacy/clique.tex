@@ -1,0 +1,31 @@
+\begin{tikzpicture}[thick,scale=0.35]
+\coordinate (a) at (324:6);
+\coordinate (b) at (288:6);
+\coordinate (c) at (252:6);
+\coordinate (d) at (216:6);
+\coordinate (e) at (180:6);
+\coordinate (f) at (144:6);
+\coordinate (g) at (108:6);
+\coordinate (h) at (72:6);
+\coordinate (i) at (36:6);
+\coordinate (j) at (0:6);
+
+\draw (a)--(b)--(c)--(d)--(e)--(f)--(g)--(h)--(i)--(j);
+\draw (a)--(c)--(e)--(g)--(i)--(b)--(d)--(f)--(h)--(j);
+\draw (a)--(d)--(g)--(j)--(c)--(f)--(i)--(b)--(e)--(h);
+\draw (a)--(e)--(j)--(b)--(g)--(c)--(h)--(d)--(f)--(i);
+\draw (a)--(j)--(a)--(i)--(a)--(h)--(a)--(g)--(a)--(f);
+\draw (i)--(d)--(i)--(e)--(i)--(f);
+\draw (j)--(d)--(j)--(f);
+\draw (i)--(c);
+
+\draw (a) node[]{};
+\draw (b) node[]{};
+\draw (c) node[]{};
+\draw (d) node[]{};\draw (h) node[]{};
+\draw (e) node[]{};
+\draw (f) node[]{};
+\draw (g) node[]{};
+\draw (i) node[]{};
+\draw (j) node[]{};
+\end{tikzpicture}

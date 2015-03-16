@@ -1,0 +1,37 @@
+\documentclass[12 pt]{article}
+
+\usepackage{tikz, amsmath, amsfonts, amsthm,xspace,cancel,ulem}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\tikzstyle{every node}=[circle, draw, fill=black,
+                        inner sep=0pt, minimum width=4pt]
+\tikzstyle{plain}=[fill = none, draw = white]
+\newcommand{\kfree}{$\overline{K_3}$-free\xspace}
+\newcommand{\St}[1]{\mathcal{S}_#1}
+\newcommand{\claim}[1]{\vskip 0.5 cm \noindent{\it #1}}
+\begin{document}
+\linespread{1.5}
+\begin{theorem}
+	Let $G = (A,B,E)$ is a chordal bipartite graph with $|A| = k$.  $G$ has a connected matching saturating $A$ if and only if there is an ordering $a_1, a_2, \ldots a_k$ of $A$ and distinct vertices $b_1, b_2, \ldots b_k$ of $B$ so that $\{a_i : i \leq j\} \subset N(b_j)$ for each $j\in [k]$.
+\end{theorem}
+%
+\begin{proof}
+
+	The condition is clearly sufficient for bipartite graphs in general.  The matching $\displaystyle\bigcup_{i \in [k]} a_ib_i$ is a connected matching saturating $A$.
+
+For the converse, it suffices to show that if a connected matching saturates $A$,  then a vertex from $B$ dominates $A$.  We proceed by induction on the order of $A$, noting that the base case of $|A| = 1$ is obvious.
+We assume that our claim holds when $|A|\leq k-1$.
+
+Suppose there is a connected matching $M$ saturating $A$.  Let $G_1$ be the subgraph of $G$ induced $M$.  Since $G_1$ is chordal bipartite, it has a bisimplicial edge $xy$, with $x\in A$.
+
+\noindent{\it Case 1}: $xy \notin M$.
+
+If $xy \notin M$,  then there is an edge $x'y$ of $M$, with $x \neq x'$.  If we remove this edge, then $M-x'y$ is a connected matching saturating $A-x'$, and by the induction hypothesis there remains a vertex $y' \in B-y$ such that $A-x' \subset N(y')$.  Since $xy$ is bisimplicial, $x' \in N(y)$, and $y' \in N(x)$ (by virtue of $y'$ dominating $A-x' \ni x$), the edge $y'x'$ must be present, and $y'$ dominates $A$.
+
+\noindent{\it Case 2}: $xy \in M$.
+
+Remove $xy$.  The remaining connected matching has a vertex $y'$ dominating $A-x$.  If $y' \in N(x)$, then $y'$ dominates $A$ and we are done.  If not, its matched partner $x'$ is in $N(y)$, as otherwise $xy$ and $x'y'$ are separable.  Now remove $x'y'$ and continue removing edges in this way until either $M$ is empty (in which case $y$ dominates $A$) or $\overline{N(x)} \cap B$ is exhausted, and some edges of $M$ remain.  What remains of $A$ is now dominated by some vertex $y'' \in N(x)$.  Note that all vertices removed from $A$ were from $N(y)$.  Since $xy$ is bisimplicial, $y''$ dominates both the remaining and the removed vertices fo $A$.
+\end{proof}
+
+\end{document}

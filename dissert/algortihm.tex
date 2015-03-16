@@ -1,0 +1,29 @@
+\documentclass[12pt]{article}
+
+\begin{document}
+
+\begin{itemize}
+	\item {\it Reduce} means to remove all bisimplicial edges of inappropriate degree
+	\item {\it LCA} is the low-connectivity algorithm for perfect connected matching in chordal bipartite graphs
+\end{itemize}
+\begin{enumerate}
+	\item Reduce $G$
+	\item Choose  bisimplicial edge $e_0 = \{a_0, b_0\}$.  Let $B_0 = N(b_0)$ and $A_0 = N(a_0)$. Let $W_0$ be the set of edges between $A-B_0$ and $B-A_0$
+	\item Remove $W_0$
+	\item If $\min \{|A_0|, |B_0|\} < n/3$, use LCA. 
+		\begin{description}
+			\item[YES] Done. 
+			\item[NO] replace $W_0$, remove $e_0$ and go to 1. 
+		\end{description}
+	\item  Reduce $G$
+	\item (WLOG assume $|A_0| > |B_0|$).  Find bisimplicial $e_1$ in graph induced by $A_0$ and $A-B_0$. 
+	\item Remove $W_1$ 
+	\item $\min \{|A_1|, |B_1|\} < n/3$, so use LCA. 
+		\begin{description}
+			\item[YES] Done. 
+			\item[NO] replace $W_1$, remove $e_1$ and go to 5. 
+		\end{description}
+	
+\end{enumerate}
+
+\end{document}

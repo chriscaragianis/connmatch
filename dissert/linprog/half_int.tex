@@ -1,0 +1,32 @@
+\input{preamble}
+
+\begin{document}
+
+Let $G$ be a simple graph, and define the \textit{bad pair graph} ($BPG$) to be the graph with vertex set $V(BPG) = E(G)$, and edge $e_ie_j \in E(BPG)$ if and only if $e_i$ and $e_j$ are either incident or disconnected (possesing no adjacent endpoints) in $G$.  Consider the following integer linear program:
+\vskip 0.5 cm
+\noindent\textbf{MCM}
+
+\noindent Maximize $\displaystyle \sum_{e_i \in E(G)} x(e_i)$ subject to: 
+\begin{align}
+	x(e_i) \in \{0,1\} \qquad &\forall e_i \in E(G)\\
+	\sum_{e_i \ni v} x(e_i) \leq 1 \qquad &\forall v\in V(G)\\
+	\sum_{e_i \in D} x(e_i) \leq 1 \qquad &\forall D\subset E(G)\makebox{, $S$ mutually disconnected}\\
+	\sum_{e_i \in C} x(e_i) \leq \lfloor \frac{1}{2}k\rfloor \qquad& \forall \makebox{$k$-cycles in $BPG$}
+\end{align} 
+
+\bprop{An optimal solution to \textbf{MCM} corresponds to a maximum connected matching in $G$.}
+\begin{proof}
+	First we show that a connected matching $M$ is a feasible point in \textbf{MCM}.  Constraint (2) is satisfied because $M$ is a matching.  No two edges of $M$ are disconnected, so (3) is satisfied.  Finally, the edges of $M$ correspond to a set of vertices in $BPG$ that induce an empty graph, so (4) is satisfied as well.
+
+Next we show that any feasible point of \textbf{MCM} corresponds to a connected matching.  Constraint (2) guarantees that the non-zero edges of a feasible assignment form a 1-regular graph, hence, a matching.  Constraint (3) requires that no two non-zero edges are disconnected.  Therefore the non-zero edges of a feasible assignment correspond to a connected matching.    
+\end{proof}
+
+Now we consider the half-integer relaxation \textbf{MCM$'$} of \textbf{MCM} formed by replacing (1) with
+\begin{equation*}\tag{$1'$}x(e_i) \in \{0, \frac{1}{2}, 1\} \qquad \forall e_i \in E(G)\end{equation*}
+\bprop{$opt(\textbf{MCM$'$}) = opt(\textbf{MCM})$}
+\begin{proof}
+	That $opt(\textbf{MCM$'$}) \geq opt(\textbf{MCM})$ is clear.  We must show that $opt(\textbf{MCM$'$}) \leq opt(\textbf{MCM})$
+
+	Take an optimal assignment for \textbf{MCM$'$}, and collect the edges valued 1 into a set $S$, and the edges valued $\frac{1}{2}$ into a set $T$.  Note that constraint (4) forbids the edges in $T$ from inducing an odd cycle in $BPG$.  Hence, $T$ induces a bipartite graph in $BPG$, and there is a set $T'\subset T$ such that $|T'| \geq |T-T'|$ and $T'$ induces an empty graph in $BPG$.  Furthermore, $S \cup T'$ induces an empty graph in $BPG$ (any pair $e_i, e_j \in S\cup T'$ with $e_i \in S$ has $e_i + e_j \geq \frac{3}{2}$, so no such pair is incident or disconnected in $G$.)  This means no pair of edges in $S\cup T'$ is incident or disconnected, so we may reassign $x(e_i) = 1$ for $e_i \in T'$, $x(e_j) = 0$ for $e_j \in T-T'$ and obtain an assignment valid for \textbf{MCM$'$} and \textbf{MCM} that has a total value no less than the assignmnet we started with.
+\end{proof}
+\end{document}

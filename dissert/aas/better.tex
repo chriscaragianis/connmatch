@@ -1,0 +1,19 @@
+\documentclass{article}
+
+\usepackage{amsthm}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\begin{lemma}
+	For any $\epsilon > 0$ there exists $N$ such that any $\overline{K_3}$-free graph with $n>N$ vertices and no copy of $\overline{K_{a,b}}$ where $ab \geq n^{1-\epsilon}$ has fewer than $n^{3-\epsilon}$ copies of $2K_2$. 
+\end{lemma}
+\begin{proof}
+	%First, note that since there is no copy of $\overline{K_{1,n^{1-\epsilon}}}$, $\delta(G) > n - n^{1-\epsilon}$, and $|E(G)| > \frac{n}{2}\delta(G) \sim n^2/2$.  Hence for any $\epsilon > 0$ and sufficiently large $n$, the number of non-edges of $G$ is less than $dn^2$.
+
+We will bound the number of copies of $2K_2$ that a particular non-edge of $G$ can participate in.  For $uv \notin E(G)$, the collection of copies of $2K_2$ that include $uv$ forms two disjoint stars, one centered at $u$ and one centered at $v$.  All vertices of the $u$-star are non-adjacent to $v$, and vice versa.  Hence, each star induces a clique, and these cliques have no edges between them.  If $x_u$ is the number of leaves in the $u$-star, and $x_v$ is the number of leaves in the $v$-star, then we must have $x_ux_v < n^{1-\epsilon}$. This product also counts the number of copies of $2K_2$ that include $uv$. Therefore 
+\[\#2K_2 < n^2/2\cdot n^{1-\epsilon}\sim n^{3-\epsilon}/2\]
+\end{proof}
+\end{document}

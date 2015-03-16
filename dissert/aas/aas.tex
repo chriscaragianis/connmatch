@@ -1,0 +1,53 @@
+\documentclass{article}
+
+\usepackage{amsthm}
+\newtheorem{conjecture}{Conjecture}
+\begin{document}
+
+Let $H$ be the random, $\overline{K_3}$-free graph produced by sequentially removing edges from $K_n$ uniformly at random from the collection of edges that would not leave an empty triangle (this is a complementary version of the triangle-free process).  Let $\mathcal{H}$ be the RGB graph induced by $H$.  Let $N$ be the random variable that counts the number of vertices in $\mathcal{H}$ (edges in $H$), $M$ be the r.v. counting the edges in the complement of $H$, and $R$, $G$, and $B$ the r.v.s counting the red, green and blue edges respectively.  Note that there is a one-to-one correspondence between red edges in $\mathcal{H}$ and copies of $C_4$ in $\overline{H}$.
+
+\vskip 1 cm
+ 
+\noindent\textbf{Calculating $N$.}
+
+Bohman shows that a.a.s. \[2^{-5}n^{3/2}\sqrt{\log n} < M < 161n^{3/2}\sqrt{\log n}  \] Let $M = c_Mn^{3/2}\sqrt{\log n} $ and we have (a.a.s.)
+\begin{eqnarray}
+	N =& {n\choose 2} - c_Mn^{3/2}\sqrt{\log n}\\
+	   =& \frac{1}{2}(n^2-n) - c_Mn^{3/2}\sqrt{\log n}\\
+	N^2n^{-1} =& \frac{1}{4}(n-1)(n^2-n) -c_M(n-1)n^{3/2}\sqrt{\log n} + c_M^2n^{2}\log n \\
+	=&\displaystyle \frac{n^3}{4}-c_Mn^{5/2}\sqrt{\log n} + c_Mn^2\log n-\frac{n^2}{2} - c_Mn^{3/2}\sqrt{\log n} + \frac{n}{4}\\
+	\sim & \displaystyle\frac{n^3}{4}
+\end{eqnarray}
+
+\noindent\textbf{Upper bounds on $B$ and $R$.}
+
+We obtain a crude upper bound on $B$ by counting the edges of the line graph of $K_n$.
+\begin{equation}
+	B < \frac{n^3}{2} - \frac{3n^2}{2} + n
+\end{equation}
+A recent result of Wolfovitz shows that if $X_{C_4}(i)$ counts the number of copies of $C_4$ in the triangle free process at step $i$ with $i$ close to but less than $2^{-5}n^{3/2}\sqrt{\log n}$, then a.a.s.
+\[X_{C_4}(i) = \Theta((n\log n)^2)\] Furthermore, with the same restictions on $i$, if $X_{P_4}(i)$ counts the number of copies of $P_4$ at step $i$, then a.a.s..
+\[X_{P_4}(i) = \Theta(n^{5/2}(\log n)^{3/2})\]This leads us to conjecture 
+\begin{conjecture}
+	a.a.s. $R = o(n^3)$
+\end{conjecture} 
+Heuristically, at the values of $i$ in Wolfovitz's result, the triangle free process is almost surely ``nearing completion'', and the number of $C_4$s and ``near'' $C_4$s are both dominated by $n^3$.
+
+\vskip 1 cm
+We would like to show that for some constant $c < 1$, a.a.s. \[G = {N\choose 2} - R - B \geq {N\choose 2} - cn{N/cn\choose 2}\] equivalently
+\begin{equation}
+	R + B \leq cn{N/cn\choose 2}
+\end{equation}
+guaranteeing by T\'{u}ran's theorem a green clique on $cn$ vertices in $\mathcal{H}$, and a $cn$-connected matching in $H$.
+
+\vskip 1 cm
+
+\noindent\textbf{Calculating $\displaystyle cn{N/cn\choose 2}$ .}
+
+\begin{eqnarray}
+	cn{N/cn\choose 2} =&\displaystyle \frac{cn}{2}\left(\frac{N^2}{c^2n^2} - \frac{N}{cn}\right)\\
+	=& \displaystyle \frac{1}{2c}N^2n^{-1} - \frac{N}{2}\\
+	\sim&   \displaystyle \frac{n^3}{8c}
+\end{eqnarray}
+If $c < 1/4$ and Conjecture 1 holds, (and there aren't any ``surprises'' in the correlation of $R$ and $N$) then a.a.s. (6) holds.
+\end{document}

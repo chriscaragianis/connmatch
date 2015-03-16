@@ -1,0 +1,37 @@
+\documentclass[12pt, oneside]{book}
+
+\usepackage{amsrefs,array,amsthm,amsmath,tikz, amssymb,framed}
+\usepackage[top=1 in, bottom=1in, left=1.5 in, right=1in]{geometry}
+\tikzstyle{every node}=[circle, draw, fill=black!50,
+                        inner sep=0pt, minimum width=4pt]
+\tikzstyle{lblvertex}=[fill=white, inner sep = 1pt, font=\small]
+\tikzstyle{lblvertex2}=[fill=white, inner sep = 1pt, font=\tiny,circle, draw]
+\tikzstyle{lblvertex3}=[fill=white, inner sep = 1pt, font=\tiny,circle, draw = black!25]
+\tikzstyle{words} =[rectangle, draw=none, fill=none, black]
+\tikzstyle{dot}=[circle, draw, fill=black,
+                        inner sep=0pt, minimum width=2pt]
+
+
+\renewcommand{\arraystretch}{1.5}
+%\doublespacing
+\linespread{2}
+\newcommand{\kfree}{\overline{K_3}}
+\newtheorem{conj}{Conjecture}
+	\newcommand{\bconj}[1]{\begin{conj}#1\end{conj}}
+\newtheorem{mconj}{Metaconjecture}
+
+\newtheorem{prop}{Proposition}
+	\newcommand{\bprop}[1]{\begin{prop}#1\end{prop}}
+\newtheorem{lem}{Lemma}
+	\newcommand{\blem}[1]{\begin{lem}#1\end{lem}}
+\newtheorem{theorem}{Theorem}
+	\newcommand{\bthm}[1]{\begin{theorem}#1\end{theorem}}
+
+
+\newtheorem{guess}{Guess}
+	\newcommand{\bguess}[1]{\begin{guess}#1\end{guess}}
+
+\theoremstyle{definition}
+\newtheorem{mydef}{Definition}
+
+

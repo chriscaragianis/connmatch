@@ -1,0 +1,24 @@
+\subsection{Hardness of MCP}
+Considering the RGB graph induced by some underlying graph, we can easily apply known complexity results regarding the maximum clique problem to explore the complexity of MCM and MCP.  First, we will determine the hardness of MCP.
+\begin{theorem}
+	MCP is NP-hard.
+\end{theorem}
+This can be easily seen by demonstrating that any maximum clique problem can be formulated as an MCP problem
+\begin{lem}
+	Any graph $G$ has a realization as the green edges in the RGB graph induced by a matching in some graph $H$.
+\end{lem}
+\begin{proof}
+	Let $G$ be an arbitrary graph.  For every vertex of $G$, add one copy of $K_2$ to $H$.  If and only if vertices $u,v$ are adjacent in $G$, add an edge between some endpoints of the corresponding copies of $K_2$ in $H$.
+\end{proof}
+Note that a similiar proof of the NP-hardness of MCM is impossible, as not every graph can be realized as the entire green graph of an RGB graph.
+\subsection{Efficent classes}
+By reducing connected matching problems to clique problems we can describe some classes of graphs that have efficient conneected matching algorithms.  Most essentially we have the following.
+\begin{theorem}
+	Let $\mathcal{S}$ be a graph property for which MAX CLIQUE has an efficient solution.  Then if $\mathcal{S'}$ is the class of graphs that induce RGB graphs such that the green edges induce a memeber of $\mathcal{S}$, then MCM is efficient for $\mathcal{S'}$. 
+\end{theorem} 
+Understanding this relationship of graph properties is ongoing work.
+
+In the case of MCP, we can describe the following polytime-recognizable class of graphs wherein MCM $\in$ \textbf{P}.
+\begin{prop}
+	If the RGB graph induced by a matching $M$ in a graph $M$ has a red graph that is bipartite, then MCP has a polytime soluton for $G$ and $M$.
+\end{prop}

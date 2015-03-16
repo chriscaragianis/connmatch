@@ -1,0 +1,410 @@
+\chapter{Computing $\nu_c(G)$}
+
+Given a graph $G$, we would like to be able to calculate the connected matching number $\nu _c(G)$.  
+%
+The general problem of calculating the connected matching number was shown to be NP-hard by Plummer, Stiebitz and Toft CITE.  
+%
+\begin{framed}
+	\noindent\textbf{k-Connected Matching}
+	\vskip 0.5cm
+	\noindent Input: Graph $G$, positive integer $k$
+	
+	\noindent Question: Is there a connected matching in $G$ of size $k$?
+\end{framed}
+In this chapter, we consider the complexity of finding the largest connected matching in members of some special families of graphs.
+
+\section{Known results}
+
+In CITE, Kathie Cameron shows that the maximum connected matching problem is solvable in polynomial time for {\it chordal} graphs.   
+%
+To do this, we first think of connected matchings as matchings contained in {\it neighborly} sets of edges.  
+%
+Neighborly sets of edges from a graph $G$ correspond to cliques in the square of the line graph of $G$, $L(G)^2$.  
+%
+It then follows that if $L(G)^2$ has $M$ maximal cliques, then finding the maximum connected matching in $G$ can be done by solving $M$ maximum matching problems.  
+%
+Hence, we can state the following general result from which the result on chordal graphs follows.
+%
+\bthm{If $\mathcal{P}$ is a class of graphs such that for any $G \in \mathcal{P}$ with $n$ vertices, the number of maximal cliques in $L(G)^2$ is less than $f(n)$ where $f$ is a polynomial, then the maximum connected matching problem can be solved in polynomial time for graphs from $\mathcal{P}$.}
+%
+One can show that the square of the line graph of a chordal graph is itself a chordal graph, and hence has a polynomial number of maximal cliques. SOME OTHER CLASSES ARE...
+%
+
+Conversely, Cameron also shows that the problem remains NP complete on 0-1 weighted bipartite graphs.  
+%
+It is not difficult to reduce this problem to the maximum clique problem on general graphs.  
+%
+We simply take any graph $H$ and replace each vertex $v$ with an edge $v_1$ and $v_2$.  This edge is given weight 1.  
+%
+Then if two vertices $u$ and $v$ are adjacent in $H$, we place an edge between $u_1$ and $v_2$ or $u_2$ and $v_1$.
+%
+These edges are given weight zero.
+%  
+Then the edges of positive weight in any connected matching in the resulting graph corresponds to a clique in $H$ and vice versa.
+%
+It is important to note that this reasoning will not extend to the unweighted bipartite graphs.  
+
+
+\section{Chordal Bipartite Graphs}
+
+To extend these results, we turn our attention to a relaxation of chordal graphs, the {\it weakly} chordal graphs. 
+%
+A weakly chordal graph is one in which every cycle of length five or greater has a chord.  
+%
+In particular, we will closely examine those weakly chordal graphs which are also bipartite.  
+%
+These graphs are known as {\it chordal bipartite} graphs.  
+\begin{figure}
+	\begin{center}
+		\input{inclusion}
+	\end{center}
+	\label{inclusion}
+	\caption{Inclusion Diagram}
+\end{figure}
+
+An important characterization of chordal bipartite graphs is that any non-empty induced subgraph of a chordal bipartite graph contains a {\it bisimplicial edge}.  
+%
+An edge $uv$ is bisimplicial if the neighborhoods of the endpoints induce a complete bipartite graph.  
+%
+That is, for any $a\in N(u)$ and $b\in N(v)$, $ab$ is an edge of the graph.  
+%
+Bisimplicial edges equip the chordal bipartite graphs with an elimination ordering, i.e., upon removing a bisimplicial edge from a chordal bipartite graph, the resulting graph is still chordal bipartite.
+
+\subsection{Inert bisimplicial edges}
+If a graph is non-separable, then we can quickly compute the maximum connected matching using any maximum matching algorthim we choose.  
+%
+The following result of Golumbic is valuable when dealing with non-separable chordal bipartite graphs.
+%
+\bthm{[Golumbic, 1979] Let $H$ be a chordal bipartite graph.  If $H$ is separable, then it has at least two separable bisimplicial edges.}
+%
+We will see shortly that once we have identified a pair of bisimplicial edges, we can always remove one of them from the graph  
+%
+
+Let us say that an edge $e$ in a graph $G$  is {\it inert} if $\nu_c{G} = \nu_c(G-e)$.  
+%
+Bisimplicial edges in chordal bipartite graphs are inert unless the conditions in the following lemma are satisfied.
+%
+\blem{Let $G = (A, B; E)$ be chordal bipartite.  A bisimplicial edge $e = uv$ is inert unless
+	\begin{enumerate}
+ 		\item $e$ is contained in every maximum connected matching.
+		\item For any maximum connected matching $M$, every edge of $M$ has
+ exactly one endpoint adjacent to an endpoint of $e$.
+		\item For any maximum connected matching $M$, $N(e)$ is covered by M
+	\end{enumerate}
+}
+%
+\begin{figure}
+	\begin{center}
+	\input{bisimp_pic3}
+	\end{center}
+	\label{bisimp_pic}
+	\caption{Picture of a non-inert bisimplicial edge.  Every maximum connected matching saturates the neighborhood of the edge with no connected matching edge left over.}
+\end{figure}
+%
+\begin{proof}
+Suppose we have a chordal bipartite graph $G = (A,B;E)$ that has a bisimplicial edge $e = uv$ with $u \in A$ and $v \in B$.  
+%
+To prove 1, we must show that removing $e$ does not reduce the size of a maximum connected matching that does not include $e$. 
+
+In fact we can show more, to wit, that removing $e$ does not reduce the size of {\it any} connected matching that does not include $e$.  
+%
+Suppose we have a connected matching $M$.  
+%
+If $M$ does not cover $e$, then obviously removing $e$ has no effect on the size of $M$.  
+%
+Thus we have $f = uu'$ and $g = v'v$ included in $M$.  
+%
+The only way removing $e$ can reduce the size of $M$ is by disconnecting $f$ and $g$.  
+%
+However, since $e$ is bisimplicial, $u' \in N(u)$, and $v' \in N(v)$; the edge $u'v'$ must be present.  
+%
+Hence removing $e$ does not disconnect $f$ and $g$.
+\begin{figure}
+	\begin{center}
+	\input{match3}
+	\end{center}
+	\label{first_part}
+	\caption{Illustration of proof of condition 1.}
+\end{figure}
+%
+In proving 2, we choose a maximum connected matching $M$.  
+%
+By 1, we can assume that $e \in M$.  
+%
+Suppose now that $f = u''v''$ is another edge of $M$ and edges $g = uv''$ and $h = u''v$ are both present.  
+%
+We claim that we can remove $e$ and $f$ from $M$ and replace them with $g$ and $h$. 
+%
+ Let $d = u'''v'''$ be an edge of $M$.  
+%
+This edge $d$ must be connected to one of the two via an endpoint of $e$.  
+%
+Without loss of generality, suppose $d$ is connected to $g$ via $uv'''$.  
+%
+Now $v''' \in N(u)$ and $u'' \in N(v)$.  
+%
+Since $u$ is bisimplicial, $u''v'''$ is present and $d$ is connected to $h$ as well.
+\begin{figure}
+	\begin{center}
+	\input{match6}
+	\end{center}
+	\label{second_part}
+	\caption{Illustration of proof of condition 2.}
+\end{figure}
+%
+To prove 3, once again choose a maximum connected matching $M$.  
+%
+Suppose now that 3 does not hold, and there is (WLOG) an edge $f = ux$ such that $x$ is not covered by $M$.  
+%
+We claim that we can remove $e$ and replace it with $f$ in $M$.  We need only consider some $M$ edge $g$ that is not connected to $e$ via $u$.  
+%
+Then there is an endpoint $w$ of $g$ so that $w \in N(v)$.  
+%
+Clearly $x\in N(u)$, so $wx$ is present and $g$ is connected to $f$.
+\begin{figure}
+	\begin{center}
+	\input{match8}
+	\end{center}
+	\label{third_part}
+	\caption{Illustration of proof of condition 3.}
+\end{figure}
+\end{proof} 
+
+If we can quickly determine which bisimplicial edge of a separable pair is inert, then we can sequentially remove them until the resulting graph is no longer separable.  
+%
+In fact, this test essentially reduces the maximum connected matching problem to a {\it saturating } connected matching problem.  
+%
+If a bisimplicial edge is not inert, then Lemma REF shows that it must have connected matchings that cover the neighborhoods of each endpoint.  
+%
+If such a condition holds for both of a pair of separable bisimplicial edges, then we can simply remove the edge with fewer incident edges (or either one if the number of incident edges is the same).  
+%
+Going forward then, we can restrict our attention to the following smaller problem.  NEED TO CLARIFY THIS DISTINCTION
+\begin{framed}\noindent\textbf{Saturating Connected Matching}
+	\vskip 0.5cm
+	\noindent Input: Bipartite graph $G = (A,B;E)$
+	
+	\noindent Question: Is there a connected matching in $G$ that saturates $A$?
+\end{framed}
+\subsection{Ordered connected matchings}
+
+Connected matchings in chordal bipartite graphs have a special property.
+%
+We define an {\it ordered} connected matching as follows.
+%  
+\begin{mydef}[Ordered Connected Matching]
+	Let $M = \{e_1, e_2, \ldots, e_k\}$ be a connected matching in a bipartite graph $G = (A,B; E)$ and label the endpoints of each $e_i$ by $a_i \: (\in A)$ and $b_i \: (\in B)$.  If there is an ordering $\sigma : M \rightarrow [k]$ so that 
+	\begin{enumerate}
+		\item $deg(a_i) \geq \sigma(e_i)$ for each $i\in [k]$ and 
+		\item $N(a_l) \subseteq N(a_j)$ whenever $j \geq l$ for all $j,l \in [k]$
+	\end{enumerate} 
+then we say $M$ is an ordered connected matching
+\end{mydef}
+%
+Note that if we find the appropriate sequence of vertices in $A$, there is neccessarily an appropriate sequence of vertices in $B$.  
+%
+\begin{figure}
+	\begin{center}
+	\input{c_6}
+	\end{center}
+	\label{c_6}
+	\caption{A connected matching that is not an ordered connected matching.}
+\end{figure}
+%
+Not every bipartite connected matching is an ordered connected matching, as we can see in figure \ref{c_6}. 
+%
+ However, it is worth noting that this example is a cycle on six vertices.  
+%
+Appropriately, we can prove the following.
+%
+\bthm{Every connected matching in a chordal bipartite graph is an ordered connected matching.}
+\begin{proof}
+%
+We will show that any connected matching $M$ in a chordal bipartite graph $G = (A,B; E)$ has a vertex $a \in A$ so that $a$ is covered by $M$ and $a$ is adjacent to the $B$-endpoints of every edge of $M$.  
+%
+We will say that such a vertex {\it dominates} $M$.  
+%
+If this is true, we can find the proper ordering of $M$ by sequentially removing the $M$-edge covering a dominating edge and working on the smaller connected matching that remains.
+
+We will proceed by induction on the size $n$ of the connected matching.  
+%
+Small cases of $n = 1,2$ are trivial, and the case of $n=3$ is easily checked.  
+%
+Now suppose that every chordal bipartite connected matching of up to $n-1$ edges has a dominating vertex and let $M$ be a connected matching of size $n$ in a chordal bipartite graph $G = (A,B;E)$.  
+%
+Let $H$ be the subgraph of $G$ induced by vertices covered by $M$.
+%
+Applying lemma REF, we can remove any bisimplicial edges of $H$ that are not contained in $M$ without reducing the size of $M$.  
+%
+Neither does this introduce any new dominating vertices.  
+%
+Remove these edges until all remaining bisimplicial edges are contained in $M$.  
+
+The resulting graph is chordal bipartite, so there exists a bisimplicial edge $ab \in M$, with $a \in A$ and $b \in B$.  
+%
+If $a$ is not a dominating vertex, then consider $M_b$, the connected matching contained in $M$ that touches the neighbors of $b$ excluding $a$.  
+%
+ADD ILLUSTRATION.  
+%
+Some $a' \in A$ dominates $M_b$, which means that $a'$ is adjacent to all non-neighbors of $a$.  
+%
+Furthermore, the bisimpliciality of $ab$ ensures that $a'$ is adjacent to all of the {\it neighbors} of $a$ as well.  
+%
+ Hence, $a'$ is a vertex that dominates $M$.  
+\end{proof} 
+
+\subsection{A related computational problem}
+
+Suppose we have a hypergraph $H = \{V(H), E(H)\}$.  Let $S = \{S_i\}_{i=1}^k$ be a sequence of subsets of $V(H)$. If for each $i \leq k$ there is a distinct $E_i \in E(H)$ such that $S_i \subseteq E_i$, then we say that $S$ is {\it dominated} by $H$.  GENERAL DOMINATION PROBLEM?  
+
+A {\it chain} is a sequence of sets $C_1, C_2, \ldots, C_k$ with the property that $C_i \subsetneq C_{i+1}$ for $1 \leq i <k$.  When considering ordered connected matchings, we are interested in the dominated chain problem.
+%
+\begin{framed}\noindent\textbf{Dominated k-chain}
+	\vskip 0.5cm
+	\noindent Input: Hypergraph $H$, positive integer $k$
+	
+	\noindent Question: Is there a chain of length $k$ dominated by $H$?
+\end{framed}
+We have an ordered connected matching of size $k$ in a bipartite graph $G = (A,B;E)$ precisely when the hypergraph of neighborhoods of (without loss of generality) $A$ dominates a chain of length $k$. 
+
+\subsection{Convex graphs}
+The {\it convex} graphs are chordal bipartite graphs for which there is a vertex ordering of one side with the property that the neighborhoods of the other side form a collection of intervals.  
+%
+Convex graphs can naturally be thought of as the bipartite graph representation of an interval hypergraph.   
+%
+As such, we can inquire after connected matchings in convex graphs by considering the $k$-dominated chain problem for interval hypergraphs.
+%
+\bprop{The largest set in a chain dominated by an interval hypergraph $H$ can be chosen to be an interval in the ordering of $V(H)$ derived from the interval representation of $H$.}
+This is obviously true as all sets in the chain are subsets of the interval dominating th etop element in the chain.  Thanks to this fact, and the fact that there are only polynomially many subintervals of a finite interval, it will suffice to find a polynomial-time algorithm for the problem of {\it perfect} dominated chain in interval hypergraphs.  If this is possible, we need only check every interval for a perfect chain dominated by $H$.
+\begin{framed}\noindent\textbf{Dominated k-chain}
+	\vskip 0.5cm
+	\noindent Input: Hypergraph $H$, positive integer $k$
+	
+	\noindent Question: Is there a chain of length $k$ dominated by $H$?
+\end{framed}
+
+Let $H$ be an interval hypergraph.  We will call the intersection of all intervals $C = \bigcap_{e \in E(H)} e$ in an interval hypergraph the {\it cap} of the hypergraph.  
+%
+We will be especially interested in two collections of intervals, $R = \{I \in H : I \geq C\}$, and $L = \{I \in H : I \leq C\}$.
+%
+\begin{figure}
+	\begin{center}
+	\input{interval_diag}
+	\end{center}
+	\caption{Diagram of an interval hypergraph.  The cap is $\{v_3,v_4\}$.}
+	\label{interval_diag}
+\end{figure}
+  As in the figure \ref{interval_diag}, we can think of these as the intervals that extend only to the left or right (respectively) of the cap.
+
+Let us index the vertices if $H$ $v_1, v_2,...v_k$ according to an interval ordering, reading right to left.
+%
+Suppose there is a perfect chain $C_1, C_2, \ldots, C_k$ on $V(H)$ that is dominated by $H$.  
+%
+It must be the case that $C_1$ is a singleton, $C_k = V(H)$, and $|C_i| = |C_{i-1}| + 1$.  
+%
+Define a permutation $\sigma : [k] \rightarrow [k]$ so that 
+\[\sigma(i) = j \:\makebox{ when $v_i \in C_j$ and $v_i \notin C_{j-1}$}.\]
+%
+In other words, $v_i$ is ``added'' at the $\sigma(i)$th step in the chain.
+%
+Our chain is completely determined by $\sigma$.
+%
+To dominate the chain, we will suppose that there exists an indexing $E_1, E_2, \ldots, E_k$ of the edges of $H$ so that 
+\[\{v_i : \sigma(i) \leq j\} \subseteq E_j\]
+%
+ We will construct an algorithm that will choose vertices to add to the chain together with dominating intervals in a ``step-bystep'' manner.
+%
+It will be easy to see that if the algorithm succeeds, its output must be a dominated perfect chain.
+%
+We will show if $H$ does indeed have the dominated perfecct chain we have supposed, our algorithm must produce a dominated perfect chain.
+
+First, note that if $j > i$, and $E_j \subseteq E_i$, then the edge sequence with $E_i$ and $E_j$ interchanged still dominates the chain. 
+%
+That is, we can take an interval ``too soon'', so long as the interval is contained in the interval it is replacing. 
+%
+The replaced interval can take the place of interval chosen too soon without disturbing the vertex order $\sigma$. 
+
+We will proceed inductively.  We will start with all of $H$, and attempt to choose a vertex contained in all $k$  edges of $H$ (GO BACK AND JUSTIFY $|V(H)| = |E(H)|$) along with one of the edges of $H$ to be designated $v_1$ and $E_1$.  
+%
+We will then remove this edge and this vertex and do the same for the resulting hypergraph.    
+%
+If we can proceed until all edges and vertices have been chosen without ecountering a hypergraph whose cap is empty, then clearly we have exhibited a perfect chain dominated by $H$.
+%
+We will describe an algorthim for making this choice that will succeed if such a chain exists.
+
+We first claim that we can choose any vertex of $C$ to be $v_1$.  
+%
+Suppose $u \in C$ is not $v_1$.  
+%
+Because $u$ is in every edge of $H$, it can act as the first chain element.  
+%
+We can then move $v_1$ to the place in the sequence of chose vertices formerly occupied by $u$ without disturbing the chain.  
+%
+Thus, the first step in our algorthim is
+
+\begin{framed}{\bf Step 0.} {\it Choose any element of $C$ to be $v_1$.}
+\end{framed}
+
+The problem remains to select an edge of $H$ to dominate $v_1$.  
+%
+By our earlier observation concerning edges containing "later" edges, if $C \in E(H)$ then we can certainly choose $C$.  So we will suppose that $C \notin E(H)$.
+%
+
+\begin{framed}{\bf Step 1.}  {\it If $C \in E(H)$, choose $C$ to be $E_1$.}
+\end{framed}
+
+Looking ahead,  we can see that we must choose all of $R$ or $L$ before $C$ is exhausted.  
+%
+Until all elements of either $R$ or $L$ have been chosen, the mutual intersection of remaining edges will be a subset of $C$.  
+%
+If $C$ is exhausted, then only the empty subset remains and the algorithm terminates.
+%
+
+\begin{framed}{\bf Step 2.} {\it If both $R$ and $L$ are smaller than $C$, then there is no dominated perfect chain.}
+\end{framed}
+
+One of $R$ or $L$ will be used in its entirety when $C$ is exhausted.  
+%
+We must ensure that the other collection can be used later.
+%  
+Subroutine 1 is designed to tell us if this is possible.
+%
+\begin{framed}
+\noindent {\bf Subroutine 1.}
+
+\noindent {\bf Input:} Sequence of vertices $u_l, u_{l-1},\ldots,u_1,v_1,v_2,\ldots,v_k$; Set $R$ of nested intervals all containing $v_1$ and not $u_1$; Set $U$ of intervals containing $v_1$ and $u_1$. 
+
+\begin{enumerate}
+	\item Assign $v_1$ to the smallest unassigned $R$ set.
+	\item If all $R$ sets have been assigned, return {\bf YES}. 
+	\item  If $v_2$ does not exist, return {\bf NO}.
+	\item If $v_2$ is not in all sets, reassign $v_1$ to the smallest unassigned $U$ set that contains $v_1$ but not $v_2$.  Return {\bf NO} if no such set exists.
+	\item Subtract 1 from the index of all $v$-vertices and go to 2.
+\end{enumerate}
+\end{framed}
+
+For the next step, send as input to Subroutine 1 $R$, $V(H)-C$ in order and with all $u$ vertices less than $C$ and all $v$ vertices greater than $C$, and $U = E(H) - (L\cup R)$.  Then send $L$ with the vertex order suitably reversed.
+%
+
+\begin{framed}{\bf Step 3.} {\it If both $L$ and $R$ return {\bf NO} from Subroutine 1, there is no dominated perfect chain.  If (WLOG) $L$ returns {\bf NO} and $R$ returns {\bf YES}, choose $\min L$ to be $E_1$.}  
+\end{framed}
+
+We will show that if Subroutine 1 is satisfied for $R$ and $L$, then we are free to choose either direction to build our chain.  For brevity, we will lean to the left.
+
+\begin{framed}{\bf Step 4.} {\it If both $L$ and $R$ return {\it YES} from Subroutine 1, choose $\min L$ to be $E_1$.}
+\end{framed}
+
+Finally, we iterate the process.
+
+\begin{framed}{\bf Step 5.} {\it Remove $v_1$ and $E_1$ from $H$ and begin at Step 0 with the resulting interval hypergraph.}
+\end{framed}
+\begin{theorem}\label{convex_alg}
+	Steps 0-5 above will return a perfect chain dominated by the input hypergraph $H$ if one exists.
+\end{theorem}
+
+
+The proof of this algorithm follows directly from the preceeding discussion together with the following lemma.  Say that $R$ or $L$ is {\it safe} if it is no larger than $C$ and returns {\bf YES} when sent as input to Subroutine 1.
+\blem{If both $R$ and $L$ are safe and there is a perfect chain dominated by $H$ that has $\min L$ as $E_1$, then there is a perfect chain dominated by $H$ that has $\min R$ as $E_1$ and vice versa.}
+\begin{proof}
+	Suppose there is a perfect chain dominated by $H$ that has $\min L$ as $E_1$.  If all of $R$ is used in this domination before $C$ is exhausted, then clearly we may interchange $\min R$ and $\min L$.  So we will assume all of $L$ is used before $C$ is exhausted.   Let $A$ be the collection of intervals used before all of $L\cup R$.  On the other hand, $L$ is safe. so we can DOT DOT DOT...
+\end{proof}
+ 

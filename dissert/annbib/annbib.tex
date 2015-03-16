@@ -1,0 +1,394 @@
+\documentclass[12 pt]{article}
+
+\usepackage{amsthm, amsmath, amsrefs,xspace}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{theorem}{Theorem}
+\newcommand{\kfree}{$\overline{K_3}$-free \xspace}
+\newcommand{\AG}{$\alpha(G) = 2$\xspace}
+
+
+\begin{document}
+
+{\linespread{1}
+\begin{bibsection}[References]\vspace{-\parskip} % This is the start of the bibliography. 
+	\begin{biblist}[\normalsize] % Replace the \bib entries with ones relevant to your problem.
+							% The bulk of each entry can be copied and pasted from MathSciNet
+							% ( http://www.ams.org/mathscinet/ ). When viewing the review of an
+							% item you want to site, open the "Select alternative format" pull-down
+							% and select AMSrefs.
+							% Most likely, the only part you will need to change is the first parameter
+							% after \bib. This is the internal name you use to cite the reference
+							% with \cite. By default it will be the Mathematical Reviews number
+							% (for example MR1375315). To make my life easier when I merge these all
+							% into the summary document, please choose a name that begins with your
+							% initials, followed by the number of problems you have submitted
+							% (including this one).
+							% For example, since this problem was submitted by Leonhard Euler and
+							% since this is the first problem he is presenting, all citation names
+							% begin with "le1". If this was his third problem, they would begin with
+							% "le3".
+%Z. Füredi, A. Gyárfás, G. Simonyi,  Connected matchings and Hadwiger's conjecture,  Combin. Probab. Comput., Problem Section, 14 (2005), 435--438.
+%M. Kriesell, On seymour's strengthening of Hadwidger's conjecture for graphs with certain forbidden subgraphs 
+
+
+
+%\bib{dwest}{book}{
+   %author={West, Douglas B.},
+   %title={Introduction to graph theory},
+   %publisher={Prentice Hall Inc.},
+   %place={Upper Saddle River, NJ},
+   %date={1996},
+   %pages={xvi+512},
+   %isbn={0-13-227828-6},
+   %review={\MR{1367739 (96i:05001)}},
+%}
+
+\bib{FGS}{article}{
+   author={F\"{u}redi, Zolt\'{a}n},
+   author={Gy{\'a}rf{\'a}s, Andr{\'a}s},
+   author={Simonyi, G\'{a}bor},
+   title={Connected matchings and Hadwiger's conjecture},
+   journal={Combin. Probab. Comput.},
+   part={Problem Section},
+   volume={14},
+   date={2005},
+   pages={435--438},
+}
+
+\vskip 0.5 cm
+
+Puts into print Seymour's conjectured improvement of Theorem \ref{DucAndMey} (in \cite{DandM})
+\begin{conjecture}\label{SeyEps}
+	There exists $\epsilon > 0$ such that every graph $G$ with $n$ vertices and with \AG contains $K_{\lceil(\frac{1}{3}+\epsilon)n}$ as a minor.
+\end{conjecture}
+
+Conjecture \ref{SeyEps} is equivalent to Conjecture \ref{cconj} SEE \cite{DandMimprove}??? CANT FIND IT!!!.  This note has a stronger conjecture
+\begin{conjecture}\label{FGSconj}
+Every graph $G$ with $4t-1$ vertices and with $\alpha{G} = 2$ contains a connected matching of size $t$.
+\end{conjecture}
+This is sharp (consider $G$ consisting of disjoint cliques), and is true for some values of $t$.  Let $f(t)$ the minimum $n$ such that every graph $G$ with $n$ vertices and \AG has a connected matching of size $t$. 
+\begin{theorem}\label{FGSresult}
+$f(t) = 4t-1$ for $1\leq t\leq17$
+\end{theorem}
+\begin{proof}
+	Assume $G$ is a graph with $4t-1$
+ vertices and with \AG.  Suppose first that the maximum degree of $\overline{G}$ is at least $t-1$ and let $v$ be a maximum degree vertex in $\overline{G}$.  Let $A\subset V(G)$ consist of $t$ (or all if there are only $t-1$) non-neighbors of $v$ (in $G$), thus $t-1 \leq |A|\leq t$.  Consider the bipartite subgraph $H = [A,B]$ of $G$, where $B= V(G)-(A\cup \{v\})$. If $H$ contains a matching of size $t$ then it is a connected matching, since $A$ induces a clique in $G$.  Also, if $|A| = t-1$ and $H$ contains a matching of size $t-1$m it can be extended by an edge incident to $v$ to a connected matching of size $t$.  If the required matching does not exist, by K\"onig's theorem, there is a $T\subset V(G)$ with $|T| \leq t-1$ (or $|T| \leq t-2$ if $|A| = t-1$) meeting all edges of $H$. As $|B| \geq 3t-2$, this implies that there exists a vertex in $A-T$ nonadjacent to at least $2t$ vertices of $G$.  Thus $K_{2t}\subset G$ which clearly contains a connected matching of size $t$. [{\em Note: this is essentially a different proof of the spider lemma, using minmax instead of Hall's theorem.  Determine the exact consequences of each version, esp. in the quantitative version.}] 
+
+\vskip 0.25 cm
+
+Therefore the maximum degree of $\overline{G}$ is at most $t-2$.  Now let $A_v$ denote the set of non-neighbors and $B_v$ the set of neighbors of $v$ in $G$.  Some vertex $w\in B_v$ is nonadjacent to at most 
+\begin{equation}\label{FGS1}
+\frac{|A_v|(t-3)}{B_v}\leq \frac{(t-2)(t-3)}{3t}
+\end{equation}
+vertices of $A_v$.  The right hand side of (\ref{FGS1}) is less that 4 if $t\leq 16$.  If $t = 17$ then, as all vertices cannot have odd degree, $v$ can be selected as a vertex nonadjacent to at most 14 vertices and the estimate (1) still gives a $w \in B_v$ nonadjacent to at most $14^2/51 < 4$ vertices of $A_v$.  Thus we have found an edge $vw$ in $G$ such that the set $C\subset V(G)$ nonadjacent to both $v$ and $w$ satisfies $|C|\leq 3$.   This allows us to carry out the inductive proof: removing $v,w$ and two further vertices (as many from $C$ as possible) the remaining graph has a connected matching of size $t-1$ and the edge $vw$ extends it to a connected matching of size $t$.  (Of course it is trivial to start the induction with $f(1) = 3$).
+[{\em Note: We can bring more information about a minimum counterexample and attempt to improve this section and extend this result to larger $t$.}]
+\end{proof}
+A 2-connected matching of size $t$ is a matching in which each pair of edges have at least 2 edges beteween their endpoint sets.  The following follows the proof method of Theorem \ref{FGSresult} and shows that even 2-connected matchings beat the obvious Ramsey bound of $\frac{t^2}{\log t}$.  
+\begin{theorem}\label{2connmatch}
+Every graph $G$ with \AG and with at least $2^{3/4}t^{3/2} + 2t + 1$ vertices contains a 2-connected matching of size $t$.  
+\end{theorem}
+\begin{proof}
+Set $c = 2^{5/4}$ which is the positive root of $\frac{4}{c} = \frac{c\sqrt{2}}{2}$.  We want to establish the recursive bound $g(t) \leq g(t-1) + ct^{1/2}+2$, for the function $g(t)(t\geq 2, g(1) = 3)$.  Then (using the inequality between arithmetic and quadratic means)
+\[g(t) \leq c(\sum_{i=2}^{t}i^{1/2}) + 2(t-1) + g(1) \leq c\frac{\sqrt{2}}{2}t^{3/2}+2t+1 = 2^{3/4}t^{3/2} + 2t + 1,\]
+the theorem follows (for $t=1$ it holds vacuously).
+\vskip 0.25 cm
+Using the argument of Theorem \ref{FGSresult}, let $N$ be the smallest integer satisfying $N\geq 2^{3/4}t^{3/2} + 2t + 1$, let $G$ be a graph with $N$ vertices and \AG.  Assuming $G$ has no 2-connected matching of size $t$, any $v\in V(G)$ is nonadjacent to at most $2t-1$ vertices of $G$.  Using the argument from the proof of Theorem \ref{FGSresult}, for any $v\in V(G)$ there is a $w\in B_v$ such that there are at most $M=\frac{(2t-1)(2t-2)}{N-2t}$ vertices of $G$ nonadjacent to both $v$ and $w$.  Therefore, it is possible to remove at most $M+2$ vertices of $G$ so that the remaining graph does not contain 2-connected matchings of size $t-1$.  Thus,
+\begin{equation}\label{FGS2}
+g(t) < g(t-1) + \frac{(2t-1)(2t-2)}{N-2t} + 2.
+\end{equation}
+Notice  that $\frac{(2t-1)(2t-2)}{N-2t} < ct^{1/2}$ because otherwise we get 
+\[N < (\frac{4}{c})t^{3/2}+2t= 2^{3/4}t^{3/2} + 2t \]
+implying 
+\[2^{3/4}t^{3/2} + 2t +1 \leq N < 2^{3/4}t^{3/2} + 2t, \]
+a contradiction.  Thus (\ref{FGS2}) gives the claimed recursive bound for $g(t)$.
+\end{proof}
+\vskip 0.5cm 
+
+\bib{Spec_case}{article}{
+   author={Plummer, Michael D.},
+   author={Stiebitz, Michael},
+   author={Toft, Bjarne},
+   title={On a special case of Hadwiger's conjecture},
+   journal={Discuss. Math. Graph Theory},
+   volume={23},
+   date={2003},
+   number={2},
+   pages={333--363},
+   issn={1234-3099},
+   review={\MR{2070161 (2005e:05055)}},
+}
+
+Here we see two equivalent statements of Hadwiger's conjecture for \kfree graphs.
+\begin{conjecture}\label{H2}
+For all $G$, $\alpha(G) = 2 \implies G \succeq K_{\chi(G)}$
+\end{conjecture}
+\begin{conjecture}\label{H3}
+For all $G$, $\alpha(G) = 2 \implies G \succeq K_{\lceil |V(G)|/2\rceil}$
+\end{conjecture}
+\begin{theorem}\label{H2equivH3}
+The conjectures \ref{H2} and \ref{H3} are equivalent
+\end{theorem}
+We begin with a list of properties of a smallest possible counterexample to Conjecture \ref{H2} and will prove Theorem \ref{H2equivH3} along the way.  Let $G$ be such a counterexample.
+\begin{enumerate}
+	\item {\em For each $x \in V(G)$, $\chi(G-x) < \chi(G)$. ($G$ is vertex critical.)}  \newline
+  If $|V(G)| = 2\chi(G)$ then for arbitrary $x \in V(G)$ we have that $2\chi(G) -1 = |V(G-x)| \leq 2\chi{G-x}$ hence $\chi(G)-\frac{1}{2} \leq \chi(G-x) \leq \chi(G)$, i.e., $\chi(G-x) = \chi(G)$.  But $G\succeq G-x$ and $G-x\succeq K_{\chi(G-x)} = K_{\chi(G)}$ (by the minimality of $G$).  Hence $G\succeq K_{\chi(G)}$ and is not a counterexample.  Therefore $|V(G)| \leq 2\chi(G)-1$. \newline 
+If $\chi(G-x) = \chi(G)$ for a vertex $x\in V(G)$ then by the minimality of $G$ we get a contradiction as above.
+	\item {\em $\overline{G}$ is connected.}
+	\item {\em $|V(G)| = 2\chi(G) -1$}
+	\item {\em For all $x \in V(G)$, $\overline{G} -x$ has a perfect matching.}
+	\item {\em $G$ is $\alpha$-critical.}
+	\item {\em $G$ is contraction $\chi$-critical}
+	\item {\em $\chi{G} \geq 7$}
+	\item {\em $G$ is 7-vertex-connected}
+	\item {\em $\delta(G) \geq \chi(G)$ and $G$ is $\chi(G)$-edge-connected}
+	\item {\em $G$ is hamiltonian}
+	\item {\em $G$ is factor critical}
+	\item {\em $G$ does not contain a non-empty connected dominating matching}
+	\item {\em $\omega(G)\leq \chi(G)-3$}
+	\item {\em $\delta(G) \geq \chi(G)+1$}
+	\item {\em $\kappa(G) \geq \chi(G)$}
+	\item {\em }
+
+\end{enumerate}
+
+\bib{sqrtofgraph}{article}{
+   author={Mukhopadhyay, A.},
+   title={The square root of a graph},
+   journal={J. Combinatorial Theory},
+   volume={2},
+   date={1967},
+   pages={290--295},
+   review={\MR{0210616 (35 \#1502)}},
+}
+\bib{DandM}{article}{
+   author={Duchet, P.},
+   author={Meyniel, H.},
+   title={On Hadwiger's number and the stability number},
+   conference={
+      title={Graph theory},
+      address={Cambridge},
+      date={1981},
+   },
+   book={
+      series={North-Holland Math. Stud.},
+      volume={62},
+      publisher={North-Holland},
+      place={Amsterdam},
+   },
+   date={1982},
+   pages={71--73},
+   review={\MR{671905 (84h:05074)}},
+}
+
+\bib{MR882610}{article}{
+   author={Maffray, F.},
+   author={Meyniel, H.},
+   title={On a relationship between Hadwiger and stability numbers},
+   journal={Discrete Math.},
+   volume={64},
+   date={1987},
+   number={1},
+   pages={39--42},
+   issn={0012-365X},
+   review={\MR{882610 (88g:05076)}},
+   doi={10.1016/0012-365X(87)90238-X},
+}
+
+
+\bib{MR1411244}{article}{
+   author={Toft, Bjarne},
+   title={A survey of Hadwiger's conjecture},
+   note={Surveys in graph theory (San Francisco, CA, 1995)},
+   journal={Congr. Numer.},
+   volume={115},
+   date={1996},
+   pages={249--283},
+   issn={0384-9864},
+   review={\MR{1411244 (97i:05048)}},
+}
+\bib{MR1654153}{article}{
+   author={Reed, Bruce},
+   author={Seymour, Paul},
+   title={Fractional colouring and Hadwiger's conjecture},
+   journal={J. Combin. Theory Ser. B},
+   volume={74},
+   date={1998},
+   number={2},
+   pages={147--152},
+   issn={0095-8956},
+   review={\MR{1654153 (99k:05079)}},
+   doi={10.1006/jctb.1998.1835},
+}
+\bib{MR1844036}{article}{
+   author={Kotlov, Andre{\u\i}},
+   title={Matchings and Hadwiger's conjecture},
+   note={Algebraic and topological methods in graph theory (Lake Bled,
+   1999)},
+   journal={Discrete Math.},
+   volume={244},
+   date={2002},
+   number={1-3},
+   pages={241--252},
+   issn={0012-365X},
+   review={\MR{1844036 (2002k:05087)}},
+   doi={10.1016/S0012-365X(01)00087-5},
+}
+
+
+
+\bib{K_Cam}{article}{
+   author={Cameron, Kathie},
+   title={Connected matchings},
+   conference={
+      title={Combinatorial optimization---Eureka, you shrink!},
+   },
+   book={
+      series={Lecture Notes in Comput. Sci.},
+      volume={2570},
+      publisher={Springer},
+      place={Berlin},
+   },
+   date={2003},
+   pages={34--38},
+   review={\MR{2163948 (2006c:90072)}},
+   %doi={10.1007/3-540-36478-1_5},
+}
+
+\bib{MR1979786}{article}{
+   author={Klazar, Martin},
+   title={Non-$P$-recursiveness of numbers of matchings or linear chord
+   diagrams with many crossings},
+   note={Formal power series and algebraic combinatorics (Scottsdale, AZ,
+   2001)},
+   journal={Adv. in Appl. Math.},
+   volume={30},
+   date={2003},
+   number={1-2},
+   pages={126--136},
+   issn={0196-8858},
+   review={\MR{1979786 (2004h:05006)}},
+   doi={10.1016/S0196-8858(02)00528-6},
+}
+
+
+
+
+
+
+
+\bib{DandMimprove}{article}{
+   author={Kawarabayashi, Ken-ichi},
+   author={Plummer, Michael D.},
+   author={Toft, Bjarne},
+   title={Improvements of the theorem of Duchet and Meyniel on Hadwiger's
+   conjecture},
+   journal={J. Combin. Theory Ser. B},
+   volume={95},
+   date={2005},
+   number={1},
+   pages={152--167},
+   issn={0095-8956},
+   review={\MR{2156345 (2006b:05118)}},
+   doi={10.1016/j.jctb.2005.04.001},
+}
+
+
+\bib{MR2249267}{article}{
+   author={Gy{\'a}rf{\'a}s, Andr{\'a}s},
+   author={Ruszink{\'o}, Mikl{\'o}s},
+   author={S{\'a}rk{\"o}zy, G{\'a}bor N.},
+   author={Szemer{\'e}di, Endre},
+   title={One-sided coverings of colored complete bipartite graphs},
+   conference={
+      title={Topics in discrete mathematics},
+   },
+   book={
+      series={Algorithms Combin.},
+      volume={26},
+      publisher={Springer},
+      place={Berlin},
+   },
+   date={2006},
+   pages={133--144},
+   review={\MR{2249267 (2008c:05120)}},
+   %doi={10.1007/3-540-33700-8_8},
+}
+
+\bib{M_Krie}{article}{
+   author={Kriesell, Matthias},
+   title={On Seymour's strengthening of Hadwiger's conjecture for graphs with certain forbidden subgraphs},
+   journal={Discrete Mathematics},
+   %volume={},
+   date={2010},
+   pages={435--438},
+}
+
+\bib{MR0297600}{article}{
+   author={Chv{\'a}tal, V.},
+   author={Erd{\H{o}}s, P.},
+   title={A note on Hamiltonian circuits},
+   journal={Discrete Math.},
+   volume={2},
+   date={1972},
+   pages={111--113},
+   issn={0012-365X},
+   review={\MR{0297600 (45 \#6654)}},
+}
+
+\bib{MR1369063}{article}{
+   author={Kim, Jeong Han},
+   title={The Ramsey number $R(3,t)$ has order of magnitude $t\sp 2/\log t$},
+   journal={Random Structures Algorithms},
+   volume={7},
+   date={1995},
+   number={3},
+   pages={173--207},
+   issn={1042-9832},
+   review={\MR{1369063 (96m:05140)}},
+   doi={10.1002/rsa.3240070302},
+}
+
+\bib{MR0284366}{article}{
+   author={Nash-Williams, C. St. J. A.},
+   title={Edge-disjoint Hamiltonian circuits in graphs with vertices of
+   large valency},
+   conference={
+      title={Studies in Pure Mathematics (Presented to Richard Rado)},
+   },
+   book={
+      publisher={Academic Press},
+      place={London},
+   },
+   date={1971},
+   pages={157--183},
+   review={\MR{0284366 (44 \#1594)}},
+}
+
+\bib{blas}{article}{
+   author={Blasiak, Jonah},
+   title={A special case of Hadwiger's conjecture},
+   journal={J. Combin. Theory Ser. B},
+   volume={97},
+   date={2007},
+   number={6},
+   pages={1056--1073},
+   issn={0095-8956},
+   review={\MR{2354718 (2009a:05064)}},
+   doi={10.1016/j.jctb.2007.04.003},
+}
+
+\bib{edhc}{article}{
+	author={Christofides, Demetres},
+	author={K\"{u}hn, Daniela},
+	author={Osthus, Deryk},
+	title={Edge-disjoint Hamilton cycles in graphs},
+	date={31 Aug 2009},
+	eprint={arXiv:0908.4572v1 [math.CO]},
+	url={http://arxiv.org/abs/0908.4572},
+}
+
+
+	\end{biblist}
+\end{bibsection}}
+
+\end{document}

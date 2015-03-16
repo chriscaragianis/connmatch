@@ -1,0 +1,24 @@
+\begin{tikzpicture}[thick,scale=0.5]
+
+	\coordinate (a1) at (90:3);
+	\coordinate (a2) at (-25:3); 
+	\coordinate (a3) at (-155:3);
+	\coordinate (a4) at (-90:3);
+	\coordinate (a5) at (0:0);
+
+	\draw (a5)-- node [lblvertex] {a}(a1);
+	\draw (a5)-- node [lblvertex] {b}(a2);
+	\draw (a5)-- node [lblvertex] {c}(a3);
+	\draw (a5)-- node [lblvertex] {d}(a4);
+	\draw (a3)-- node [lblvertex] {e}(a4);
+	\draw (a2)-- node [lblvertex] {f}(a4);
+
+	\draw (a1) node {};
+	\draw (a2) node {};
+	\draw (a3) node {};
+	\draw (a4) node {};
+	\draw (a5) node {};
+	%\draw (a1) node[lblvertex] {a};
+	%\draw (a2) node[lblvertex] {b};  
+	
+\end{tikzpicture}

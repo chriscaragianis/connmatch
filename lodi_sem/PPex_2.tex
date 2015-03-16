@@ -1,0 +1,21 @@
+\begin{tikzpicture}[thick,scale=0.5]
+
+	\coordinate (a1) at (72:2.5);
+	\coordinate (a2) at (144:2.5); 
+	\coordinate (a3) at (216:2.5);
+	\coordinate (a4) at (288:2.5);
+	\coordinate (a5) at (0:2.5);
+	
+	\draw[blue] (a1)--(a2);	
+	\draw[green,] (a1)-- (a3);
+	\draw[green] (a1)--(a4);
+	\draw[blue] (a1)--(a5);
+	\draw[blue] (a2)--(a3);	
+	\draw[blue] (a2)--(a4);	
+	\draw[green] (a2)--(a5);
+	\draw[blue] (a3)--(a4);
+	\draw[red] (a3)--(a5);
+	\draw[red] (a4)--(a5);
+	
+	
+\end{tikzpicture}

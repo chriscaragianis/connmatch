@@ -1,0 +1,119 @@
+\chapter{RELATED PROBLEMS}
+
+In the course of studying connected matchings, some problems have arisen that are quite interesting in their own right.  While these approaches did not lead to results related to connected matchings, they are closely related to this investigation in their own ways, and may point the way to further research.  The first is a notion related to the distance approach to detecting connected matchings.  The second offers a systematic way of ``reducing'' a chordal bipartite graph.  
+	
+	\section{Characterizing the ``connected matching graph''}
+
+A graph $G$ induces a proximity partition described by the collection of \textit{distance-$k$ graphs} of $G$.
+%
+We may ask if there is a characterization of $\mathcal{H}_k$ where
+%
+\[\mathcal{H}_k = \{H :\: H \makebox{ is the distance-$k$ graph of some graph } G\}\]
+%
+In the case of $\mathcal{H}_2$, we can do so.
+%
+Let $A(G)$ denote the adjacency matrix of a graph $G$.  
+%
+In \cite{sqrtofgraph} Mukhopdhyay characterizes graphs that have a \textit{square root}, which is to say graphs $H$ such that for some graph $G$, $A(H) = A(G)^2$.
+%  
+This is equivalent to $H$ possessing an edge between any pair of vertices $u,v$ that satisfy $d_G(u,v) \leq 2$.  
+%
+\bthm{[Mudkhopdhyay] A connected graph $G$ with $n$ vertices $v_1, v_2, \ldots, v_n$ has a square root if and only if some set of $n$ complete subgraphs of $G$ whose union is $G$ can be labeled $C_1, C_2, \ldots, C_n$ so that, for all $i,j = 1, 2, \ldots, n$ the following conditions hold:
+\begin{enumerate}
+	\item $C_i$ contains $v_i$,
+	\item $C_i$ contains $v_j$ if and only if $C_ij$ contains $v_i$.
+\end{enumerate}}
+\noindent An alternate definition of $\mathcal{H}_2$ is 
+\[\mathcal{H}_2 = \{H : \: A(H) = A(G)^2-A(G)\}\] and we have the following characterization in the spirit of Mukhopdhyay's theorem.  
+\bthm{A graph $G$ with $n$ vertices $v_1, v_2, \ldots , v_n$ is the distance 2 graph of some graph $H$ if and only if some set of $n$ subgraphs of $G$ whose union is $G$ can be labeled $C_1, C_2, \ldots, C_n$ so that 
+\begin{enumerate}
+	\item $v_a \notin C_a$ 
+	\item For every pair of vertices $v_i, v_j \in C_k$, exactly one of the following holds:
+	\begin{enumerate}
+		\item $v_iv_j \in E(C_k)$ 
+		\item If $v_i \in V(C_j)$, then $v_j \in V(C_i)$
+		\item $v_i \in C_j$ and $v_j \in C_i$
+	\end{enumerate}
+	\item If $C_i \cap C_j \neq \emptyset$, then $v_i, v_j \in V(C_k)$ for some $k$.
+\end{enumerate}\label{dist2}}
+The proof of this theorem rests on the same central realization as Mudkhopdhay's theorem, which is that the enumerated subgraphs correspond to the neighborhoods (closed neighborhoods in Mudkhopdhay's theorem, open ones in Theorem \ref{dist2}) in the underlying graph.
+\begin{proof}
+Suppose we have a graph $G$ on vertices $v_1, v_2, \ldots, v_n$ and subgraphs $C_1, C_2, \ldots, C_n$ that satisfy the above conditions.  We construct a graph $H$ on the same vertex set by adding edges in two steps for each $C_i$.
+\begin{description}
+	\item[Step 1.] Add the complement of $C_i$.
+	\item[Step 2.] Add all edges from $v_i$ to $C_i$.
+\end{description}
+	We claim that $G$ is now the distance 2 graph of $H$.  Suppose that $d_H(v_i, v_j) = 2$.  We want to show that $v_iv_j \in E(G)$.  Since $d_H(v_i,v_j) \leq 2$, there is some vertex $v_k$ so that $v_iv_k, v_jv_k \in E(H)$.  If both edges were added in step 2, then one of the following occurs
+\begin{description}
+	\item[Case 1.] $v_i, v_j \in C_k$
+	\item[Case 2.] $v_k \in C_i$, $v_k \in C_j$
+	\item[Case 3.] $v_k \in C_i, C_j$
+\end{description}    
+In case 1, distance 2 implies $v_iv_j \notin E(H)$. In particular, this edge was not added in step 2, so $v_i \notin C_j$ and $v_j \notin C_i$.  Condition 2 then implies that if $v_i, v_j \in C_k$ for some $C_k$, then $v_iv_j \in E(G)$.  In case 2, $V(C_i)$ and $V(C_j)$ intersect, implying (by condition 3) again that there is a $V(C_l)$ containing both $v_i$ and $v_j$.  In case 3, condition 4 requires that $v_i, v_j \in C_k$.  In any event, $v_iv_j \in E(G)$.
+
+Now we may assume (WLOG) that $v_iv_k$ was added to $H$ in step 1.  Suppose $v_jv_k$ was added in step 2. Then either $v_k \in C_j$, implying $C_i \cap C_j \neq \emptyset$, or $v_j \in C_k$ implying $v_i, v_j \in C_k$.  The only remaining possibility is that both $v_iv_k$ and $v_jv_k$ were added in step 1.  Following from two applications of condition 2(b), both $v_i$ and $v_j$ are then in $V(C_k)$.  This completes the proof of sufficiency.
+
+For the proof of necessity, we take a graph $H$ and show that the distance-two graph $D_2(H)$ has a collection of subgraphs with the necessary properties.  For each vertex $v_i$, let $V(C_i) = N(v_i)$.  That condition 1 holds is immediate.  The vertices of any given $C_i$ are at most distance two apart.  Whenever there is a nonedge in a particular $C_i$ and 2(a) fails, the vertices must be adjacent in $H$, and condition 2(b) holds.  The symmetric property of the neighbor relation shows that conditions 3 and 4 hold as well.  Finally, all distance 2 edges occur between vertices with a common neighbor, so $\bigcup C_i = G$. 
+\end{proof}
+
+In a distance 2 graph, the enumerated subgraphs are actually the {\it complements} of the graphs induced by the open neighborhoods of the underlying graphs.  This allows us to characterize the distance 2 graphs of graphs with local characterizations.  The following is an example.
+\bprop{If every enumerated subgraph $C_i$ of a distance 2 graph $H$ has independence number 2, then it is the distance 2 graph of a claw-free graph.}
+In the case of connected matchings, we are most interested in the distance 2 graphs of line graphs.  Unfortunately, line graphs do not have a local characterization.  The best local characterization that approximates them is the {\it locally co-bipartite} graphs.  A graph is locally co-bipartite if each open neighborhood induces a graph whose complement is bipartite.  Hence, the following is the best we have in the direction of characterizing the distance 2 graphs of line graphs.
+\bprop{If every enumerated subgraph $C_i$ of a distance 2 graph $H$ is bipartite, then it is the distance 2 graph of a locally co-bipartite graph.}
+	
+\section{Totally balanced hypergraphs, basic trees, and chordal bipartite graphs.}
+
+In chapter 4, we discussed the chordal bipartite graphs at some length.  There is a characterization of chordal bipartite graphs that we have not yet discussed.  The {\it incidence bigraph}\index{Incidence bigraph} of a hypergraph $H$ is a bipartite graph with one partite set comprised of the edges of $H$, and the other comprised of the vertices of $H$.  We draw an edge from $v$ to $e$ whenever $v \in e$ in $H$.  The chordal bipartite graphs are characterized as the incidence bigraphs of a special class of hypergraphs known as {\it totally balanced}\index{Totally balanced hypergraph} hypergraphs.
+
+A {\it cycle}\footnote{This is not the only defintion of a cycle in the theory of hypergraphs.  This particular definition is a generalization of cycles in graphs, but the reader should be aware of other definitions in the literature. } in a hypergraph is an analog of the graph-theoretic notion of a cycle.  The vertices $v_1, v_2, \ldots , v_k$ of of a hypergraph $H$ form a cycle if the pairs \[v_1v_2, v_2v_3, \ldots, v_{k-1}v_k, v_kv_1\] are all adjacent in $H$.  A hypergraph is totally balanced if and only if every cycle of length greater than two has an edge containing three vertices of the cycle.  It is not difficult to see that through the lens of an incidence bigraph, this is equivalent to requiring that cycles of length 6 have a chord.
+
+This connection between totally balanced hypergraphs and chordal bipartite graphs led to a new line of inquiry growing out of work by Lehel.  In \cite{Lehel}, Lehel describes a reduction process achievable on totally balanced hypergraphs.  Totally balanced hypergraphs are a special case of {\it tree}\index{Tree hypergraphs} hypergraphs.  A tree hypergraph is one for which there is a {\it basic tree}\index{Basic tree}.  A basic tree is a tree $T_H$ on the vertices of the hypergraph with the property that every edge of $H$ induces a subtree of $T_H$. 
+
+
+Let us describe Lehel's method of ``reducing'' a tree hypergraph modulo a basic tree.  For a hypergraph $H$ and a choice of  basic tree $T$, let the edges of $T$ be the vertices of a new hypergraph $H/T$.  For each edge $e$ of $H$, we construct an edge $e'$ of $H/T$ by collecting all of the edges of $T$ for which both endpoints are in $e$.  
+
+
+Unfortunately, this line of investigation did not yield substantial results on the question of computing connected mathings in chordal bipartite graphs.  However, a key property of Lehel's reduction vis a vis basic trees was uncovered, as well as an interesting tree mapping which we describe below.
+
+A (simple) {\it enveloping} of a graph $G = (V, E(G))$ into a graph $H = (V, E(H))$ is a one-to-one mapping $\phi: E(G) \rightarrow E(H)$ with the property that for every $uv \in E(G)$, $\phi(uv)$ is on a $u,v$ path in $H$.
+
+\begin{theorem}
+For any pair of trees $T_1$ and $T_2$ on a vertex set $V$, there is a simple enveloping $\phi$ of $T_1$ into $T_2$.
+\end{theorem}
+
+\begin{proof}
+We work by induction on the number of vertices in $V$.  For the case of $|V| = 2$, an identity map is an enveloping. 	
+
+Now suppose we have an enveloping between trees on up to $k$ vertices.  Let $T_1$ and $T_2$ be a pair of trees on $k+1$ vertices.  Start by taking any pendant edge $uv$ of $T_1$ with leaf vertex $u$, and mapping it to $uv'$ where $v'$ is the next vertex on the $u,v$ path in $T_2$.  Now remove $u$ from $T_1$ and identify $u$ and $v'$ as $v'$ in $T_2$.  We now have two trees $T_1 - u$ and $T_2'$ on a vertex set $V' = V-\{u\}$ with $k$ vertices.  Hence there is an enveloping $\phi$ of $T_1-\{u\}$ into $T_2'$.  Furthermore, $\phi$ can be extended  as follows to an enveloping $\phi '$ of $T_1$ into $T_2$:
+\begin{enumerate}
+	\item $uv$ maps to $uv'$ as above. 
+	\item If $\phi(x,y)  = wv'$ then either $wu$ or $wv'$ is an edge of $T_2$.  Set $\phi'(x,y) = wu$ or $wv'$ as appropriate.
+\end{enumerate} 
+\end{proof}
+
+This theorem tells us that between any two trees on a set of vertices, one can be mapped onto the other in such a way that edges are mapped into the paths defined by their endpoints.  Tree envelopings may be a topic worthy of investigation in their own right.
+
+Using this result on envelopings, we prove that the reduction proposed by Lehel is insensitive to the choice of basic tree.
+\begin{theorem}
+	If $T_1$ and $T_2$ are basic trees of a tree hypergraph $H$, then \[H/T_1 \simeq H/T_2\].
+\end{theorem}
+
+\begin{proof}
+	We show that an enveloping $\phi$ of $T_1$ into $T_2$ induces an isomorphism between $H/T_1$ and $H/T_2$.
+
+Suppose first that $uv \in N(e_i)$ in $H/T_1$.  Then $\{u,v\}\subseteq e_i$ in $H$.  Since $e_i$ then induces a subtree of $T_2$, the vertices of $u,v$ path of $T_2$ must be in $e_i$.  Hence, the endpoints of $\phi(uv)$ are in $e_i$, and $\phi(uv) \in N(e_i)$ in $H/T_2$.
+
+Now we need to show that $|N(e_i)|$ in $H/T_1$ is the same as  $|N(e_i)|$ in $H/T_2$.  This is as simple as noting that the neighborhood of $e_i$ induces a subtree in both $T_1$ and $T_2$, and both of these subtrees have $|e_i|-1$ edges.  Hence $|N(e_i)| = |e_i|-1$ in both $H/T_1$ and $H/T_2$.
+\end{proof}
+
+\section{Conclusion}
+
+We have laid a great deal of groundwork in computing maximum connected matchings in certain families of bipartite graphs.  With additional attention, it is likely this can provide the basis for determining the complexity of finding a maximum connected matching in convex or chordal bipartite graphs.   
+
+We have also demonstrated the equivalence of the maximum connected matching problem to certain cases of an important practical optimization problem: the bipartite margin shop.  It would be interesting to see how well chordal bipartite graphs approximate the actual account/security relationships in investment firms.  Conversely, it would be also be worthwhile to investigate how closely a graph must approximate a chordal bipartite graph (whether this is measured in edit distance, or total number of long cycles) in order to apply the results found herein.  
+
+In pursuit of the extremal question, we have determined that counterexamples to the key conjecture of Gy\'arf\'as, F\"uredi and Simonyi (Conjecture \ref{GFSconj}) have both high connectivity and no large cliques.  Furthermore, we have determined that any infinite family of counterexamples must not have the {\it smallest} possible clique numbers for graphs with independence number two.  This excludes from consideration the most probable graphs arising from the triangle-free process.  
+
+The study of connected matchings is alive and well, and it is our hope that this dissertation will be helpful in moving this area forward.  Many appealing computational problems remain, and the close connection to Hadwiger's conjecture is a fascinating aspect of the structural study of connected matchings.    We look forward to investigating these ideas in the future.  
+
+

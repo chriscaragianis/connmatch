@@ -1,0 +1,24 @@
+\documentclass[12 pt]{article}
+
+\usepackage{amsthm}
+
+\newtheorem{theorem}{Theorem}
+
+\begin{document}
+
+\begin{theorem}
+For every pair of positive constants $\epsilon, c$ there is $n_{\epsilon, c}$ such that every triangle-free graph $G$ with $n > n_{\epsilon, c}$ vertices and $\alpha(G) < c\sqrt{n\log n}$ has fewer than $\epsilon n^3$ copies of $C_4$.
+\end{theorem}
+
+\begin{proof}
+	Fix $\epsilon, c> 0$ and let $G$ be a triangle free graph on $n$ vertices with $\alpha(G) < c\sqrt{n\log n}$.  Let $X_{C_4}$ be the number of $C_4$ in $G$.  Then
+\[X_{C_4} = \frac{1}{2}\sum_{\{u,v\}\notin E(G)} {|N(u) \cap N(v)| \choose 2}\]
+Set $\epsilon_1 = \sqrt{8\epsilon}$ and suppose that there are more than $n^2(\log n)^{-2}$ pairs $u,v$ so that $|N(u)\cap N(v)| \geq \epsilon_1\sqrt{n}$. Then when we count the total number of vertices in these intersections, the count is at least $\epsilon_1n^{5/2}(\log n)^{-2}$, meaning some vertex is counted $\epsilon_1n^{3/2}(\log n)^{-2}$ times.  However, $\Delta(G) \leq \alpha(G) < c\sqrt{n\log n}$, so each vertex is in at most \[{c\sqrt{n\log n}\choose 2 } < \frac{c^2}{2}n\log n\] neighborhood intersections.  Thus, for sufficiently large $n$,  fewer than $n^2(\log n)^{-2}$ neighborhood intersections are larger than $\epsilon_1\sqrt{n}$.     
+
+Now we can bound $X_{C_4}$.
+\begin{eqnarray}X_{C_4} <& \frac{1}{2}\left[\frac{n^2}{(\log n)^2}{c\sqrt{n\log n}\choose 2}+ \left(|E(\overline{G})|- \frac{n^2}{(\log n)^2}\right){\epsilon_1\sqrt{n}\choose 2}\right]\\
+\sim& \frac{\epsilon_1^2}{8}n^3 = \epsilon n^3
+\end{eqnarray}
+Thus for sufficiently large $n$, $X_{C_4} < \epsilon n^3$.
+\end{proof}
+\end{document}

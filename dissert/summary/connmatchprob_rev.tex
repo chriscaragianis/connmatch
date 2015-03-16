@@ -1,0 +1,32 @@
+%\input{\home\cjcara01\connmatch\dissert\preamble}
+%\begin{document}
+
+\section{The connected matching problem}
+
+Let $\mathcal{P}$ be a proximity $3$-coloring of $K_n$ induced by a graph $H$.  If $H$ is the line graph of a graph $G$, then connected matchings in $G$ correspond to monochromatic color 2 cliques in $\mathcal{P}$.  
+
+\noindent\textbf{MCM}
+
+\noindent Maximize $\displaystyle \sum_{e_i \in E(G)} x(e_i)$ subject to: 
+\begin{align}
+	x(e_i) \in \{0,1\} \qquad &\forall e_i \in E(G)\\
+	\sum_{e_i \ni v} x(e_i) \leq 1 \qquad &\forall v\in V(G)\\
+	\sum_{e_i \in D} x(e_i) \leq 1 \qquad &\forall D\subset E(G)\makebox{, $S$ mutually disconnected}\\
+	\sum_{e_i \in C} x(e_i) \leq \lfloor \frac{1}{2}k\rfloor \qquad& \forall \makebox{$k$-cycles in $BPG$}
+\end{align} 
+\bprop{An optimal solution to \textbf{MCM} corresponds to a maximum connected matching in $G$.}
+\begin{proof}
+	First we show that a connected matching $M$ is a feasible point in \textbf{MCM}.  Constraint (2) is satisfied because $M$ is a matching.  No two edges of $M$ are disconnected, so (3) is satisfied.  Finally, the edges of $M$ correspond to a set of vertices in $BPG$ that induce an empty graph, so (4) is satisfied as well.
+
+Next we show that any feasible point of \textbf{MCM} corresponds to a connected matching.  Constraint (2) guarantees that the non-zero edges of a feasible assignment form a 1-regular graph, hence, a matching.  Constraint (3) requires that no two non-zero edges are disconnected.  Therefore the non-zero edges of a feasible assignment correspond to a connected matching.    
+\end{proof}
+
+We define the \textit{fractional connected matching number of $G$}, denoted $cm_f(G)$, as the optimum of the linear relaxation of \textbf{MCM} obtained by replacing (1) with
+\begin{equation*}\tag{$1'$}x(e_i) \in (0,1) \qquad \forall e_i \in E(G)\end{equation*}
+\bprop{If $G$ with $|V(G)| \geq 3$ is 2-connected and $\alpha(G) \leq 2$, then $cm_f(G) \geq n/2$}
+
+\begin{proof}
+	In \cite{MR0297600}, Erd\H{o}s and Chv{\'a}tal show that if $|V(G)| \geq 3$, $\alpha(G) \leq \kappa(G)$, then $G$ is Hamiltonian.  Assigning each edge of a Hamiltonian cycle a weight of 1/2 gives a total weight of $n/2$ with neither a vertex weight nor a mutually dsiconnected edge set weight greater than 1.
+\end{proof}
+
+%\end{document}

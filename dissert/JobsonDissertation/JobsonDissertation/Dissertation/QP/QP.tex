@@ -1,0 +1,329 @@
+%!TEX root=../Dissertation.tex
+\chapter{AVOIDING: COLORING QUASI-PROGRESSIONS}
+
+Several\footnote{This chapter contains joint work with Andr\'e K\'ezdy, Hunter Snevily, and Susan White, and has been submitted to a journal for publication.} renowned open conjectures in combinatorics and number theory involve arithmetic progressions. Van der Waerden famously proved in 1927 that for each positive integer $k$ there exists a least positive integer \index{van der Waerden number}$w(k)$ such that any $2$-coloring of $1,\ldots,w(k)$ produces a monochromatic $k$-term arithmetic progression. The best known upper bound for $w(k)$ is due to Gowers and is quite large. Ron Graham \cite{G} conjectures $w(k) \leq 2^{k^2}$, for all $k$. \comments{The best known lower bound is due to Berlekamp: $w(p+1) \geq p2^p$, for primes $p$. Another conjecture involving arithmetic progressions is one of Erd\H{o}s' most famous (still open) conjectures: if the sum of the reciprocals of the members of a set of positive integers $S$ diverges, then $S$ contains arbitrarily long arithmetic progressions. Many researchers have worked on this or special cases of this conjecture, including the recent and now famous theorem by Green and Tao which proves that the primes contain arbitrarily long arithmetic progressions.}
+
+\section{Introduction}
+Brown, Erd\H{o}s, and Freedman \cite{B} introduced quasi-progressions as a way of generalizing arithmetic progressions: 
+\begin{definition}[Quasi-progression]\index{Quasi-progression}A $k$-term quasi-progression (QP) of diameter $d$\index{diameter!of a quasi-progression} is a sequence $\left\{x_1, \ldots, x_k\right\}$ for which there exists a positive integer $l$ such that $l \leq x_{i} - x_{i-1} \leq l+d$, for all $i=2,\ldots,k$.
+
+$l$ is called the \defn{low-difference}\index{low-difference} of the QP.
+\end{definition}
+
+Arithmetic progressions are quasi-progressions with diameter zero.\comments{ Brown et al. consider the question of when a set of positive integers contains arbitrarily long quasi-progressions of a given diameter. A main result of theirs is that quasi-progressions behave similarly to arithmetic progressions, at least with respect to Erd\H{o}s' conjecture, in that Erd\H{o}s' conjecture is equivalent to the statement: if the sum of the reciprocals of the members of a set of positive integers $S$ diverges, then there exists a diameter $d$ such that $S$ contains arbitrarily long quasi-progressions of diameter $d$.
+}
+Analogous to the van~der Waerden function $w(k)$, Landman \cite{L,LR} introduced a Ramsey function for quasi-progressions.
+\begin{definition}\index{Q(d,k)@$Q(d,k)$} $Q(d,k)$ is the least positive integer such that every two-coloring of the set $\left\{1, \ldots, Q(d,k)\right\}$ contains a monochromatic $k$-term quasi-progression of diameter $d$.
+\end{definition}
+
+This function produces a lower bound for $w(k)$ since \[w(k) = Q(0,k) \geq Q(1,k) \geq Q(2,k) \geq Q(3,k) \geq \cdots\] So, it is of great interest to find bounds on $Q(d,k)$ for various $d$, especially small values of $d$. Of particular interest is the rate of growth of $Q(1,k)$. Is it merely polynomial or is it at least exponential in $k$?  Vijay \cite{V}\footnote{We thank Bruce Landman for bringing our attention to Vijay's paper.} has recently established an exponential lower bound for $Q(1,k)$, so quasi-progressions of small diameter behave similarly to arithmetic progressions, at least with respect to these Ramsey functions. An interesting open problem is to determine the largest diameter $d$ for which $Q(d,k)$ is at least exponential (in $k$).
+
+Landman established several bounds on $Q(d,k)$ and made several conjectures which we resolve in this paper. Our results, like Landman's, focus on large diameter; that is, $d = k-i$, for some positive integer $i$ satisfying $k\geq 2i \geq 1$. The main difficulty is the upper bound on $Q(k-i,k)$. Specifically, how can we tailor an argument that handles the large number of extremal $2$-colorings which seem to defy uniform description (cf. Landman's data at the end of his paper)? In \autoref{sec:superblocks} we introduce superblocks, an equivalence relation that imposes sufficient structure on extremal $2$-colorings to extract long monochromatic quasi-progression fragments via a greedy strategy. Through the superblock lens, the extremal $2$-colorings coalesce. The superblock argument is used in \autoref{sec:QP upper bounds} where we show how to splice monochromatic fragments together to produce long monochromatic quasi-progressions. This yields an upper bound on $Q(k-i,k)$; the bound is often sharp. One consequence is that, if $k \geq 2i$ and $k=mi+r$ for integers $m,r$ such that $1 < r < i$, then \[Q(k-i,k) \leq 2ik-4i+2r-1.\] This improves bounds given by Landman.
+
+Our main result is proven is \autoref{sec:QP lower bound}: \[ Q(k-i,k) = 2ik-4i+2r-1,\] if $k=mi+r$ for integers $m,r$ such that $3 \leq r < \frac{i}{2}$ and $r-1 \leq m$. This disproves Conjecture 1 of Landman's paper for these values of $r$. Residues $r\geq i/2$ that are not considered in this result appear to be more difficult. The techniques here are inadequate to resolve those values of $Q(k-i,k)$. However, we also prove that, if $k\geq 2i \geq 1$, then 
+\[ Q\left(k-i,k\right) =
+	\begin{cases}
+		2ik-4i+3	&k \equiv 0\text{ or }2 \pmod{i}\\
+		2ik-2i+1	&k \equiv 1 \pmod{i}
+	\end{cases}
+\] thus proving Landman's conjecture in these cases.
+
+\section{Superblocks\label{sec:superblocks}}
+
+In this section we develop notation, concepts and tools to describe the structure of extremal strings which avoid long monochromatic quasi-progressions.
+
+A \defn{$k$-term progression} is an increasing sequence of $k$ positive integers $x_1 < x_2 < \cdots < x_k$. Given a $k$-term progression $P=\{x_j\}_{j=1}^k$, the \defn{differences} in $P$ are the elements in the set  \[ D(P) = \{ x_j - x_{j-1} : j=2,\ldots,k\}.\] The \defn{low-difference}\index{low-difference} of $P$, denoted $\delta(P)$ (or simply $\delta$), is the minimum element in $D(P)$;  the \defn{high-difference} of $P$, denoted $\Delta(P)$ (or simply $\Delta$), is the maximum. The diameter of $P$ is $d = \Delta - \delta$. Observe that arithmetic progressions are quasi-progressions with diameter $d = 0$.
+
+Consider now $2$-colorings of the positive integers. A quasi-progression is a \defn{good progression} if it is a monochromatic quasi-progression with length $k$ and diameter at most $d$. Define $Q(d,k)$\index{Q(d,k)@$Q(d,k)$} to be the least positive integer such that every $2$-coloring of $\{1,\ldots,Q(d,k)\}$ contains a good progression. Motivated by conjectures of Landman \cite{L}, we consider $Q(d,k)$ for values of $d$ and $k$ satisfying $d = k - i$ and $k \geq 2i$, where $i$ is some fixed positive integer. So, for the rest of this paper $d = k-i$ and a \defn{good progression} means a monochromatic quasi-progression with length $k$ and diameter at most $k-i$. To understand the structure of extremal $2$-colorings avoiding good progressions, we now introduce two important substructures: blocks and superblocks.
+
+Let $C=c_1c_2\ldots c_\ell$ be a binary string of length $\ell$. A \defn{substring} of $C$ is a string of the form $c_p c_{p+1}\cdots c_q$, for some positive integers $1 \leq p \leq q \leq \ell$. A \index{block}\defn{block} of $C$ is a maximal monochromatic substring of $C$. We employ the usual shorthand notation in which, for $x \in \{0,1\}$, the shorthand $x^n$ represents the string $\underbrace{x \cdots x}_{n}$. There is a natural partition of $C$ into blocks: without loss of generality, the first block of $C$ is a block of $1$s so \[C = 1^{\alpha_1}\ 0^{\alpha_2}\ \cdots\ 1^{\alpha_{b-1}}\ 0^{\alpha_b},\] where the $\alpha_j$ are positive integers, except possibly $\alpha_b$ which may be zero (in which case the final block of $C$ is actually a block of $1$s). Note that $\sum_{j=1}^b \alpha_j = \ell$.
+
+Now consider an extremal coloring $C$; that is, suppose that $\ell = Q(k-i,k) - 1$ and $C$ represents a $2$-coloring of the integers $1,\ldots,\ell$ with no good progression. For convenience, blocks of $C$ of length at most $k-i$ are \index{minor block}\index{block!minor}\defn{minor} blocks; longer blocks are \index{major block}\index{block!major}\defn{major}. There are two important facts that motivate this dichotomy:
+\begin{enumerate}
+	\item\label{en:QP observation 1} Quasi-progressions with low-difference $1$ and diameter $k-i$ can jump over any intermediate minor blocks.
+	\item\label{en:QP observation 2} ``Greedy monochromatic jumping'' (in which jumps of length at least $\delta$ but at most $\delta + k -i$ are taken, for some choice of $\delta$) can not get stuck in substrings that avoid major blocks of one color (see later \autoref{thm:GreedyMajorJump} and \autoref{thm:GreedyMinorJump}).
+\end{enumerate}
+
+A consequence of \altref[observation]{en:QP observation 1} is that, in a substring in which only minor blocks of one color appear, all of the integers with the other color in this substring form a monochromatic progression with low-difference $1$ and high-difference $k-i+1$ (that is, a monochromatic quasi-progression with diameter $k-i$).
+
+Now we turn to the task of identifying monochromatic substructures of $C$ with the property that a greedy strategy can guarantee dense monochromatic progressions beginning and ending at endpoints of the substructure. To make this precise, we define the equivalence relation $\sim$ on the integers $1,\ldots,\ell$ so that $x \sim y$ if and only if $x$ and $y$ are contained in a monochromatic quasi-progression $P$ of $C$ such that $D(P) \subseteq \{1,\ldots,k-i+1\}$ (the transitivity of $\sim$ follows from the fact that the union of two intersecting monochromatic quasi-progressions with differences in $\{1,\ldots,k-i+1\}$ is another such quasi-progression). The equivalence classes under $\sim$ are called \defn{\textbf{superblocks}}\index{superblock}. Superblocks are not necessarily substrings. Suppose that $C$ has $t$ superblocks $B_1,\ldots,B_t$. We naturally order superblocks this way: $B_p < B_q$ if and only if $\min B_p < \min B_q$, where $\min B_p$ denotes the smallest integer in $B_p$ (that is, the left-most one). A superblock is \index{major superblock}\index{superblock!major}\defn{major} if it contains all of the elements from a major block of $C$; otherwise it is \index{minor superblock}\index{superblock!minor}\defn{minor}. The \index{superblock!extremes}\defn{extremes} of a superblock are its minimum and maximum elements.
+
+\begin{example} Consider $k = 12, i = 6$. Because $Q(6,12) = 123$, an extremal string in this case has length $122$. There are several extremal strings, one is shown below: \[C =  1^{6}\ 0^{10}\ 1^{1}\ 0^{1}\ 1^{10}\ 0^{11}\ 1^{11}\ 0^{10}\ 1^{1}\ 0^{1}\ 1^{10}\ 0^{10}\ 1^{1}\ 0^{1}\ 1^{10}\ 0^{11}\ 1^{11}\ 0^{6}\] This string has $18$ blocks, but only $12$ superblocks of which exactly two are minor. The cardinalities of the superblocks are (in this order) \[6, 11, 11,11, 11,11, 11,11, 11,11, 11, 6.\]
+\end{example}
+
+\begin{theorem}[Superblock Upper Bound]\label{thm:SuperBlockUpperBound} If $C$ is a $2$-coloring with no good progression, then every superblock of $C$ has cardinality at most $k-1$.
+\end{theorem}
+\begin{proof}
+The union of two intersecting monochromatic quasi-progression of $C$ using differences from $\{1,\ldots,k-i+1\}$ is also a monochromatic quasi-progression of $C$ using differences from $\{1,\ldots,k-i+1\}$. It follows that all of the elements of a superblock are contained in a single monochromatic quasi-progression of $C$ using differences from $\{1,\ldots,k-i+1\}$. Because $C$ contains no good quasi-progression, each superblock contains fewer than $k$ elements.
+\end{proof}
+
+The following theorem lists basic facts about superblocks.
+
+\begin{theorem}[Superblock Fundamentals]\label{thm:Fundamentals} Suppose $C$ is a binary string that represents a $2$-coloring with no good progression. If $C$ has $t$ superblocks $B_1 <\cdots < B_t$, then
+\begin{enumerate}
+\item\label{en:SBfund1} all elements in a superblock have the same color (that is, superblocks are monochromatic),
+\item\label{en:SBfund2} $B_1,\ldots,B_t$ form a partition of $C$, 
+\item\label{en:SBfund3} consecutive superblocks have opposite color, 
+\item\label{en:SBfund4} superblocks $B_2,\ldots,B_{t-1}$ contain exactly one major block (in particular they are major superblocks), 
+\item\label{en:SBfund5} an extreme element of a superblock is adjacent to either the end of the string, a minor superblock, or the major block of neighboring major superblock, and
+\item\label{en:SBfund6} a substring of $C$ consisting of all characters between (and including) the extreme elements of a superblock contains exactly one major block.
+\end{enumerate}
+\end{theorem}
+\begin{proof} \ref{en:SBfund1} two elements are in relation $\sim$ if they are in a common monochromatic quasi-progression. Therefore their color is identical. \ref{en:SBfund2} the equivalence classes of an equivalence relation form a partition. \ref{en:SBfund3}--\ref{en:SBfund6} the boundary of a superblock is reached at the end of the string or at an obstructing major block of the opposite color. Thus each superblock with a neighbor, must contain a major block that defines the boundary of that neighbor. So superblocks alternate color. If a superblock contained two major blocks, then its size would exceed $k-1$, contradicting \autoref{thm:SuperBlockUpperBound}.
+\end{proof}
+
+Note that, by \ref{en:SBfund2}, the length of $C$ is $\ell = \sum_{j=1}^t |B_j|$. The basic approach for an upper bound on the length of $C$ is based on this partition -- we seek to bound the cardinality of each of the superblocks. To accomplish this, we need to argue that segments of a long monochromatic quasi-progression can be strung together using fragments from each superblock. The technique relies on the following two fundamental theorems.
+
+\begin{theorem}[Greedy Major Superblock Jumping]\label{thm:GreedyMajorJump} Assume $k \geq 2i$. If $B$ is a major superblock of $C$ and $1 \leq \delta \leq i$, then $B$ contains a monochromatic quasi-progression $P$ such that 
+\begin{enumerate}
+   \item\label{en:GreedyMaSBJ1} $P$ has length at least $\left\lceil \frac{|B|}{\delta} \right\rceil$,
+   \item\label{en:GreedyMaSBJ2} the low difference of $P$ is at least $\delta$,
+   \item\label{en:GreedyMaSBJ3} the diameter of $P$ is at most $k-i$, and
+   \item\label{en:GreedyMaSBJ4} both extremes of $B$ are in $P$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Without loss of generality, $B$ has color $1$. Let $S$ denote the binary substring of $C$ consisting of all characters between the minimum and maximum elements of $B$. By definition, $S$ begins and ends with a $1$. Let us suppose that $p \delta < |B| \leq (p+1)\delta$, for some positive integer $p$. We must show that there is a monochromatic quasi-progression of length at least $p+1$ (that is, a progression that satisfies \ref{en:GreedyMaSBJ1} above) with the additional properties \ref{en:GreedyMaSBJ2}--\ref{en:GreedyMaSBJ4}. First, create a monochromatic quasi-progression this way: start with the left-most $1$ of $S$ and repeatedly jump right to the first available $1$ that is distance at least $\delta$, but no more than $\delta + k-i$ from the last chosen $1$. Note that there can never be an obstruction to jumping to the next available $1$ unless we reach the end of $S$ because, if a jump to the next $1$ required a length more than $\delta + k-i$, then the last $k-i+1$ skipped elements would be a major block of $0$s in $S$ which is impossible by \autoref{thm:Fundamentals}~\ref{en:SBfund6}. This means that when this greedy jumping reaches the end of $S$, it must land on a $1$ that is distance at most $\delta -1$ of the rightmost $1$ of $S$. Also notice that each jump can pass over at most $\delta-1$ ones. Thus each $1$ in our constructed progression ``consumes'' at most $\delta$ ones: itself plus the at most $\delta-1$ ones that are skipped by the next jump. But, since there are more than $p \delta$ ones and we have not wasted any $1$s because we started at the beginning of $S$, our progression must have at least $p+1$ ones. The only problem is that this progression may not end at the maximum element of $B$. We now address this problem.
+
+Let $x$ denote the leftmost $1$ of $S$ and $y$ the rightmost $1$ of $S$. Suppose that our currently constructed progression from $S$ is $x=x_1<\cdots<x_{q}$, for some $q \geq p+1$. In a manner similar to the construction of this sequence, construct a new progression starting at $y$ and greedily jumping leftward toward $x$. Suppose that this second progression is $y_h < \cdots < y_2 < y_1$; that is, this progression begins at the rightmost element $y_1=y$ of $S$, jumps leftwards greedily until it reaches $y_h$ and no further jumps are possible. A consequence of the next claim is that the $x$-progression and the $y$-progression have the same length (i.e. $h=q$).
+
+\begin{claim} $y_j - x_{q+1-j} < \delta$, for $j=1,\ldots,q$.
+
+We prove this by induction on $j$. The basis case is true because $y_1=y$ and as noted in the paragraph above, the progression of $x$s must end within $\delta$ of $y$. Now suppose that $y_{j} - x_{q+1-j} < \delta$, for some $j$. Because the progression of $y$s must end within $\delta$ of $x$, if $q+1-j > 1$, the element $y_{j+1}$ must exist. The distance $y_{j} - y_{j+1}$ must be at least $\delta$ so $y_{j+1} < x_{q+1-j}$. In particular, $x_{q-j} \leq y_{j+1} < x_{q+1-j}$. Because the $x$-sequence did not jump from $x_{q-j}$ to $ y_{j+1}$, it follows that $y_{j+1}- x_{q-j} \leq \delta - 1$, as desired.
+\end{claim}
+Observe that if $y_j = x_{q+1-j}$, for some $j \in \{1,\ldots,q\}$ then the progression \[ x_1, \dotsc, x_{q+1-j}, y_{j-1}, \dotsc, y_1 \] satisfies the conclusion of the theorem.
+
+So, we have proven that we may assume that these two sequences interlace: \[ x_1 < y_q < x_2 < y_{q-1} < \dotsb < x_{q-1} < y_2 < x_{q} < y_1,\] and $y_j - x_{q+1-j} < \delta$, for $j=1, \dotsc, q$.
+ 
+Now let $T$ denote the substring of $S$ corresponding to the major block of $1$s in $B$. Because $T$ is a major block, $T$ is a substring of $1$s with length at least $k-i+1$. In particular, since $k \geq 2i$, the length of $T$ is at least $i+1$, which is larger than $\delta$. Now observe that among the differences between consecutive elements of the progression $x_1,\ldots,x_q$, there must be a difference of exactly $\delta$ because the first greedy jump that this progression makes into $T$ must either have length exactly $\delta$ or it hits the first element of $T$. In the latter event, the following jump must have length $\delta$ because $T$ contains at least $\delta + 1$ ones.
+
+So, there is some $j \in \{1,\ldots,q-1\}$ such that $x_{q+1-j} - x_{q-j} = \delta$. Because $y_j - x_{q+1-j} < \delta$, it follows that $y_j - x_{q-j} \leq 2\delta \leq k - i + \delta$. Therefore, the progression \[ x_1,\dotsc, x_{q-j}, y_{j}, \dotsc, y_1 \] satisfies the conclusion of the theorem.
+\end{proof}
+
+\begin{theorem}[Greedy Minor Superblock Jumping]\label{thm:GreedyMinorJump} 
+Assume $k \geq 2i$.
+If $B$ is a minor superblock of $C$, $x$ is an extreme of $B$, and $1 \leq \delta \leq i$, then $B$ contains a monochromatic quasi-progression $P$ such that 
+\begin{enumerate}
+   \item\label{en:GreedyMiSBJ1} $P$ has length at least $\left\lceil \frac{|B|}{\delta} \right\rceil$,
+   \item\label{en:GreedyMiSBJ2} the low difference of $P$ is at least $\delta$,
+   \item\label{en:GreedyMiSBJ3} the diameter of $P$ is at most $k-i$, and
+   \item\label{en:GreedyMiSBJ4} $x \in P$.
+\end{enumerate}
+\end{theorem}
+\begin{proof} We argue essentially the same way as in the proof of \autoref{thm:GreedyMajorJump}. Without loss of generality, $B$ has color $1$ and $x$ is the leftmost element of $B$ (that is, $x = \min B$). Let $S$ denote the binary substring of $C$ consisting of all characters between the minimum and maximum elements of $B$. By definition, $S$ begins and ends with a $1$. Let us suppose that $p \delta < |B| \leq (p+1)\delta$, for some positive integer $p$. We must show that there is monochromatic quasi-progression of length at least $p+1$ (that is, a progression that satisfies \ref{en:GreedyMiSBJ1} above) with the additional properties \ref{en:GreedyMiSBJ2}--\ref{en:GreedyMiSBJ4}. Create such a monochromatic quasi-progression this way: start with $x$ and repeatedly jump right to the first available $1$ that is distance at least $\delta$, but no more than $\delta + k-i$ from the last chosen $1$. Note that there can never be an obstruction to jumping to the next available $1$ unless we reach the end of $S$ because, if a jump to the next $1$ required a length more than $\delta + k-i$, then the last $k-i+1$ skipped elements would be a major block of $0$s in $S$ which is impossible by \autoref{thm:Fundamentals}~\ref{en:SBfund6}. This means that when this greedy jumping reaches the end of $S$, it must lands on a $1$ that is distance at most $\delta - 1$ of the right most $1$ of $S$. Also notice that each jump can pass over at most $\delta - 1$ ones. Thus each $1$ in our constructed progression ``consumes'' at most $\delta$ ones, itself plus the at most $\delta-1$ ones that are skipped by the next jump. But, since there are more than $p \delta$ ones and we have not wasted any $1$s because we started at the beginning of $S$, our progression must have at least $p + 1$ ones.
+\end{proof}
+
+The next theorem brings together the previous two theorems and is a significant tool in later proofs.
+
+\begin{theorem}\label{thm:QP main tool}
+Assume $k \geq 2i$. Suppose $C$ is a binary string that represents a $\{\mbox{red, blue}\}$-coloring of positive integers with no good progression. If $C$ has no red major blocks of cardinality at least $k-i+\delta$, for some $1 \leq \delta \leq i$, and $B_1,\ldots,B_h$ are the blue superblocks of $C$, then $C$ contains a monochromatic quasi-progression $P$ with diameter at most $k-i$, low-difference at least $\delta$, and length at least $\sum_{j=1}^h \left\lceil \frac{|B_j|}{\delta} \right\rceil$.
+\end{theorem}
+\begin{proof} Apply \autoref{thm:GreedyMajorJump} to superblocks $B_2,\ldots,B_{h-1}$ to obtain monochromatic quasi-progression fragments $P_2,\ldots,P_{h-1}$ with length at least $\left\lceil \frac{|B_j|}{\delta} \right\rceil$, low-difference $\delta$, diameter $k-i$ and that contain both extremes of each of their major superblocks. Similarly, apply \autoref{thm:GreedyMinorJump} to superblocks $B_1$ and $B_h$ to obtain monochromatic quasi-progression fragments $P_1$ and $P_h$ with length at least $\left\lceil \frac{|B_j|}{\delta} \right\rceil$, low-difference $\delta$, diameter $k-i$ and that contain the maximum and minimum, respectively, of $B_1$ and $B_h$. Because $C$ has no red major blocks of cardinality at least $k-i+\delta$, jumps of length at most $k-i+\delta$ (and at least $\delta$) can be made to join the extremes of these fragments into the desired monochromatic quasi-progression $P$.
+\end{proof}
+
+\section{Some upper bounds\label{sec:QP upper bounds}}
+
+This section establishes upper bounds on $Q(k-i,k)$. In many cases the bounds are sharp. The proofs rely heavily on the superblock results from the previous section.
+
+\begin{theorem} If $k \geq 2i$ and $k \equiv 0 \pmod{i}$, then $Q(k-i,k) = 2ik-4i+3$.
+\end{theorem}
+\begin{proof} 
+The lower bound $Q(k-i,k) \geq 2ik-4i+3$ follows from Corollary 1 of Landman's paper \cite{L}; so it suffices to prove the upper bound. Suppose that $\ell = Q(k-i,k) - 1$ and $C$ is a binary string of length $\ell$ that represents a $2$-coloring of the integers $1,\ldots,\ell$ with no good progression. We must prove that $\ell \leq 2ik-4i+2$. Assume that $k = m i$, for some $m \geq 2$.
+
+We claim that there can not be $i$ major superblocks of the same color. To see this, suppose to the contrary, that $B_1,\ldots,B_p$ ($p \geq i$) are all of the blue major superblocks of $C$. Apply \autoref{thm:QP main tool} with $\delta = i$ to the substring of $C$ between the $\min B_1$ and the $\max B_i$. This theorem guarantees a monochromatic quasi-progression of length at least \[\sum_{j=1}^p \left\lceil \frac{|B_j|}{i} \right\rceil \geq \sum_{j=1}^p \left\lceil \frac{k-i+1}{i} \right\rceil \geq \sum_{j=1}^p m \geq mp \geq k,\] a contradiction. So $C$ has at most $i-1$ major superblocks of each color.
+
+Suppose that $C$ has $i-1$ major superblocks of the same color. We now claim that the total number of elements in minor blocks of that color is at most $k-i$. To prove this, suppose that $C$ has $i-1$ blue major superblocks $B_1,\ldots,B_{i-1}$ and two minor superblocks $B_0$ and $B_{i}$ (it is clear that there are most two blue minor superblocks, since there is at most one at each end). Again, apply \autoref{thm:QP main tool} with $\delta = i$ to the substring of $C$ between the $\min B_0$ and the $\max B_i$. This theorem guarantees a monochromatic quasi-progression of length at least \[\sum_{j=0}^i \left\lceil \frac{|B_j|}{i} \right\rceil = (i-1)m + \left\lceil \frac{|B_0|}{i} \right\rceil + \left\lceil \frac{|B_i|}{i} \right\rceil.\] Since this sum is at most $k-1 = mi-1$, it follows that $|B_0| + |B_i| \leq k - i$. Consequently, the blue superblocks have cardinalities that sum to at most $(i-1)(k-1) + (k-i)$. The same argument applies to the red superblocks. Therefore, the length of $C$ is at most \[2(i-1)(k-1) + 2(k-i) = 2ik-4i+2,\] as desired.
+\end{proof}
+
+\begin{theorem} If $k \geq 2i + 1$ and $k \equiv 1 \pmod{i}$, then $Q(k-i,k) = 2ik-2i+1$.
+\end{theorem}
+\begin{proof} 
+The lower bound $Q(k-i,k) \geq 2ik-2i+1$ follows from Corollary 1 of Landman's paper \cite{L}; so it suffices to prove the upper bound. Let $C$ be binary string realizing an extremal $2$-coloring with no good progression. We must prove that the length of $C$ is at most $2i(k-1)$. Let $B_1,\ldots,B_p$ be the blue superblocks of $C$ and $R_1,\ldots,R_q$ the red superblocks. Because the superblocks form a partition, the length of $C$ is $\sum_{j=1}^p |B_j| +\sum_{j=1}^q |R_j|$. However, applying \autoref{thm:QP main tool} with $\delta = i$ to the substring of $C$ between the $\min B_1$ and the $\max B_p$, we find that $C$ contains a monochromatic quasi-progression of length $\sum_{j=0}^p \left\lceil \frac{|B_j|}{i} \right\rceil$. Since this can not exceed $k-1$, it follows that $\sum_{j=1}^p |B_j| \leq i (k-1)$. A symmetric argument shows $\sum_{j=1}^q |R_j| \leq i (k-1)$. Therefore the length of $C$ is at most $2i(k-1)$, as desired.
+\end{proof}
+
+The next theorem gives a general upper bound that we shall show in the next section is sharp when $k=mi+r$ for integers $m,r$ such that $3 \leq r < \frac{i}{2}$ and $r-1 \leq m$.
+
+\begin{theorem} \label{thm:GeneralUpperBound} If $k \geq 2i$ and $k=mi+r$ for integers $m,r$ such that $1 < r < i$, then \[Q(k-i,k) \leq 2ik-4i+2r-1.\]
+\end{theorem}
+\begin{proof} 
+Suppose that $\ell = Q(k-i,k) - 1$ and $C$ is a binary string of length $\ell$ that represents a $2$-coloring of the integers $1,\ldots,\ell$ with no good progression. We must prove that $\ell \leq 2ik-4i+2r-2$. We argue by contradiction: assume that $\ell > 2ik-4i+2r-2$.
+
+For $j=0,1$, let $\alpha_j$ denoted the number of superblocks of $C$ that have size greater than $mi$. Apply \autoref{thm:QP main tool} with $\delta = i$ to the shortest substring containing all superblocks of color $j$: \[\alpha_j (m+1) + \sum_{\substack{\text{$B$ has color $j$}\\ |B| \leq mi}} \left\lceil \frac{|B|}{i} \right\rceil \leq k-1.\] It follows that, for $j=0,1$, \[\sum_{\substack{\text{$B$ has color $j$}\\ |B| \leq mi}} |B| \leq i(k - 1 - \alpha_j (m+1)).\] Therefore, the length of $C$ can be bounded as follows:
+\begin{align*}
+\ell &= \sum_{j=0}^1 \left( \sum_{\substack{\text{$B$ has color $j$}\\ |B| > mi}} |B| \right) + \sum_{j=0}^1 \left( \sum_{\substack{\text{$B$ has color $j$}\\ |B| \leq mi}}  |B| \right) \\
+ &\leq (\alpha_0 + \alpha_1)(k-1) + i(k - 1 - \alpha_0 (m+1)) + i(k - 1 - \alpha_1 (m+1)) \\
+ &= 2ik - 2i - \alpha(i+1 - r),
+\end{align*}
+where $\alpha = \alpha_0 + \alpha_1$. Because we are assuming that $\ell > 2ik-4i+2r-2$, we may conclude that $\alpha < 2$. Without loss of generality, $\alpha_0=0$ and $\alpha_1 \leq 1$.
+
+Because $\alpha_0=0$, the coloring contains no superblocks of $0$s with cardinality larger than $mi$. Now apply \autoref{thm:QP main tool} with $\delta = i-r+1$ to the substring of $C$ containing all superblocks of color $1$: \[\sum_{\text{$B$ has color $1$}} \left\lceil \frac{|B|}{i-r+1} \right\rceil \leq k-1.\] Consequently the number of $1$s in $C$ is at most $(k-1)(i-r+1)$. Applying \autoref{thm:QP main tool} with $\delta = i$ to the substring of $C$ containing all superblocks of color $0$ we find \[\sum_{\text{$B$ has color $0$}} \left\lceil \frac{|B|}{i} \right\rceil \leq k-1.\] Therefore the number of $0$s in $C$ is at most $(k-1)i$. It follows that the length of $C$ can be bounded as follows:
+\begin{align*}
+	\ell	&= \left(\# 1\mbox{s in }C \right) + \left( \# 0\mbox{s in }C \right) \\
+		&\leq (k-1)(i-r+1) +  (k-1)i\\
+		&= 2ik - 2i +(k-1)(1 - r),
+\end{align*}
+which is at most $2ik-4i+2r-2$ since $r > 1$ and $k > 2i$. This contradicts that $\ell > 2ik-4i+2r-2$. 
+\end{proof}
+
+\section{A general lower bound\label{sec:QP lower bound}}
+
+In this section we exhibit an extremal $2$-coloring of positive integers avoiding monochromatic $k$-term quasi-progressions of diameter $k-i$ for many values of $k$ and $i$. To describe this coloring we first introduce some notation.
+
+Recall that a block of a binary string is a maximal length monochromatic substring. A \defn{segment} of a binary string is a maximal length substring in which all blocks have the same length. Its segments naturally partition a binary string. Therefore a binary string $C$ can be abbreviated by an expression involving positive integers of the form $a_1^{b_1}\cdots a_s^{b_s}$, which indicates that the $j$th segment consists of $b_j$ blocks of length $a_j$ (we assume that the first block is a block of $1$s). We adopt this notation in this section. Note that $C$ has length $\sum_{j=1}^s a_j b_j$. 
+
+\begin{theorem} \label{thm:GeneralLowerBound} Suppose that $k=mi+r$ for integers $m,r$ such that $3 \leq r < \frac{i}{2}$. If $r-1 \leq m$, then the following $2$-coloring of the integers from $1$ to $2ik-4i + 2r - 2$ contains no monochromatic $k$-term quasi-progression of diameter $k-i$: \[(i(r-2))^1 \ (mi)^{i-1}\ (k-1)^{2}\ (mi)^{i-1}\ (i(r-2))^1.\]
+\end{theorem}
+\begin{proof} Let $C$ denote the binary string corresponding to this coloring. We assume that $C$ begins with a block of $1$s. Observe that $C$ is a palindrome and, because $r-1 \leq m$, the initial block of $1$s is shorter than the others. For a positive integer $\delta$, let $Q_\delta$ be a longest monochromatic quasi-progression in $C$ with low-difference $\delta$, and let $\ell$ be the length of $Q_\delta$. We must show $\ell \leq k-1$. Because $C$ is a palindrome, we may assume that $Q_\delta$ consists of elements of color $1$. If $\delta < i - r + 1$, then $Q_\delta$ can not jump across blocks of length $mi$ or longer, so $Q_\delta$ has length at most $k-1$ in this case. So it suffices to consider values of $\delta \geq i-r+1$. However, because $C$ has only interior blocks of length $mi$ or $k-1$, we can restrict our attention of $\delta = i - r + 1$ (which permits leaps over blocks size $mi$ but not $k-1$) or $\delta = i$ (which permits leaps over all block sizes). Upper bounds on $\ell$ for other values of $\delta$ follow immediately from the upper bounds on these two values of $\delta$.
+
+Assume first that $\delta = i$. The quasi-progression $Q_\delta$ can use at most $\left\lceil \frac{|B|}{i} \right\rceil$ elements from a block $B$. Consequently, the length $\ell$ can be bounded this way:
+\begin{align*}
+\ell &\leq \left\lceil \frac{i(r-2)}{i} \right\rceil + (i-1) \left\lceil \frac{mi}{i} \right\rceil + \left\lceil \frac{k-1}{i} \right\rceil \\
+	&= (r - 2) + (i-1)m + (m + 1) \\
+	&= k - 1
+\end{align*}
+as desired.
+
+Assume now that $\delta = i - r + 1$. Clearly the quasi-progression $Q_\delta$ can use at most $\left\lceil \frac{|B|}{ i - r + 1} \right\rceil$ elements from a block $B$. There are two cases according to the parity of $i$. In each case the length of $Q_\delta$ is bounded from above:
+
+If $i$ is even the extremal length occurs when $Q_\delta$ uses $1$s from the small beginning block, $(i-2)/2$ intermediate blocks of size $mi$, and the large block of $k-1$ ones, so
+\begin{equation} \label{eq:Case1Bound}
+\ell \leq \left\lceil \frac{i(r-2)}{i - r + 1} \right\rceil + \frac{i-2}{2} \left\lceil \frac{mi}{i - r + 1} \right\rceil + \left\lceil \frac{k-1}{i - r + 1} \right\rceil. 
+\end{equation}
+
+If $i$ is odd the extremal length occurs when $Q_\delta$ uses $1$s from $(i-1)/2$ intermediate blocks of size $mi$, and the large block of $k-1$ ones, so
+\begin{equation} \label{eq:Case2Bound}
+\ell \leq \frac{i-1}{2} \left\lceil \frac{mi}{i - r + 1} \right\rceil + \left\lceil \frac{k-1}{i - r + 1} \right\rceil. 
+\end{equation}
+
+Consider now the following upper bounds which, when substituted into inequalities (\ref{eq:Case1Bound}) and (\ref{eq:Case2Bound}), will show that $\ell \leq k-1$.
+
+\begin{claim}[Bound 1]$\left\lceil \frac{mi}{i - r + 1} \right\rceil \leq \min\{2m - 1,2m + \frac{2(r-1-m)}{i-1}\}$.
+
+It suffices to prove that $\frac{mi}{i - r + 1} \leq 2m - 1 + \frac{2(r-1-m)}{i-1}$. Assume the contrary: $\frac{mi}{i - r + 1} > 2m - 1 + \frac{2(r-1-m)}{i-1}$. Applying the assumption that $2r + 1 \leq i$ while solving for $m$, we find that \[\frac{(i-r+1)(i-2r+1)}{i(i-2r-1)+4(r-1)} > m.\] Because we have assumed that $m \geq r-1$, it follows that \[\frac{(i-r+1)(i-2r+1)}{i(i-2r-1)+4(r-1)} > r-1.\] Consequently,
+	\begin{align*}
+		0	&> \left(r-1\right)\left[i(i-2r-1)+4(r-1)\right] - (i-r+1)(i-2r+1)\\
+     		&= \left(r-2\right)\left(i-1\right)\left(i - \frac{2r^2 - 5r + 3}{r-2}\right)
+	\end{align*}
+Because $r > 2$ and $i > 1$, we conclude that $i < \frac{2r^2 - 5r + 3}{r-2}$. However, since $i > 2r$ we find that \[ 2r < \frac{2r^2 - 5r + 3}{r-2} \] which implies that $r < 3$, a contradiction.
+\end{claim}
+
+\begin{claim}[Bound 2]$\left\lceil \frac{k-1}{i - r + 1} \right\rceil \leq 2m$.
+
+Assume, to the contrary, that $\frac{k-1}{i - r + 1} > 2m$. Substituting $k=mi+r$ and solving for $m$ produces the inequality $\frac{r-1}{i-2r+2} > m$. Because we have assumed that $m \geq r-1$, it follows that $\frac{r-1}{i-2r+2} > r-1$ which implies that $i < 2r-1$, a contradiction.
+\end{claim}
+
+\begin{claim}[Bound 3]$\left\lceil \frac{i(r-2)}{i - r + 1} \right\rceil \leq \frac{i}{2} + r - 2$.
+
+It suffices to prove that  $\frac{i(r-2)}{i - r + 1} \leq \frac{i}{2} + r - 3$. Assume, to the contrary, that $ \frac{i(r-2)}{i - r + 1} > \frac{i}{2} + r - 3$. Equivalently, \[ 0  >  2\left(\frac{i}{2}+ r- 3\right)(i-r+1) - 2i (r-2) = (i+r-3)(i-2r+2),\] a contradiction.
+\end{claim}
+
+To complete the proof we show, using these bounds applied to inequalities (\ref{eq:Case1Bound}) and (\ref{eq:Case2Bound}), that $\ell \leq k-1$. Consider inequality (\ref{eq:Case1Bound}):
+	\begin{align*}
+		\ell	&\leq \left\lceil \frac{i(r-2)}{i - r + 1} \right\rceil + \frac{i-2}{2} \left\lceil \frac{mi}{i - r + 1} \right\rceil + \left\lceil \frac{k-1}{i - r + 1} \right\rceil\\
+   			&\leq \left(\frac{i}{2} + r - 2\right) + \left( \left( \frac{i-2}{2}\right) \left( 2m-1 \right)\right) + \left( 2m \right)\\
+			&= k-1
+   \end{align*}
+Now consider inequality (\ref{eq:Case2Bound}):
+	\begin{align*}
+		\ell	&\leq \frac{i-1}{2} \left\lceil \frac{mi}{i - r + 1} \right\rceil + \left\lceil \frac{k-1}{i - r + 1} \right\rceil\\
+			&\leq \left( \left( \frac{i-1}{2}\right) \left( 2m + \frac{2(r-1-m)}{i-1} \right)\right) + \left( 2m \right)\\
+			&= k-1
+   \end{align*}
+\end{proof}
+
+\begin{theorem} \label{thm:SharpGeneralBound} If $k=mi+r$ for integers $m,r$ such that $3 \leq r < \frac{i}{2}$ and $r-1 \leq m$, then \[Q(k-i,k) = 2ik-4i+2r-1.\]
+\end{theorem}
+\begin{proof}  \Autoref{thm:GeneralUpperBound} proves the upper bound and \autoref{thm:GeneralLowerBound} proves the lower bound.
+\end{proof}
+
+\begin{theorem} If $k \geq 2i$ and $k \equiv 2 \pmod{i}$, then $Q(k-i,k) = 2ik-4i+3$.
+\end{theorem}
+\begin{proof} \Autoref{thm:GeneralUpperBound} gives the upper bound $Q(k-i,k) \leq 2ik-4i+3$. Arguing in a manner similar to the proof of \autoref{thm:GeneralLowerBound}, one can show that \[ (k-2)^{i-1}\ (k-1)^{2}\ (k-2)^{i-1}.\] is a $2$-coloring of $1,\dotsc, 2ik-4i+2$ that avoids monochromatic $k$-term quasi-progressions of diameter $k-i$.
+\end{proof} 
+
+\section{Computational Results}
+
+Landman \cite{L} gave a table of maximal known $2$-colorings avoiding quasi-progressions of length $k$ and diameter $k-i$ for various values of $k$ and $i$. Here we present extended versions of that table obtained using our own program. Results not included in the original table are indicated in bold; if the $k$ and $i$ values are bolded then the row did not appear in the original at all. A horizontal line separates the entries with $k < 2i$ from the entries with $k \geq 2i$. The fact that $Q\left(13-5,5\right) = 115$ is of particular interest; this is the easiest-to-compute value for which Landman's conjecture fails.
+
+\newcommand*{\updated}[1]{{\bfseries #1}}%
+
+\begin{table}\caption{Verified and \updated{updated} version of the table from \cite{L} $\left(i=3\right)$}\centering\linespread{1}\selectfont\begin{tabular}{rrrl}\hline\\[-8pt]
+$k$	&$i$	&\multicolumn{2}{l}{$Q\left(k-i,k\right)$\hfill Maximal Valid Colorings\hfill\null}\\[2pt]\hline\hline\\[-8pt]
+$3$	&$3$	&\hphantom{$9999$}$9$		&$2^4$, $1^3 2^1 1^3$, $1^1 2^3 1^1$\\
+$4$	&$3$	&$19$	&$3^6$\\
+$5$	&$3$	&$29$	&$4^2 3^2 4^2 3^2$, $3^2 4^2 3^2 4^2$, $4^1 3^2 4^2 3^2 4^1$, $3^1 4^2 3^2 4^2 3^1$\\
+\cline{1-3}
+$6$	&$3$	&$27$	&$3^1 5^4 3^1$\\
+$7$	&$3$	&$37$	&$6^6$, $3^1 6^5 3^1$\\
+$8$	&$3$	&$39$	&$6^2 7^2 6^2$ 
+\updated{and 5 others}\\
+
+$9$	&$3$	&$45$	&$6^1 8^4 6^1$\\
+$10$ &$3$	&$55$	&$9^6$, $6^1 9^5 3^1$, $3^1 9^5 6^1$\\
+$11$ &$3$	&$57$	&$9^2 10^2 9^2$ \updated{and 7 others}\\
+$12$ &$3$	&$63$	&$9^1 11^4 9^1$\\
+$13$ &$3$	&$73$	&$12^6$, $9^1 12^5 3^1$, $6^1 12^5 6^1$, $3^1 12^5 9^1$\\
+$14$ &$3$	&$75$	&$12^2 13^2 12^2$ \updated{and 9 others}	\\
+$15$ &$3$	&$81$	&$12^1 14^4 12^1$\\
+$16$ &$3$	&$91$	&$15^6$, $12^1 15^5 3^1$, $9^1 15^5 6^1$, $6^1 15^5 6^1$, $3^1 15^5 12^1$	\\
+$17$ &$3$	&$93$	&$15^2 16^2 15^2$ \updated{and 11 others}\\
+\updated{18} &\updated{3}	&$99$	&$15^1 17^4 15^1$\\
+\updated{19} &\updated{3}	&$109$	&6 examples\\
+\updated{20} &\updated{3}	&$111$	&14 examples\\
+\updated{21} &\updated{3}	&$117$	&$18^1 20^4 18^1$
+\end{tabular}\label{tab:i = 3}\end{table}
+
+\begin{table}\caption{Verified and \updated{updated} version of the table from \cite{L} $\left(i=4\right)$}\centering\linespread{1}\selectfont\begin{tabular}{rrrl}\hline\\[-8pt]
+$k$	&$i$	&\multicolumn{2}{l}{$Q\left(k-i,k\right)$\hfill Maximal Valid Colorings\hfill\null}\\[2pt]\hline\hline\\[-8pt]
+$4$ &$4$	&\hphantom{$999$}$35$	&\updated{14 examples}\\
+$5$	&$4$	&$33$	&$4^8$ \updated{and 43 others}\\
+$6$	&$4$	&$49$	&$5^4 4^2 5^4$ \updated{and 8 others}\\
+$7$	&$4$	&$65$	&$6^2 4^1 6^2 4^1 6^2 4^1 6^2 4^1$, $6^1 4^1 6^2 4^1 6^2 4^1 6^2 4^1 6^1$, $4^1 6^2 4^1 6^2 4^1 6^2 4^1 6^2$\\
+\cline{1-3}
+$8$	&$4$	&$51$	&$4^1 7^6 4^1$ \updated{and 6 others}\\
+$9$ &$4$	&$65$	&$8^8$, $4^1 8^7 4^1$\\
+$10$ &$4$	&$67$	&$8^3 9^2 8^3$ \updated{and 14 others}\\
+$11$ &$4$	&$75$	&\updated{6 examples}\\
+$12$ &$4$	&$83$	&$8^1 11^6 8^1$ \updated{and 6 others}\\
+$13$ &$4$	&$97$	&$12^8$, $8^1 12^7 4^1$, $4^1 12^7 8^1$\\
+$14$ &$4$	&$99$	&$12^3 13^2 12^3$ \updated{and 20 others}\\
+\updated{15} &\updated{4}	&$107$	&9 examples\\
+\updated{16} &\updated{4}	&$115$	&7 examples\\
+\updated{17} &\updated{4}	&$129$	&$16^8$, $12^1 16^7 4^1$, $8^1 16^7 8^1$, $4^1 16^7 12^1$\\
+\updated{18} &\updated{4}	&$131$	&7 examples\\
+\updated{19} &\updated{4}	&$139$	&12 examples
+\end{tabular}\label{tab:i = 4}\end{table}
+
+\begin{table}\caption{Verified and \updated{updated} version of the table from \cite{L} $\left(i\geq 5\right)$}\centering\linespread{1}\selectfont\begin{tabular}{rrrl}\hline\\[-8pt]
+$k$	&$i$	&\multicolumn{2}{l}{$Q\left(k-i,k\right)$\hfill Maximal Valid Colorings\hfill\null}\\[2pt]\hline\hline\\[-8pt]
+$5$	&$5$	&\hphantom{$99$}$178$	&\updated{96812 examples}\\
+$6$	&$5$	&$67$	&$2^2 5^2 2^2 3^2 2^2 5^2 2^2 3^2 2^2 5^2 2^2$\\
+$7$	&$5$	&$73$	&\updated{Four examples}\\
+$8$ &$5$	&$93$	&\updated{198 examples}\\
+$9$ &$5$	&\updated{115}	&\updated{44 examples}\\
+\cline{1-3}
+$10$ &$5$	&$83$	&$5^1 9^8 5^1$ \updated{and 25 others}\\
+$11$ &$5$	&$101$	&$10^{10}$, $5^1 10^9 5^1$\\
+$12$ &$5$	&\updated{103}	&\updated{10 examples}\\
+$13$ &$5$	&\updated{115}	&\updated{$5^1 10^4 12^2 10^4 5^1$}\\
+$14$ &$5$	&\updated{123}	&$5^1 10^2 13^2 10^2 13^2 10^2 5^1$\\
+$15$ &$5$	&\updated{133}	&\updated{26 examples}\\
+\updated{16} &\updated{5}	&$151$	&$15^{10}$, $10^1 15^9 5^1$, $5^1 15^9 10^1$\\
+\updated{17} &\updated{5}	&$153$	&40 examples\\
+\\
+$7$ &$6$	&\updated{127}	&$52256466664255246511566432362141$,\\
+	&&&$522564666642552466666432362141$\\
+\updated{11} &\updated{6}	&$184$	&94 examples (see QPcirc)\\
+\cline{1-3}
+\updated{12} &\updated{6}	&$123$	&61 examples\\
+\updated{15} &\updated{6}	&$\geq 161$	&$6^1 12^5 14^2 12^5 6^1$\\
+\\
+$8$	&$7$	&\updated{$\geq$ 194}	&$7263634353377422552562575$-\\&&&-$12267472256226572133351$\\
+\\
+$9$	&$8$	&\updated{$\geq$ 289}	&$82836386822482622723782342252472$-\\&&&-$88578852484422168253442387428231$
+\end{tabular}\label{tab:i geq 5}\end{table}
+
+A natural direction for further study is to try to obtain upper bounds similar to \autoref{thm:GeneralUpperBound} for quasi-progressions with smaller diameter. While it seems unlikely that exact results can be obtained, it may be possible to get the correct order of growth. Landman proved $Q\left(k-1,k\right) = 2k-1$ and \autoref{thm:GeneralUpperBound} says in essence that $Q\left(\frac{k}{2},k\right) \leq 2k^2$. Accordingly, we make the following conjecture.
+
+\begin{conjecture}For a fixed positive integer $r$, there exists a constant $c$ such that \[Q\left(\frac{k}{r},k\right) \leq c k^r\]
+\end{conjecture}

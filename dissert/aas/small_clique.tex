@@ -1,0 +1,59 @@
+\documentclass{article}
+
+\usepackage{amsthm}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\begin{document}
+
+\begin{theorem}
+Let $c < 1/4$ be a constant.  For any constant $b$ and sufficently large $n$, every $\overline{K_3}$-free graph $G$ on $n$ vertices with $\omega(G) < b\sqrt{n\log n}$ has a $cn$-connected matching.
+\end{theorem}
+
+We will employ the following lemma about triangle free graphs with small independence number.
+
+\begin{lemma}
+For every pair of positive constants $\epsilon, d$ there is $n_{\epsilon, d}$ such that every triangle-free graph $G$ with $n > n_{\epsilon, d}$ vertices and $\alpha(G) < d\sqrt{n\log n}$ has fewer than $\epsilon n^3$ copies of $C_4$.
+\end{lemma}
+\begin{proof}
+Fix $\epsilon, d> 0$ and let $G$ be a triangle free graph on $n$ vertices with $\alpha(G) < d\sqrt{n\log n}$.  Let $X_{C_4}$ be the number of $C_4$ in $G$.  Then
+\[X_{C_4} = \frac{1}{2}\sum_{\{u,v\}\notin E(G)} {|N(u) \cap N(v)| \choose 2}\]
+Set $\epsilon_1 = \sqrt{8\epsilon}$.
+
+\noindent\textit{Claim. For sufficiently large $n$, fewer than $n^2(\log n)^{-2}$ pairs of vertices $u,v$ have neighborhood intersection larger than $\epsilon_1\sqrt{n}$.}
+
+Suppose the contrary is true, and there are more than $n^2(\log n)^{-2}$ pairs $u,v$ so that $|N(u)\cap N(v)| \geq \epsilon_1\sqrt{n}$. When we count the total number of vertices in these intersections, the count is at least $\epsilon_1n^{5/2}(\log n)^{-2}$, meaning some vertex is counted $\epsilon_1n^{3/2}(\log n)^{-2}$ times.  However, $\Delta(G) \leq \alpha(G) < d\sqrt{n\log n}$, so each vertex is in at most \[{d\sqrt{n\log n}\choose 2 } < \frac{d^2}{2}n\log n\] neighborhood intersections.  Thus, for sufficiently large $n$,  the claim holds.
+
+Now we can bound $X_{C_4}$.
+\begin{eqnarray}X_{C_4} <& \frac{1}{2}\left[\frac{n^2}{(\log n)^2}{d\sqrt{n\log n}\choose 2}+ \left(|E(\overline{G})|- \frac{n^2}{(\log n)^2}\right){\epsilon_1\sqrt{n}\choose 2}\right]\\
+\sim& \frac{\epsilon_1^2}{8}n^3 = \epsilon n^3
+\end{eqnarray}
+Thus for sufficiently large $n$, $X_{C_4} < \epsilon n^3$.
+\end{proof}
+\vskip 1 cm
+ 
+Now we can prove the main theorem.
+
+\begin{proof}[Proof (of Theorem 1)]
+Fix constants $d$ and $c < 1/4$, and let $G$ be a $\overline{K_3}$-free graph with $n$ vertices, $m$ edges, and $\omega(G) < b\sqrt{n\log n}$.  Consider the $RGB$ graph $\mathcal{G}$ sinduced by $G$ (recalling that green $k$-cliques correspond to $k$-connected matchings in $G$ and red edges correspond to induced $\overline{C_4}$s in $G$).  If $R, G,$ and $B$ denote the number of red, green and blue edges respectively, we would like to show that \[G = {m\choose 2} - R - B \geq {m\choose 2} - cn{m/cn\choose 2}\] equivalently
+\begin{equation}
+	R + B \leq cn{m/cn\choose 2}\label{goal}
+\end{equation}
+guaranteeing by T\'{u}ran's theorem a green clique on $cn$ vertices in $\mathcal{G}$, and a $cn$-connected matching in $G$.
+
+We obtain a crude upper bound on $B$ by taking the number of edges in the line graph of $K_n$.
+\begin{equation}
+	B < \frac{n^3}{2} - \frac{3n^2}{2} + n
+\end{equation}
+We can also asymptotically bound $R$ using Lemma 1.  For any $\epsilon > 0$ and sufficiently large $n$, \[B + R < \frac{n^3}{2} + \epsilon n^3\]
+We compare this with the right hand side of (\ref{goal})
+\begin{eqnarray}
+	cn{m/cn\choose 2} =&\displaystyle \frac{cn}{2}\left(\frac{m^2}{c^2n^2} - \frac{m}{cn}\right)\\
+	=& \displaystyle \frac{1}{2c}m^2n^{-1} - \frac{m}{2}\\
+	\sim&   \displaystyle \frac{n^3}{8c}
+\end{eqnarray}
+Since $c < 1/4$, and we can take $\epsilon < \frac{1-4c}{8c}$, for sufficiently large $n$ (\ref{goal}) holds and $G$ has a $cn$-connected matching.
+\end{proof}
+
+\end{document}
